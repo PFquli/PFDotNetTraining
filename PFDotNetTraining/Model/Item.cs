@@ -13,7 +13,7 @@ namespace PFDotNetTraining.Model
 
         public string CreatedDate { get; set; }
 
-        public string Creator { get; set; }
+        public string CreatedBy { get; set; }
 
         public string ModifiedAt { get; set; }
 

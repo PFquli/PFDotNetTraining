@@ -15,6 +15,9 @@ namespace PFDotNetTraining.Data
 
         public DbSet<Item> Items { get; set; }
 
-        public DbSet<Account> Accounts { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Item>().ToTable("Item");
+        }
     }
 }

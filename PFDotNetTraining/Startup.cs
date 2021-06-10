@@ -25,6 +25,8 @@ namespace PFDotNetTraining
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ShelfContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
