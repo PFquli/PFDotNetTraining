@@ -7,15 +7,13 @@ using PFDotNetTraining.Model;
 
 namespace PFDotNetTraining.Data
 {
-    public class TrainingContext : DbContext
+    public class ShelfContext : DbContext
     {
-        public TrainingContext(DbContextOptions<TrainingContext> options) : base(options)
+        public ShelfContext(DbContextOptions<ShelfContext> options) : base(options)
         {
         }
 
-        public DbSet<File> Files { get; set; }
-
-        public DbSet<Folder> Folders { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
     }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PFDotNetTraining.Model
 {
-    public class Folder
+    public class Item
     {
         public int Id { get; set; }
 
@@ -22,6 +22,8 @@ namespace PFDotNetTraining.Model
         public string Icon { get; set; }
 
         public string Parent { get; set; }
+
+        public string Extension { get; set; }
 
         public bool IsEmpty { get; set; }
     }
