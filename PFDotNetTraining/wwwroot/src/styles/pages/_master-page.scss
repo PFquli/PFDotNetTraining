@@ -1,0 +1,19 @@
+// Import global styles
+
+//library import
+@import '../lib/bootstrap.scss';
+
+//Custom variables,mixins and functions
+@import '../utilities/variables';
+@import '../utilities/functions';
+@import '../utilities/mixins';
+
+//Reset page
+@import '../base/reset';
+@import '../base/typography';
+
+//Component styles
+@import '../components/index.scss';
+
+//Layout styles
+@import '../layout/index.scss';
