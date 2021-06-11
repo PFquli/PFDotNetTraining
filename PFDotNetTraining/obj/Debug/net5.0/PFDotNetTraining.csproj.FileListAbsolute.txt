@@ -56,3 +56,8 @@ C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\ru
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
