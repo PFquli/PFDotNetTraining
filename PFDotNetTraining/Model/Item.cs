@@ -25,6 +25,6 @@ namespace PFDotNetTraining.Model
 
         public string Extension { get; set; }
 
-        public bool IsEmpty { get; set; }
+        public bool IsFile { get; set; }
     }
 }
