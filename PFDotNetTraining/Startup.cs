@@ -27,25 +27,34 @@ namespace PFDotNetTraining
             services.AddDbContext<ShelfContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Error");
+            //}
+
+            app.UseDeveloperExceptionPage();
 
             //app.UseDefaultFiles();
 
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseEndpoints(cfg =>
+            {
+                cfg.MapControllerRoute("Default", "/{controller}/{action}/{id?}", new { controller = "Items", action = "getItems" });
+            });
 
             //app.UseAuthorization();
         }

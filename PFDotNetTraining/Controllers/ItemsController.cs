@@ -21,34 +21,34 @@ namespace PFDotNetTraining.Controllers
             _context = context;
         }
 
-        // GET: api/Items
+        //GET: api/Items
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
         {
-            return await _context.Items.ToListAsync();
+            return await _context.Items.AsNoTracking().OrderBy(item => item.CreatedDate).ToListAsync();
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItems(string parent)
+        // GET: api/Items/root
+        [HttpGet("{parent}")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetItems(int parent)
         {
-            var items = await _context.Items.Where(item => item.Parent == parent).OrderBy(item => DateTime.Parse(item.CreatedDate)).ToListAsync();
-            // check the parent folder
+            var items = await _context.Items.AsNoTracking().Where(item => item.Parent == parent).OrderBy(item => item.CreatedDate).ToListAsync();
             return items;
         }
 
         // GET: api/Items/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetItem(int id)
-        {
-            var item = await _context.Items.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Item>> GetItem(int id)
+        //{
+        //    var item = await _context.Items.FindAsync(id);
 
-            if (item == null)
-            {
-                return NotFound();
-            }
+        //    if (item == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return item;
-        }
+        //    return item;
+        //}
 
         // PUT: api/Items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

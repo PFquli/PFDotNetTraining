@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PFDotNetTraining.Migrations
 {
-    public partial class initialMigration : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,14 +14,14 @@ namespace PFDotNetTraining.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedAt = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Parent = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Extension = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsEmpty = table.Column<bool>(type: "bit", nullable: false)
+                    Size = table.Column<float>(type: "real", nullable: false),
+                    Parent = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    IsFile = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

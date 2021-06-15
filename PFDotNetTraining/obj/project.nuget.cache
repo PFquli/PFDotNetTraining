@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mIDZoDVI72aqmzFjrzth+fIRy7zGgg5k8QpEBOCJYGTtsYby/88NR91JZLD9PgNNUUkIiduP0lnBsyMTthPz5g==",
+  "dgSpecHash": "p91i22C9wcu/MPHZgVv9p8DLtWEkl/jJhG92vNQj3aPjo3+DMeq+h3W2mdcNB8TcePI9fE1mdSpmQZtlGMfoLA==",
   "success": true,
   "projectFilePath": "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
   "expectedPackageFiles": [
@@ -49,6 +49,7 @@
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.identitymodel.tokens\\5.6.0\\microsoft.identitymodel.tokens.5.6.0.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.netcore.targets\\1.1.3\\microsoft.netcore.targets.1.1.3.nupkg.sha512",
+    "C:\\Users\\quli\\.nuget\\packages\\microsoft.typescript.msbuild\\4.3.2\\microsoft.typescript.msbuild.4.3.2.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration\\5.0.2\\microsoft.visualstudio.web.codegeneration.5.0.2.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.contracts\\5.0.2\\microsoft.visualstudio.web.codegeneration.contracts.5.0.2.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.core\\5.0.2\\microsoft.visualstudio.web.codegeneration.core.5.0.2.nupkg.sha512",

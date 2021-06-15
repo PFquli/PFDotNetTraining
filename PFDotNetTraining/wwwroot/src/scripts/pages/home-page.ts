@@ -14,7 +14,6 @@ let hoverRow: string = '';
 let editMode: boolean = false;
 const randomLength: number = 5;
 
-
 ready(() => {
     renderGrid();
     currentDir = properties.BASE_DIRECTORY;
@@ -190,7 +189,7 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
 };
 
 /**
- * Add current folder to directory if folder name is provided 
+ * Add current folder to directory if folder name is provided
  * else return current directory
  * @param {string}  folder - folder name.
  * @return {string} - result prefix & length.
