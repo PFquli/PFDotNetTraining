@@ -135,3 +135,4 @@ C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PF
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\ref\PFDotNetTraining.dll
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.pdb
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.genruntimeconfig.cache
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
