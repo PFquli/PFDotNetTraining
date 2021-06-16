@@ -136,3 +136,15 @@ C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\re
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.pdb
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.genruntimeconfig.cache
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Azure.Core.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Azure.Identity.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Azure.Security.KeyVault.Certificates.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Azure.Security.KeyVault.Secrets.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.AzureAD.UI.Views.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.AzureAD.UI.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.Identity.Web.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.Identity.Web.UI.Views.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Microsoft.Identity.Web.UI.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.MvcApplicationPartsAssemblyInfo.cs
