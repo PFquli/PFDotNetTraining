@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PFDotNetTraining.Model;
 
-namespace PFDotNetTraining.Data
+namespace PFDotNetTraining.Data.Context
 {
     public class ShelfContext : DbContext
     {

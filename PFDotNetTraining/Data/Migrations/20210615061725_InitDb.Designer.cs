@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PFDotNetTraining.Data;
+using PFDotNetTraining.Data.Context;
 
-namespace PFDotNetTraining.Migrations
+namespace PFDotNetTraining.Data.Migrations
 {
     [DbContext(typeof(ShelfContext))]
     [Migration("20210615061725_InitDb")]

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace PFDotNetTraining.Migrations
+namespace PFDotNetTraining.Data.Migrations
 {
     public partial class InitDb : Migration
     {

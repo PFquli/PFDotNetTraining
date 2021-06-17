@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PFDotNetTraining.Data;
+using PFDotNetTraining.Data.Context;
 using PFDotNetTraining.Model;
 using System.Collections.Generic;
 using System.Linq;
