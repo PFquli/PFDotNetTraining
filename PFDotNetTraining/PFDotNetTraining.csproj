@@ -5,6 +5,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\dist\css\bootstrap-icon\fonts\bootstrap-icons.woff" />
+    <Content Remove="wwwroot\dist\css\bootstrap-icon\fonts\bootstrap-icons.woff2" />
+    <Content Remove="wwwroot\dist\css\fontawesome\css\all.min.css" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.eot" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.svg" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.ttf" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.woff" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.woff2" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.eot" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.svg" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.ttf" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.woff" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.woff2" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.eot" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.svg" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.ttf" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.woff" />
+    <Content Remove="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.woff2" />
+    <Content Remove="wwwroot\dist\css\home-page.css.map" />
+    <Content Remove="wwwroot\dist\js\home-page.js.map" />
+    <Content Remove="wwwroot\dist\js\home-page.ts.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Home\dist\css\bootstrap-icon\bootstrap-icons.css" />
+    <None Remove="Views\Home\dist\css\fontawesome\css\all.css" />
+    <None Remove="Views\Home\dist\css\home-page.css" />
+    <None Remove="Views\Home\dist\image\excel.png" />
+    <None Remove="Views\Home\dist\image\folder.png" />
+    <None Remove="Views\Home\dist\js\home-page.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Home\dist\css\bootstrap-icon\bootstrap-icons.css" />
+    <Content Include="Views\Home\dist\css\fontawesome\css\all.css" />
+    <Content Include="Views\Home\dist\css\home-page.css" />
+    <Content Include="Views\Home\dist\image\excel.png" />
+    <Content Include="Views\Home\dist\image\folder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.7" />
@@ -27,6 +68,34 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Home\dist\js\home-page.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\dist\css\bootstrap-icon\fonts\bootstrap-icons.woff" />
+    <None Include="wwwroot\dist\css\bootstrap-icon\fonts\bootstrap-icons.woff2" />
+    <None Include="wwwroot\dist\css\fontawesome\css\all.min.css" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.eot" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.ttf" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.woff" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.eot" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.ttf" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.woff" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.eot" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.ttf" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.woff" />
+    <None Include="wwwroot\dist\css\fontawesome\webfonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\dist\css\home-page.css.map" />
+    <None Include="wwwroot\dist\js\home-page.js.map" />
+    <None Include="wwwroot\dist\js\home-page.ts.js.map" />
   </ItemGroup>
 
 </Project>

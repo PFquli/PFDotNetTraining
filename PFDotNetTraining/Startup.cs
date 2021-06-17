@@ -67,7 +67,7 @@ namespace PFDotNetTraining
 
             //app.UseDefaultFiles();
 
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
