@@ -1,8 +1,5 @@
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\appsettings.json
-C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Views\Home\package-lock.json
-C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Views\Home\package.json
-C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\Views\Home\tsconfig.json
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\PFDotNetTraining.exe
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\PFDotNetTraining.deps.json
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\PFDotNetTraining.runtimeconfig.json
