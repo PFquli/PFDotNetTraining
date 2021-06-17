@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,8 @@ using PFDotNetTraining.Model;
 
 namespace PFDotNetTraining.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/{controller}")]
     [ApiController]
     public class ItemsController : ControllerBase
     {
@@ -23,6 +25,7 @@ namespace PFDotNetTraining.Controllers
 
         //GET: api/Items
         [HttpGet]
+        [Route("all")]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
         {
             return await _context.Items.AsNoTracking().OrderBy(item => item.CreatedDate).ToListAsync();

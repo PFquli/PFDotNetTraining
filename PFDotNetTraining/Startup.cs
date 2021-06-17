@@ -47,6 +47,8 @@ namespace PFDotNetTraining
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
+            services.AddRazorPages()
+    .AddMicrosoftIdentityUI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,18 +67,18 @@ namespace PFDotNetTraining
 
             //app.UseDefaultFiles();
 
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
 
+            app.UseAuthorization();
+
             app.UseEndpoints(cfg =>
             {
-                cfg.MapControllerRoute("Default", "/{controller}/{action}/{id?}", new { controller = "Items", action = "getItems" });
+                cfg.MapControllerRoute("Default", "/{controller}/{action}/{id?}", new { controller = "Home", action = "Index" });
             });
-
-            //app.UseAuthorization();
         }
     }
 }
