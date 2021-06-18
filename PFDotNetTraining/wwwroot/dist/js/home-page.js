@@ -2339,6 +2339,12 @@ let clickedRow = 'root';
 let hoverRow = '';
 let editMode = false;
 const randomLength = 5;
+const userApiUrl = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User";
+
+function itemApiUrl(parent) {
+  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + parent;
+}
+
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_DIRECTORY;
@@ -2347,11 +2353,11 @@ const randomLength = 5;
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/1").then(function (response) {
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID)).then(function (response) {
     // handle success
     console.log(response);
   });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User").then(function (response) {
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(userApiUrl).then(function (response) {
     // handle success
     console.log(response);
   });
@@ -2385,7 +2391,31 @@ function generateData(input) {
       attachRemoveItemEvent(row);
       attachEditEvent(row);
     }
-  }
+  } //if (!input[0].isFile) {
+  //    for (let i = 0; i < input.length; i += 1) {
+  //        let folder = new Folder();
+  //        folder.mapping(input[i]);
+  //        let row = template.render(folder);
+  //        let id = row.cells[row.cells.length - 2].textContent;
+  //        getRowIdOnHover(id, row);
+  //        attachRemoveItemEvent(row);
+  //        attachOnclickFolder(id, row);
+  //        attachEditEvent(row);
+  //    }
+  //}
+  //else {
+  //    //Generate Files
+  //    for (let i = 0; i < input.length; i += 1) {
+  //        let file = new File();
+  //        file.mapping(input[i]);
+  //        let row = template.render(file);
+  //        let id = row.cells[row.cells.length - 2].textContent;
+  //        getRowIdOnHover(id, row);
+  //        attachRemoveItemEvent(row);
+  //        attachEditEvent(row);
+  //    }
+  //}
+
 }
 
 ; //Render all items in local storage
@@ -2613,6 +2643,12 @@ let clickedRow = 'root';
 let hoverRow = '';
 let editMode = false;
 const randomLength = 5;
+const userApiUrl = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User";
+
+function itemApiUrl(parent) {
+  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + parent;
+}
+
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_DIRECTORY;
@@ -2621,11 +2657,11 @@ const randomLength = 5;
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/1").then(function (response) {
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID)).then(function (response) {
     // handle success
     console.log(response);
   });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User").then(function (response) {
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(userApiUrl).then(function (response) {
     // handle success
     console.log(response);
   });
@@ -2659,7 +2695,31 @@ function generateData(input) {
       attachRemoveItemEvent(row);
       attachEditEvent(row);
     }
-  }
+  } //if (!input[0].isFile) {
+  //    for (let i = 0; i < input.length; i += 1) {
+  //        let folder = new Folder();
+  //        folder.mapping(input[i]);
+  //        let row = template.render(folder);
+  //        let id = row.cells[row.cells.length - 2].textContent;
+  //        getRowIdOnHover(id, row);
+  //        attachRemoveItemEvent(row);
+  //        attachOnclickFolder(id, row);
+  //        attachEditEvent(row);
+  //    }
+  //}
+  //else {
+  //    //Generate Files
+  //    for (let i = 0; i < input.length; i += 1) {
+  //        let file = new File();
+  //        file.mapping(input[i]);
+  //        let row = template.render(file);
+  //        let id = row.cells[row.cells.length - 2].textContent;
+  //        getRowIdOnHover(id, row);
+  //        attachRemoveItemEvent(row);
+  //        attachEditEvent(row);
+  //    }
+  //}
+
 }
 
 ; //Render all items in local storage

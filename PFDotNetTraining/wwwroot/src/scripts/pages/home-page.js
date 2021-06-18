@@ -13,19 +13,27 @@ let clickedRow = 'root';
 let hoverRow = '';
 let editMode = false;
 const randomLength = 5;
+const userApiUrl = properties.BASE_API_URL + "User";
+function itemApiUrl(parent) {
+    return properties.BASE_API_URL + "Items/" + parent;
+}
 ready(() => {
     renderGrid();
-    currentDir = properties.BASE_DIRECTORY;
+    currentDir = properties.BASE_ID;
     changeCurrentDirectory();
     renderLocalStorage();
     let submitButton = document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
-    axios.get(properties.BASE_API_URL + "Items/1").then(function (response) {
+    axios.get(itemApiUrl(properties.BASE_ID)).then(function (response) {
         // handle success
         console.log(response);
     });
-    axios.get(properties.BASE_API_URL + "User").then(function (response) {
+    axios.get(itemApiUrl("1")).then(function (response) {
+        // handle success
+        console.log(response);
+    });
+    axios.get(userApiUrl).then(function (response) {
         // handle success
         console.log(response);
     });
@@ -60,6 +68,30 @@ function generateData(input) {
             attachEditEvent(row);
         }
     }
+    //if (!input[0].isFile) {
+    //    for (let i = 0; i < input.length; i += 1) {
+    //        let folder = new Folder();
+    //        folder.mapping(input[i]);
+    //        let row = template.render(folder);
+    //        let id = row.cells[row.cells.length - 2].textContent;
+    //        getRowIdOnHover(id, row);
+    //        attachRemoveItemEvent(row);
+    //        attachOnclickFolder(id, row);
+    //        attachEditEvent(row);
+    //    }
+    //}
+    //else {
+    //    //Generate Files
+    //    for (let i = 0; i < input.length; i += 1) {
+    //        let file = new File();
+    //        file.mapping(input[i]);
+    //        let row = template.render(file);
+    //        let id = row.cells[row.cells.length - 2].textContent;
+    //        getRowIdOnHover(id, row);
+    //        attachRemoveItemEvent(row);
+    //        attachEditEvent(row);
+    //    }
+    //}
 }
 ;
 //Render all items in local storage
