@@ -6,6 +6,7 @@ import { RenderTemplate } from '../components/Models/RenderTemplate';
 import { getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
+import axios from '../../../node_modules/axios/index';
 
 let currentDir = '';
 let template = new RenderTemplate(<HTMLTableElement>document.getElementById("content-table"), properties.ORDERING);
@@ -22,6 +23,14 @@ ready(() => {
     let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
+    axios.get(properties.BASE_API_URL + "Items/1").then(function (response) {
+        // handle success
+        console.log(response);
+    })
+    axios.get(properties.BASE_API_URL + "User").then(function (response) {
+        // handle success
+        console.log(response);
+    })
 });
 
 /**

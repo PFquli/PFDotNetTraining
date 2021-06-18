@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Home\dist\**" />
+    <Content Remove="Views\Home\dist\**" />
+    <EmbeddedResource Remove="Views\Home\dist\**" />
+    <None Remove="Views\Home\dist\**" />
+    <TypeScriptCompile Remove="Views\Home\dist\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\dist\css\bootstrap-icon\fonts\bootstrap-icons.woff" />
     <Content Remove="wwwroot\dist\css\bootstrap-icon\fonts\bootstrap-icons.woff2" />
     <Content Remove="wwwroot\dist\css\fontawesome\css\all.min.css" />
@@ -26,23 +34,6 @@
     <Content Remove="wwwroot\dist\css\home-page.css.map" />
     <Content Remove="wwwroot\dist\js\home-page.js.map" />
     <Content Remove="wwwroot\dist\js\home-page.ts.js.map" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Views\Home\dist\css\bootstrap-icon\bootstrap-icons.css" />
-    <None Remove="Views\Home\dist\css\fontawesome\css\all.css" />
-    <None Remove="Views\Home\dist\css\home-page.css" />
-    <None Remove="Views\Home\dist\image\excel.png" />
-    <None Remove="Views\Home\dist\image\folder.png" />
-    <None Remove="Views\Home\dist\js\home-page.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Home\dist\css\bootstrap-icon\bootstrap-icons.css" />
-    <Content Include="Views\Home\dist\css\fontawesome\css\all.css" />
-    <Content Include="Views\Home\dist\css\home-page.css" />
-    <Content Include="Views\Home\dist\image\excel.png" />
-    <Content Include="Views\Home\dist\image\folder.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,10 +59,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Home\dist\js\home-page.js" />
   </ItemGroup>
 
   <ItemGroup>
