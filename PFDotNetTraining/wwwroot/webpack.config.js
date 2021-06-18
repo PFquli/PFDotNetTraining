@@ -30,6 +30,10 @@ const commonConfig = {
     entry: getEntries(),
     mode: 'development',
     watch: true,
+    watchOptions: {
+        aggregateTimeout: 200,
+        poll: 1000,
+    },
     devtool: 'source-map',
     stats: {
         cached: false,

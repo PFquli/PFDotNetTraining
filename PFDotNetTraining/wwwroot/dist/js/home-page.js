@@ -2341,13 +2341,13 @@ let editMode = false;
 const randomLength = 5;
 const userApiUrl = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User";
 
-function itemApiUrl(parent) {
-  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + parent;
+function itemApiUrl(id) {
+  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + id;
 }
 
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
-  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_DIRECTORY;
+  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID;
   changeCurrentDirectory();
   renderLocalStorage();
   let submitButton = document.getElementsByClassName('btn-add')[0];
@@ -2357,10 +2357,15 @@ function itemApiUrl(parent) {
     // handle success
     console.log(response);
   });
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl("1")).then(function (response) {
+    // handle success
+    console.log(response);
+  });
   _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(userApiUrl).then(function (response) {
     // handle success
     console.log(response);
   });
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().delete(itemApiUrl("110")).then(reponse => console.log(reponse)).catch(error => alert(error));
 });
 /**
  * Render all data with given array of Folder or Files.
@@ -2645,19 +2650,23 @@ let editMode = false;
 const randomLength = 5;
 const userApiUrl = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User";
 
-function itemApiUrl(parent) {
-  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + parent;
+function itemApiUrl(id) {
+  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + id;
 }
 
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
-  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_DIRECTORY;
+  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID;
   changeCurrentDirectory();
   renderLocalStorage();
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
   _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID)).then(function (response) {
+    // handle success
+    console.log(response);
+  });
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl("1")).then(function (response) {
     // handle success
     console.log(response);
   });

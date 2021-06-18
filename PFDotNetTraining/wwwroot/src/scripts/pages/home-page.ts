@@ -15,8 +15,8 @@ let hoverRow: string = '';
 let editMode: boolean = false;
 const randomLength: number = 5;
 const userApiUrl = properties.BASE_API_URL + "User";
-function itemApiUrl(parent: string) {
-    return properties.BASE_API_URL + "Items/" + parent;
+function itemApiUrl(id: string) {
+    return properties.BASE_API_URL + "Items/" + id;
 }
 
 ready(() => {
@@ -39,6 +39,7 @@ ready(() => {
         // handle success
         console.log(response);
     })
+    /*    axios.put(itemApiUrl("109"))*/
 });
 
 /**

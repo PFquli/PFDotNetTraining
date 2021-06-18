@@ -14,8 +14,8 @@ let hoverRow = '';
 let editMode = false;
 const randomLength = 5;
 const userApiUrl = properties.BASE_API_URL + "User";
-function itemApiUrl(parent) {
-    return properties.BASE_API_URL + "Items/" + parent;
+function itemApiUrl(id) {
+    return properties.BASE_API_URL + "Items/" + id;
 }
 ready(() => {
     renderGrid();
@@ -37,6 +37,7 @@ ready(() => {
         // handle success
         console.log(response);
     });
+    /*    axios.put(itemApiUrl("109"))*/
 });
 /**
  * Render all data with given array of Folder or Files.

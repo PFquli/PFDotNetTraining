@@ -21,7 +21,7 @@ namespace PFDotNetTraining.Controllers
             _context = context;
         }
 
-        //GET: api/Items
+        //GET: api/Items/all
         [HttpGet]
         [Route("all")]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
@@ -29,11 +29,11 @@ namespace PFDotNetTraining.Controllers
             return await _context.Items.AsNoTracking().OrderBy(item => item.CreatedDate).ToListAsync();
         }
 
-        // GET: api/Items/root
+        // GET: api/Items/0
         [HttpGet("{parent}")]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItems(int parent)
+        public async Task<ActionResult<IEnumerable<Item>>> GetItemsByParentId(int parent)
         {
-            var items = await _context.Items.AsNoTracking().Where(item => item.Parent == parent).OrderBy(item => item.CreatedDate).ToListAsync();
+            var items = await _context.Items.AsNoTracking().Where(item => item.Parent == parent).OrderBy(item => item.ModifiedAt).ToListAsync();
             return items;
         }
 
@@ -95,18 +95,30 @@ namespace PFDotNetTraining.Controllers
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(int id)
+        public async Task<IActionResult> DeleteItemById(int id)
         {
             var item = await _context.Items.FindAsync(id);
             if (item == null)
             {
                 return NotFound();
             }
-
+            await DeleteItemsByParent(id);
             _context.Items.Remove(item);
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        //Recursively delete children of a parent item
+        public async Task DeleteItemsByParent(int parent)
+        {
+            var items = await _context.Items.AsNoTracking().Where(item => item.Parent == parent).ToListAsync();
+            foreach (var item in items)
+            {
+                int id = item.Id;
+                await DeleteItemsByParent(id);
+                _context.Items.Remove(item);
+            }
         }
 
         private bool ItemExists(int id)
