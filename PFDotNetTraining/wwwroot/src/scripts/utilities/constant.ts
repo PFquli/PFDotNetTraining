@@ -1,3 +1,8 @@
+const baseApiUrl = 'https://localhost:44390/api/';
+const userApiUrl = baseApiUrl + "User";
+function itemApiUrl(id: number) {
+    return baseApiUrl + "Items/" + id;
+}
 export const properties = {
   CREATE_MODE: 'create',
   EDIT_MODE: 'edit',
@@ -8,5 +13,6 @@ export const properties = {
   FOLDER_PREFIX: 'folder-',
   FILE_DEFAULT_URL: './dist/image/excel.png',
   FOLDER_DEFAULT_URL: './dist/image/folder.png',
-  BASE_API_URL: 'https://localhost:44390/api/',
+  USER_API_URL: userApiUrl,
+  ITEM_API_URL: itemApiUrl
 };

@@ -2334,15 +2334,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let currentDir = '';
-let template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_4__.RenderTemplate(document.getElementById("content-table"), _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.ORDERING);
+const template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_4__.RenderTemplate(document.getElementById('content-table'), _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.ORDERING);
 let clickedRow = 'root';
 let hoverRow = '';
 let editMode = false;
 const randomLength = 5;
-const userApiUrl = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User";
+const userApiUrl = `${_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL}User`;
 
 function itemApiUrl(id) {
-  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + id;
+  return `${_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL}Items/${id}`;
 }
 
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
@@ -2350,14 +2350,14 @@ function itemApiUrl(id) {
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID;
   changeCurrentDirectory();
   renderLocalStorage();
-  let submitButton = document.getElementsByClassName('btn-add')[0];
+  const submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
   _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID)).then(function (response) {
     // handle success
     console.log(response);
   });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl("1")).then(function (response) {
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl('1')).then(function (response) {
     // handle success
     console.log(response);
   });
@@ -2365,38 +2365,38 @@ function itemApiUrl(id) {
     // handle success
     console.log(response);
   });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().delete(itemApiUrl("110")).then(reponse => console.log(reponse)).catch(error => alert(error));
+  /*    axios.put(itemApiUrl("109")) */
 });
 /**
  * Render all data with given array of Folder or Files.
  * @param {Array<Item>} input - Array of folders or files.
-*/
+ */
 
 function generateData(input) {
-  //Generate Folder
+  // Generate Folder
   if (input[0].subItems) {
     for (let i = 0; i < input.length; i += 1) {
-      let folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
+      const folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
       folder.mapping(input[i]);
-      let row = template.render(folder);
-      let id = row.cells[row.cells.length - 2].textContent;
+      const row = template.render(folder);
+      const id = row.cells[row.cells.length - 2].textContent;
       getRowIdOnHover(id, row);
       attachRemoveItemEvent(row);
       attachOnclickFolder(id, row);
       attachEditEvent(row);
     }
   } else {
-    //Generate Files
+    // Generate Files
     for (let i = 0; i < input.length; i += 1) {
-      let file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
+      const file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
       file.mapping(input[i]);
-      let row = template.render(file);
-      let id = row.cells[row.cells.length - 2].textContent;
+      const row = template.render(file);
+      const id = row.cells[row.cells.length - 2].textContent;
       getRowIdOnHover(id, row);
       attachRemoveItemEvent(row);
       attachEditEvent(row);
     }
-  } //if (!input[0].isFile) {
+  } // if (!input[0].isFile) {
   //    for (let i = 0; i < input.length; i += 1) {
   //        let folder = new Folder();
   //        folder.mapping(input[i]);
@@ -2407,8 +2407,8 @@ function generateData(input) {
   //        attachOnclickFolder(id, row);
   //        attachEditEvent(row);
   //    }
-  //}
-  //else {
+  // }
+  // else {
   //    //Generate Files
   //    for (let i = 0; i < input.length; i += 1) {
   //        let file = new File();
@@ -2419,35 +2419,33 @@ function generateData(input) {
   //        attachRemoveItemEvent(row);
   //        attachEditEvent(row);
   //    }
-  //}
+  // }
 
-}
+} // Render all items in local storage
 
-; //Render all items in local storage
 
 function renderLocalStorage() {
-  for (var i = 0; i < window.localStorage.length; i += 1) {
-    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
+  for (let i = 0; i < window.localStorage.length; i += 1) {
+    const item = JSON.parse(localStorage.getItem(localStorage.key(i)));
     if (item.parent === clickedRow) generateData([item]);
   }
-} //Clear current page data excluding header
+} // Clear current page data excluding header
 
 
 function clearCurrentData() {
-  let tr = document.getElementsByTagName('tr');
+  const tr = document.getElementsByTagName('tr');
 
   while (tr.length != 1) {
     tr[1].remove();
   }
 }
-
-;
 /**
  * Attach on click event to view items in folder for <tr> tag
  */
 
+
 function getItemInFolder(folderId) {
-  let fold = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
+  const fold = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
   fold.mapping(JSON.parse(window.localStorage.getItem(folderId)));
   return fold;
 }
@@ -2459,10 +2457,10 @@ function getItemInFolder(folderId) {
 
 
 function attachOnclickFolder(id, tr) {
-  tr.addEventListener("click", function () {
-    clearCurrentData(); //Check if data is in local storage and render
+  tr.addEventListener('click', function () {
+    clearCurrentData(); // Check if data is in local storage and render
 
-    let fold = getItemInFolder(id);
+    const fold = getItemInFolder(id);
     clickedRow = id;
     changeCurrentDirectory(fold.name);
 
@@ -2493,38 +2491,38 @@ function getRowIdOnHover(id, tr) {
 
 function addItemEvent(btn) {
   btn.onclick = function () {
-    //Get ID field
-    let idField = document.getElementById("id");
-    let id = idField.value; //Get Name field
+    // Get ID field
+    const idField = document.getElementById('id');
+    const id = idField.value; // Get Name field
 
-    let nameField = document.getElementById("name");
-    let name = nameField.value; //Check if in put is a file
+    const nameField = document.getElementById('name');
+    const name = nameField.value; // Check if in put is a file
 
-    let inputElem = document.getElementById("file");
-    let isFile = inputElem.checked;
+    const inputElem = document.getElementById('file');
+    const isFile = inputElem.checked;
     const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX;
-    let result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
+    const result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
     idField.value = result;
 
     if (!editMode) {
-      //Add file or folder
+      // Add file or folder
       if (isFile) {
-        let item = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow, '.xlxs');
+        const item = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow, '.xlxs');
         item.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.CREATE_MODE);
       } else {
-        let item = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow);
+        const item = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow);
         item.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.CREATE_MODE);
       }
     } else {
-      let type = hoverRow.split('-');
+      const type = hoverRow.split('-');
 
       if (type[0] === 'file') {
-        let file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
+        const file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
         file.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
         file.name = name;
         file.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.EDIT_MODE);
       } else {
-        let folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
+        const folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
         folder.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
         folder.name = name;
         folder.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.EDIT_MODE);
@@ -2544,19 +2542,19 @@ function addItemEvent(btn) {
 
 
 function attachRemoveItemEvent(row) {
-  let btn = row.getElementsByClassName('close');
+  const btn = row.getElementsByClassName('close');
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', function () {
-      let type = hoverRow.split('-');
+      const type = hoverRow.split('-');
 
       if (type[0] === 'file') {
-        let file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
+        const file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
         file.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
         clickedRow = file.parent;
         file.remove();
       } else {
-        let folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
+        const folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
         folder.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
         clickedRow = folder.parent;
         folder.remove();
@@ -2568,8 +2566,6 @@ function attachRemoveItemEvent(row) {
     });
   }
 }
-
-;
 /**
  * Add current folder to directory if folder name is provided
  * else return current directory
@@ -2577,22 +2573,23 @@ function attachRemoveItemEvent(row) {
  * @return {string} - result prefix & length.
  */
 
+
 function changeCurrentDirectory(folder = '') {
-  if (folder != '') currentDir += '/' + folder;
+  if (folder != '') currentDir += `/${folder}`;
   document.getElementById('directory').innerHTML = currentDir;
   return currentDir;
 } // Checkbox event
 
 
 function checkboxEvent() {
-  let inputElem = document.getElementById("file");
-  let idField = document.getElementById("id");
+  const inputElem = document.getElementById('file');
+  const idField = document.getElementById('id');
   idField.value = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX, randomLength);
 
   inputElem.onclick = function () {
-    let isFile = inputElem.checked;
+    const isFile = inputElem.checked;
     const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX;
-    let result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
+    const result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
     idField.value = result;
   };
 }
@@ -2602,11 +2599,11 @@ function checkboxEvent() {
 
 
 function attachEditEvent(tr) {
-  let btn = tr.getElementsByClassName('edit');
+  const btn = tr.getElementsByClassName('edit');
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', function () {
-      let btn = document.getElementById('toggle-button');
+      const btn = document.getElementById('toggle-button');
       btn.click();
       editMode = true;
       console.log(editMode);
@@ -2662,15 +2659,8 @@ function itemApiUrl(id) {
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID)).then(function (response) {
-    // handle success
-    console.log(response);
-  });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl("1")).then(function (response) {
-    // handle success
-    console.log(response);
-  });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(userApiUrl).then(function (response) {
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().delete(itemApiUrl("19")).then(response => console.log(response)).catch(error => alert(error));
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl("19")).then(function (response) {
     // handle success
     console.log(response);
   });

@@ -6,7 +6,6 @@ import { RenderTemplate } from '../components/Models/RenderTemplate';
 import { getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
-import axios from '../../../node_modules/axios/index';
 let currentDir = '';
 let template = new RenderTemplate(document.getElementById("content-table"), properties.ORDERING);
 let clickedRow = 'root';
@@ -25,19 +24,6 @@ ready(() => {
     let submitButton = document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
-    axios.get(itemApiUrl(properties.BASE_ID)).then(function (response) {
-        // handle success
-        console.log(response);
-    });
-    axios.get(itemApiUrl("1")).then(function (response) {
-        // handle success
-        console.log(response);
-    });
-    axios.get(userApiUrl).then(function (response) {
-        // handle success
-        console.log(response);
-    });
-    /*    axios.put(itemApiUrl("109"))*/
 });
 /**
  * Render all data with given array of Folder or Files.

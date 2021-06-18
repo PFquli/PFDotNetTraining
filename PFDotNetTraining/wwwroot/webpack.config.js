@@ -31,8 +31,8 @@ const commonConfig = {
     mode: 'development',
     watch: true,
     watchOptions: {
-        aggregateTimeout: 200,
-        poll: 1000,
+        poll: true,
+        ignored: /node_modules/
     },
     devtool: 'source-map',
     stats: {

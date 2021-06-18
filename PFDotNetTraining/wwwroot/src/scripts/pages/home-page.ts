@@ -14,10 +14,6 @@ let clickedRow: string = 'root';
 let hoverRow: string = '';
 let editMode: boolean = false;
 const randomLength: number = 5;
-const userApiUrl = properties.BASE_API_URL + "User";
-function itemApiUrl(id: string) {
-    return properties.BASE_API_URL + "Items/" + id;
-}
 
 ready(() => {
     renderGrid();
@@ -27,19 +23,6 @@ ready(() => {
     let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
-    axios.get(itemApiUrl(properties.BASE_ID)).then(function (response) {
-        // handle success
-        console.log(response);
-    })
-    axios.get(itemApiUrl("1")).then(function (response) {
-        // handle success
-        console.log(response);
-    })
-    axios.get(userApiUrl).then(function (response) {
-        // handle success
-        console.log(response);
-    })
-    /*    axios.put(itemApiUrl("109"))*/
 });
 
 /**

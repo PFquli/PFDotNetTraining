@@ -1,7 +1,10 @@
+import axios from "../../../node_modules/axios/index";
+import { properties } from "../utilities/constant";
+
 export function getItemById(id: string): File {
-  for (let i = 0; i < window.localStorage.length; i += 1) {
-    if (localStorage.key(i) === id) {
-      return JSON.parse(localStorage.getItem(localStorage.key(i)));
-    }
-  }
+    let item;
+    axios.get(properties.ITEM_API_URL(parseInt(id))).then(function (response) {
+        item = response;
+    }).catch(err => console.log(err));
+    return item;
 }
