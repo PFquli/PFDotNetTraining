@@ -3,7 +3,7 @@ import { properties } from "../utilities/constant";
 
 export function getItemById(id: number): File {
     let item;
-    axios.get(properties.ITEM_API_URL(id)).then(function (response) {
+    axios.get(properties.ITEM_ID_API_URL(id)).then(function (response) {
         item = response;
     }).catch(err => console.log(err));
     return item;

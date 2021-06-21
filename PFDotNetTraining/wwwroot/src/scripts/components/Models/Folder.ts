@@ -1,5 +1,5 @@
 import { properties } from '../../utilities/constant';
-import { Item } from './Item';
+import Item from './Item';
 
 export class Folder extends Item {
   subItems: Array<any>;

@@ -7,7 +7,7 @@ import { getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
 import axios from '../../../node_modules/axios/index';
-import { Item } from '../components/Models/Item';
+import Item from '../components/Models/Item';
 
 let currentDir = '';
 let template = new RenderTemplate(<HTMLTableElement>document.getElementById("content-table"), properties.ORDERING);
@@ -150,6 +150,37 @@ function getRowIdOnHover(id: string, tr: HTMLTableRowElement) {
 }
 
 /**
+ * Get last id in database and plus 1
+ * */
+function getNextIdForInsert() {
+    let id = 1;
+    axios.get(properties.ITEM_ID_API_URL(-1))
+        .then(res => id = res.data).catch(err => console.log(err));
+    return id;
+}
+
+/**
+ * Get user name from cookies after authentication
+ * */
+function getUserName() {
+    let name = "";
+    axios.get(properties.USER_API_URL)
+        .then(res => name = res.data).catch(err => console.log(err));
+    return name;
+}
+
+/**
+ * Save new item to the Db by calling Post with new item
+ * @param item - new item
+ */
+function createNewItem(item: Item) {
+    let created = false;
+    axios.post(properties.ITEM_API_URL, item)
+        .then(res => created = true);
+    return created;
+}
+
+/**
  * Attach add folder event to provided <button>.
  * @param {HTMLButtonElement}  btn - <tr> element.
  */
@@ -164,18 +195,14 @@ function addItemEvent(btn: HTMLButtonElement) {
         //Check if in put is a file
         let inputElem: HTMLInputElement = <HTMLInputElement>document.getElementById("file");
         let isFile: boolean = inputElem.checked;
-        const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
-        let result = generateKey(prefix, randomLength);
-        idField.value = result;
+        //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
+        //let result = generateKey(prefix, randomLength);
+        idField.value = getNextIdForInsert().toString();
+        let creator = getUserName();
         if (!editMode) {
             //Add file or folder
-            if (isFile) {
-                let item = new File(id, name, getCurrentDate(), null, null, null, null, clickedRow, '.xlxs');
-                item.addOrUpdate(properties.CREATE_MODE);
-            } else {
-                let item = new Folder(id, name, getCurrentDate(), null, null, null, null, clickedRow);
-                item.addOrUpdate(properties.CREATE_MODE);
-            }
+            let item = new Item(parseInt(id), name, getCurrentDate(), creator, getCurrentDate(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+            createNewItem(item);
         } else {
             let type: Array<string> = hoverRow.split('-');
             if (type[0] === 'file') {

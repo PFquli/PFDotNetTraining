@@ -2,8 +2,8 @@ import { properties } from '../../utilities/constant';
 import { IitemOperations } from '../Shared/_IitemOperations';
 import { IMapping } from '../Shared/_IMapping';
 
-export class Item implements IitemOperations, IMapping {
-    Id: string;
+export default class Item implements IMapping {
+    Id: number;
 
     Name: string;
 
@@ -15,22 +15,22 @@ export class Item implements IitemOperations, IMapping {
 
     ModifiedBy: string;
 
-    Size: string;
+    Size: number;
 
-    Parent: string;
+    Parent: number;
 
     Content: string;
     IsFile: Number;
 
     constructor(
-        id?: string,
+        id?: number,
         name?: string,
         createDate?: string,
         createdBy?: string,
         modifiedAt?: string,
         modifiedBy?: string,
-        size?: string,
-        parent: string = properties.BASE_ID,
+        size?: number,
+        parent: number = properties.BASE_ID,
         content: string = null,
         isFile: Number = 1
     ) {

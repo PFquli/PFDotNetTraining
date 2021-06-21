@@ -1,6 +1,6 @@
 import { properties } from "../../utilities/constant";
 import { Folder } from "./Folder";
-import { Item } from "./Item";
+import Item from "./Item";
 
 export class File extends Item {
     constructor(
@@ -28,7 +28,7 @@ export class File extends Item {
             if (mode === properties.CREATE_MODE) {
                 folder.subItems.push(this);
             } else {
-                for (let i = 0; i<folder.subItems.length; i++) {
+                for (let i = 0; i < folder.subItems.length; i++) {
                     if (folder.subItems[i].id === this.id) {
                         folder.subItems[i].name = this.name;
                     }
