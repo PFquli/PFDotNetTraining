@@ -3,58 +3,59 @@ import { IitemOperations } from '../Shared/_IitemOperations';
 import { IMapping } from '../Shared/_IMapping';
 
 export class Item implements IitemOperations, IMapping {
-  id: string;
+    Id: string;
 
-  name: string;
+    Name: string;
 
-  createDate: string = '049/04/2021';
+    CreatedDate: string;
 
-  creator: string = 'An Tran Hoang';
+    CreatedBy: string = 'An Tran Hoang';
 
-  modifiedAt: string;
+    ModifiedAt: string;
 
-  modifiedBy: string;
+    ModifiedBy: string;
 
-  icon: string;
+    Size: string;
 
-  parent: string;
+    Parent: string;
 
-  constructor(
-    id?: string,
-    name?: string,
-    createDate?: string,
-    creator?: string,
-    modifiedAt?: string,
-    modifiedBy?: string,
-    icon?: string,
-    parent: string = properties.BASE_DIRECTORY,
-  ) {
-    if (id) this.id = id;
-    if (name) this.name = name;
-    if (createDate) this.createDate = createDate;
-    if (creator) this.creator = creator;
-    if (modifiedAt) this.modifiedAt = modifiedAt;
-    if (modifiedBy) this.modifiedBy = modifiedBy;
-    if (icon) this.icon = icon;
-    if (parent) this.parent = parent;
-  }
+    Content: string;
+    IsFile: Number;
 
-  addOrUpdate(mode: string) {
-    localStorage.setItem(this.id, JSON.stringify(this));
-  }
+    constructor(
+        id?: string,
+        name?: string,
+        createDate?: string,
+        createdBy?: string,
+        modifiedAt?: string,
+        modifiedBy?: string,
+        size?: string,
+        parent: string = properties.BASE_ID,
+        content: string = null,
+        isFile: Number = 1
+    ) {
+        if (id) this.Id = id;
+        if (name) this.Name = name;
+        if (createDate) this.CreatedDate = createDate;
+        if (createdBy) this.CreatedBy = createdBy;
+        if (modifiedAt) this.ModifiedAt = modifiedAt;
+        if (modifiedBy) this.ModifiedBy = modifiedBy;
+        if (size) this.Size = size;
+        if (parent) this.Parent = parent;
+        if (content) this.Content = content;
+        if (isFile) this.IsFile = isFile;
+    }
 
-  remove() {
-    localStorage.removeItem(this.id);
-  }
-
-  mapping(input: any) {
-    if (input.id) this.id = input.id;
-    if (input.name) this.name = input.name;
-    if (input.creator) this.creator = input.creator;
-    if (input.createDate) this.createDate = input.createDate;
-    if (input.modifiedBy) this.modifiedBy = input.modifiedBy;
-    if (input.modifiedAt) this.modifiedAt = input.modifiedAt;
-    if (input.icon) this.icon = input.icon;
-    if (input.parent) this.parent = input.parent;
-  }
+    mapping(input: any) {
+        if (input.id) this.Id = input.id;
+        if (input.name) this.Name = input.name;
+        if (input.createdBy) this.CreatedBy = input.createdBy;
+        if (input.createdDate) this.CreatedDate = input.createdDate;
+        if (input.modifiedBy) this.ModifiedBy = input.modifiedBy;
+        if (input.modifiedAt) this.ModifiedAt = input.modifiedAt;
+        if (input.size) this.Size = input.size;
+        if (input.parent) this.Parent = input.parent;
+        if (input.content) this.Content = input.content;
+        if (input.isFile) this.IsFile = input.isFile;
+    }
 }

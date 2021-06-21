@@ -29,27 +29,27 @@ namespace PFDotNetTraining.Controllers
             return await _context.Items.AsNoTracking().OrderBy(item => item.CreatedDate).ToListAsync();
         }
 
+        // GET: api/Items/5
+        [HttpGet("id/{id}")]
+        public async Task<ActionResult<Item>> GetItemById(int id)
+        {
+            var item = await _context.Items.FindAsync(id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return item;
+        }
+
         // GET: api/Items/0
-        [HttpGet("{parent}")]
+        [HttpGet("parent/{parent}")]
         public async Task<ActionResult<IEnumerable<Item>>> GetItemsByParentId(int parent)
         {
             var items = await _context.Items.AsNoTracking().Where(item => item.Parent == parent).OrderBy(item => item.ModifiedAt).ToListAsync();
             return items;
         }
-
-        // GET: api/Items/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Item>> GetItem(int id)
-        //{
-        //    var item = await _context.Items.FindAsync(id);
-
-        //    if (item == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return item;
-        //}
 
         // PUT: api/Items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -110,7 +110,7 @@ namespace PFDotNetTraining.Controllers
         }
 
         //Recursively delete children of a parent item
-        public async Task DeleteItemsByParent(int parent)
+        private async Task DeleteItemsByParent(int parent)
         {
             var items = await _context.Items.AsNoTracking().Where(item => item.Parent == parent).ToListAsync();
             foreach (var item in items)
