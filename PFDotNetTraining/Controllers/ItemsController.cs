@@ -43,6 +43,14 @@ namespace PFDotNetTraining.Controllers
             return item;
         }
 
+        [HttpGet("id/-1")]
+        public async Task<ActionResult<int>> GetNextId()
+        {
+            var lastItem = _context.Items.AsNoTracking().OrderByDescending(item => item.Id).FirstOrDefault();
+
+            return (int)lastItem.Id + 1;
+        }
+
         // GET: api/Items/0
         [HttpGet("parent/{parent}")]
         public async Task<ActionResult<IEnumerable<Item>>> GetItemsByParentId(int parent)
