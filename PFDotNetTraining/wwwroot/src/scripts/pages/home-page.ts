@@ -7,10 +7,11 @@ import { getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
 import axios from '../../../node_modules/axios/index';
+import { Item } from '../components/Models/Item';
 
 let currentDir = '';
 let template = new RenderTemplate(<HTMLTableElement>document.getElementById("content-table"), properties.ORDERING);
-let clickedRow: string = 'root';
+let clickedRow: number = 0;
 let hoverRow: string = '';
 let editMode: boolean = false;
 const randomLength: number = 5;
@@ -19,7 +20,7 @@ ready(() => {
     renderGrid();
     currentDir = properties.BASE_ID;
     changeCurrentDirectory();
-    renderLocalStorage();
+    renderItemsOfCurrentFolder();
     let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
@@ -85,11 +86,14 @@ function generateData(input: Array<any>) {
 };
 
 //Render all items in local storage
-function renderLocalStorage() {
-    for (var i = 0; i < window.localStorage.length; i += 1) {
-        let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        if (item.parent === clickedRow) generateData([item]);
-    }
+function renderItemsOfCurrentFolder() {
+    let items = [];
+    getItemsInFolder(clickedRow);
+    items.forEach(i => generateData(i))
+    //for (var i = 0; i < window.localStorage.length; i += 1) {
+    //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    //    if (item.parent === clickedRow) generateData([item]);
+    //}
 }
 
 //Clear current page data excluding header
@@ -101,34 +105,38 @@ function clearCurrentData() {
 };
 
 /**
- * Attach on click event to view items in folder for <tr> tag
+ * Get an array of items in a folder
+ * @param folderId - parentId
  */
-function getItemInFolder(folderId: string) {
-    let fold: Folder = new Folder();
-    fold.mapping(JSON.parse(window.localStorage.getItem(folderId)));
-    return fold;
+function getItemsInFolder(folderId: number) {
+    let items = [];
+    axios.get(properties.ITEMS_FOR_PARENT_API_URL(clickedRow))
+        .then(response => items = JSON.parse(response.data)).catch(err => console.log(err));
+    return items;
 }
 
 /**
  * Attach on click event to view items in folder for <tr> tag
- * @param {string} id - folder id.
+ * @param {number} id - folder id.
  * @param {HTMLTableRowElement}  tr - <tr> element.
  */
-function attachOnclickFolder(id: string, tr: HTMLTableRowElement) {
+function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
     tr.addEventListener("click", function () {
         clearCurrentData();
         //Check if data is in local storage and render
-        let fold = getItemInFolder(id);
+        let fold = getItemById(id);
         clickedRow = id;
         changeCurrentDirectory(fold.name);
-        if (fold) {
-            fold.subItems.forEach(element => {
-                if (Array.isArray(element)) {
-                    generateData(element);
-                }
-                else generateData([element]);
-            });
-        }
+        //if (!fold.IsFile) {
+        //    fold.subItems.forEach(element => {
+        //        if (Array.isArray(element)) {
+        //            generateData(element);
+        //        }
+        //        else generateData([element]);
+        //    });
+        //}
+        let items = getItemsInFolder(id);
+        generateData(items);
     });
 }
 
@@ -154,7 +162,7 @@ function addItemEvent(btn: HTMLButtonElement) {
         let nameField: HTMLInputElement = <HTMLInputElement>document.getElementById("name");
         let name: string = nameField.value;
         //Check if in put is a file
-        let inputElem = <HTMLInputElement>document.getElementById("file");
+        let inputElem: HTMLInputElement = <HTMLInputElement>document.getElementById("file");
         let isFile: boolean = inputElem.checked;
         const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
         let result = generateKey(prefix, randomLength);
@@ -184,7 +192,7 @@ function addItemEvent(btn: HTMLButtonElement) {
             editMode = false;
         }
         clearCurrentData();
-        renderLocalStorage();
+        renderItemsOfCurrentFolder();
     }
 }
 
@@ -209,7 +217,7 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
                 folder.remove();
             }
             clearCurrentData();
-            renderLocalStorage();
+            renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();
         })
     }
