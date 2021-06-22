@@ -1,10 +1,9 @@
 import ready from '../utilities/_helper';
 import renderGrid from '../components/_grid';
 import { RenderTemplate } from '../components/Models/RenderTemplate';
-import { getItemById } from '../data/dataOperation';
+import { removeExistingItem, updateExistingItem, createNewItem, getUserName, getNextIdForInsert, getItemsInFolder, getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
-import axios from '../../../node_modules/axios/index';
 import Item from '../components/Models/Item';
 
 let currentDir = '';
@@ -70,9 +69,9 @@ function generateData(input: Array<any>) {
 };
 
 //Render all items in local storage
-function renderItemsOfCurrentFolder() {
+async function renderItemsOfCurrentFolder() {
     let items = [];
-    getItemsInFolder(clickedRow);
+    items = await getItemsInFolder(clickedRow, clickedRow);
     generateData(items);
     //for (var i = 0; i < window.localStorage.length; i += 1) {
     //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
@@ -89,26 +88,15 @@ function clearCurrentData() {
 };
 
 /**
- * Get an array of items in a folder
- * @param folderId - parentId
- */
-function getItemsInFolder(folderId: number) {
-    let items = [];
-    axios.get(properties.ITEMS_FOR_PARENT_API_URL(clickedRow))
-        .then(response => items = JSON.parse(response.data)).catch(err => console.log(err));
-    return items;
-}
-
-/**
  * Attach on click event to view items in folder for <tr> tag
  * @param {number} id - folder id.
  * @param {HTMLTableRowElement}  tr - <tr> element.
  */
 function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
-    tr.addEventListener("click", function () {
+    tr.addEventListener("click", async function () {
         clearCurrentData();
         //Check if data is in local storage and render
-        let fold = getItemById(id);
+        let fold = await getItemById(id);
         clickedRow = id;
         changeCurrentDirectory(fold.name);
         //if (!fold.IsFile) {
@@ -119,7 +107,7 @@ function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
         //        else generateData([element]);
         //    });
         //}
-        let items = getItemsInFolder(id);
+        let items = await getItemsInFolder(id, clickedRow);
         generateData(items);
     });
 }
@@ -134,59 +122,11 @@ function getRowIdOnHover(id: number, tr: HTMLTableRowElement) {
 }
 
 /**
- * Get last id in database and plus 1
- * */
-function getNextIdForInsert() {
-    let id = 1;
-    axios.get(properties.ITEM_ID_API_URL(-1))
-        .then(res => id = res.data).catch(err => console.log(err));
-    return id;
-}
-
-/**
- * Get user name from cookies after authentication
- * */
-function getUserName() {
-    let name = "";
-    axios.get(properties.USER_API_URL)
-        .then(res => name = res.data).catch(err => console.log(err));
-    return name;
-}
-
-/**
- * Save new item to the Db by calling Post with new item
- * @param item - new item
- */
-function createNewItem(item: Item) {
-    let created = false;
-    axios.post(properties.ITEM_API_URL, item)
-        .then(res => created = true);
-    return created;
-}
-
-/**
- * Update item by calling Put
- * @param id - id of the current item
- * @param item - updated item
- */
-function updateExistingItem(id: number, item: Item) {
-    let updated = false;
-    axios.put(properties.ITEM_API_URL, { id, item }).then(res => updated = true);
-    return updated;
-}
-
-function removeExistingItem(id: number) {
-    let removed = false;
-    axios.delete(properties.ITEM_ID_API_URL(id)).then(res => removed = true);
-    return removed;
-}
-
-/**
  * Attach add folder event to provided <button>.
  * @param {HTMLButtonElement}  btn - <tr> element.
  */
 function addItemEvent(btn: HTMLButtonElement) {
-    btn.onclick = function () {
+    btn.onclick = async function () {
         //Get ID field
         let idField: HTMLInputElement = <HTMLInputElement>document.getElementById("id");
         let id: string = idField.value;
@@ -198,12 +138,12 @@ function addItemEvent(btn: HTMLButtonElement) {
         let isFile: boolean = inputElem.checked;
         //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
         //let result = generateKey(prefix, randomLength);
-        idField.value = getNextIdForInsert().toString();
-        let creator = getUserName();
+        idField.value = await getNextIdForInsert().toString();
+        let creator = await getUserName();
         if (!editMode) {
             //Add file or folder
             let item = new Item(parseInt(id), name, getCurrentDate(), creator, getCurrentDate(), creator, 50, clickedRow, null, isFile ? 1 : 0);
-            createNewItem(item);
+            await createNewItem(item);
         } else {
             //let type: Array<string> = hoverRow.split('-');
             //if (type[0] === 'file') {
@@ -217,11 +157,11 @@ function addItemEvent(btn: HTMLButtonElement) {
             //    folder.name = name;
             //    folder.addOrUpdate(properties.EDIT_MODE);
             //}
-            let file = getItemById(hoverRow);
+            let file = await getItemById(hoverRow);
             let item = new Item();
             item.mapping(file);
             item.Name = name;
-            updateExistingItem(hoverRow, item);
+            await updateExistingItem(hoverRow, item);
             editMode = false;
         }
         clearCurrentData();
@@ -236,7 +176,7 @@ function addItemEvent(btn: HTMLButtonElement) {
 function attachRemoveItemEvent(row: HTMLTableRowElement) {
     let btn = row.getElementsByClassName('close');
     for (let i = 0; i < btn.length; i += 1) {
-        btn[i].addEventListener('click', function () {
+        btn[i].addEventListener('click', async function () {
             //let type: Array<string> = hoverRow.split('-');
             //if (type[0] === 'file') {
             //    let file: File = new File();
@@ -250,9 +190,9 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
             //    folder.remove();
             //}
             let item = new Item();
-            item.mapping(getItemById(hoverRow));
+            item.mapping(await getItemById(hoverRow));
             clickedRow = item.Parent;
-            removeExistingItem(hoverRow);
+            await removeExistingItem(hoverRow);
             clearCurrentData();
             renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();

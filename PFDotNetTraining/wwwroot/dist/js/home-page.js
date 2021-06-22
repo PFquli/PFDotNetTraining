@@ -1962,19 +1962,83 @@ const renderGrid = () => {// TODO: implement code to Render grid
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getItemById": function() { return /* binding */ getItemById; }
+/* harmony export */   "getItemById": function() { return /* binding */ getItemById; },
+/* harmony export */   "getItemsInFolder": function() { return /* binding */ getItemsInFolder; },
+/* harmony export */   "getNextIdForInsert": function() { return /* binding */ getNextIdForInsert; },
+/* harmony export */   "getUserName": function() { return /* binding */ getUserName; },
+/* harmony export */   "createNewItem": function() { return /* binding */ createNewItem; },
+/* harmony export */   "updateExistingItem": function() { return /* binding */ updateExistingItem; },
+/* harmony export */   "removeExistingItem": function() { return /* binding */ removeExistingItem; }
 /* harmony export */ });
 /* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
 /* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
 
 
-function getItemById(id) {
+async function getItemById(id) {
   let item;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(id)).then(function (response) {
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(id)).then(function (response) {
     item = response;
   }).catch(err => console.log(err));
-  return item;
+  return await item;
+}
+/**
+ * Get an array of items in a folder
+ * @param folderId - parentId
+ */
+
+async function getItemsInFolder(folderId, clickedRow) {
+  let items = [];
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEMS_FOR_PARENT_API_URL(clickedRow)).then(response => items = response.data).catch(err => console.log(err));
+  console.log(items);
+  return await items;
+}
+/**
+ * Get last id in database and plus 1
+ * */
+
+async function getNextIdForInsert() {
+  let id = 1;
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(-1)).then(res => id = res.data).catch(err => console.log(err));
+  return await id;
+}
+/**
+ * Get user name from cookies after authentication
+ * */
+
+async function getUserName() {
+  let name = '';
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.USER_API_URL).then(res => name = res.data).catch(err => console.log(err));
+  return await name;
+}
+/**
+ * Save new item to the Db by calling Post with new item
+ * @param item - new item
+ */
+
+async function createNewItem(item) {
+  let created = false;
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().post(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_API_URL, item).then(res => created = true);
+  return await created;
+}
+/**
+ * Update item by calling Put
+ * @param id - id of the current item
+ * @param item - updated item
+ */
+
+async function updateExistingItem(id, item) {
+  let updated = false;
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().put(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_API_URL, {
+    id,
+    item
+  }).then(res => updated = true);
+  return await updated;
+}
+async function removeExistingItem(id) {
+  let removed = false;
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().delete(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(id)).then(res => removed = true);
+  return await removed;
 }
 
 /***/ }),
@@ -2011,14 +2075,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "properties": function() { return /* binding */ properties; }
 /* harmony export */ });
 const baseApiUrl = 'https://localhost:44390/api/';
-const userApiUrl = baseApiUrl + "User";
+const userApiUrl = `${baseApiUrl}User`;
 
 function itemsForParentApiUrl(parentId) {
-  return baseApiUrl + "Items/parent/" + parentId;
+  return `${baseApiUrl}Items/parent/${parentId}`;
 }
 
 function itemIdApiUrl(id) {
-  return baseApiUrl + "Items/id/" + id;
+  return `${baseApiUrl}Items/id/${id}`;
 }
 
 const properties = {
@@ -2034,7 +2098,7 @@ const properties = {
   USER_API_URL: userApiUrl,
   ITEMS_FOR_PARENT_API_URL: itemsForParentApiUrl,
   ITEM_ID_API_URL: itemIdApiUrl,
-  ITEM_API_URL: baseApiUrl + "Items"
+  ITEM_API_URL: `${baseApiUrl}Items`
 };
 
 /***/ }),
@@ -2163,10 +2227,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_dataOperation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../data/dataOperation */ "./src/scripts/data/dataOperation.ts");
 /* harmony import */ var _utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/utilities-function */ "./src/scripts/utilities/utilities-function.ts");
 /* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Models/Item */ "./src/scripts/components/Models/Item.ts");
-
+/* harmony import */ var _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Models/Item */ "./src/scripts/components/Models/Item.ts");
 
 
 
@@ -2221,7 +2282,7 @@ function generateData(input) {
   //    }
   //}
   for (let i = 0; i < input.length; i += 1) {
-    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
     item.mapping(input[i]);
     let row = template.render(item);
     let id = item.Id;
@@ -2237,9 +2298,9 @@ function generateData(input) {
 
 ; //Render all items in local storage
 
-function renderItemsOfCurrentFolder() {
+async function renderItemsOfCurrentFolder() {
   let items = [];
-  getItemsInFolder(clickedRow);
+  items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(clickedRow, clickedRow);
   generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
   //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
   //    if (item.parent === clickedRow) generateData([item]);
@@ -2257,27 +2318,16 @@ function clearCurrentData() {
 
 ;
 /**
- * Get an array of items in a folder
- * @param folderId - parentId
- */
-
-function getItemsInFolder(folderId) {
-  let items = [];
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEMS_FOR_PARENT_API_URL(clickedRow)).then(response => items = JSON.parse(response.data)).catch(err => console.log(err));
-  return items;
-}
-/**
  * Attach on click event to view items in folder for <tr> tag
  * @param {number} id - folder id.
  * @param {HTMLTableRowElement}  tr - <tr> element.
  */
 
-
 function attachOnclickFolder(id, tr) {
-  tr.addEventListener("click", function () {
+  tr.addEventListener("click", async function () {
     clearCurrentData(); //Check if data is in local storage and render
 
-    let fold = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
+    let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
     changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
     //    fold.subItems.forEach(element => {
@@ -2288,7 +2338,7 @@ function attachOnclickFolder(id, tr) {
     //    });
     //}
 
-    let items = getItemsInFolder(id);
+    let items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id, clickedRow);
     generateData(items);
   });
 }
@@ -2303,65 +2353,13 @@ function getRowIdOnHover(id, tr) {
   };
 }
 /**
- * Get last id in database and plus 1
- * */
-
-
-function getNextIdForInsert() {
-  let id = 1;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(-1)).then(res => id = res.data).catch(err => console.log(err));
-  return id;
-}
-/**
- * Get user name from cookies after authentication
- * */
-
-
-function getUserName() {
-  let name = "";
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.USER_API_URL).then(res => name = res.data).catch(err => console.log(err));
-  return name;
-}
-/**
- * Save new item to the Db by calling Post with new item
- * @param item - new item
- */
-
-
-function createNewItem(item) {
-  let created = false;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().post(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, item).then(res => created = true);
-  return created;
-}
-/**
- * Update item by calling Put
- * @param id - id of the current item
- * @param item - updated item
- */
-
-
-function updateExistingItem(id, item) {
-  let updated = false;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().put(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, {
-    id,
-    item
-  }).then(res => updated = true);
-  return updated;
-}
-
-function removeExistingItem(id) {
-  let removed = false;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().delete(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(id)).then(res => removed = true);
-  return removed;
-}
-/**
  * Attach add folder event to provided <button>.
  * @param {HTMLButtonElement}  btn - <tr> element.
  */
 
 
 function addItemEvent(btn) {
-  btn.onclick = function () {
+  btn.onclick = async function () {
     //Get ID field
     let idField = document.getElementById("id");
     let id = idField.value; //Get Name field
@@ -2373,13 +2371,13 @@ function addItemEvent(btn) {
     let isFile = inputElem.checked; //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
     //let result = generateKey(prefix, randomLength);
 
-    idField.value = getNextIdForInsert().toString();
-    let creator = getUserName();
+    idField.value = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getNextIdForInsert)().toString();
+    let creator = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getUserName)();
 
     if (!editMode) {
       //Add file or folder
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
-      createNewItem(item);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+      await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.createNewItem)(item);
     } else {
       //let type: Array<string> = hoverRow.split('-');
       //if (type[0] === 'file') {
@@ -2393,11 +2391,11 @@ function addItemEvent(btn) {
       //    folder.name = name;
       //    folder.addOrUpdate(properties.EDIT_MODE);
       //}
-      let file = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+      let file = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
       item.mapping(file);
       item.Name = name;
-      updateExistingItem(hoverRow, item);
+      await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.updateExistingItem)(hoverRow, item);
       editMode = false;
     }
 
@@ -2415,7 +2413,7 @@ function attachRemoveItemEvent(row) {
   let btn = row.getElementsByClassName('close');
 
   for (let i = 0; i < btn.length; i += 1) {
-    btn[i].addEventListener('click', function () {
+    btn[i].addEventListener('click', async function () {
       //let type: Array<string> = hoverRow.split('-');
       //if (type[0] === 'file') {
       //    let file: File = new File();
@@ -2428,10 +2426,10 @@ function attachRemoveItemEvent(row) {
       //    clickedRow = folder.parent;
       //    folder.remove();
       //}
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
-      item.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
       clickedRow = item.Parent;
-      removeExistingItem(hoverRow);
+      await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       clearCurrentData();
       renderItemsOfCurrentFolder();
       event.stopImmediatePropagation();
@@ -2499,10 +2497,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_dataOperation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../data/dataOperation */ "./src/scripts/data/dataOperation.ts");
 /* harmony import */ var _utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/utilities-function */ "./src/scripts/utilities/utilities-function.ts");
 /* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Models/Item */ "./src/scripts/components/Models/Item.ts");
-
+/* harmony import */ var _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Models/Item */ "./src/scripts/components/Models/Item.ts");
 
 
 
@@ -2557,7 +2552,7 @@ function generateData(input) {
   //    }
   //}
   for (let i = 0; i < input.length; i += 1) {
-    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
     item.mapping(input[i]);
     let row = template.render(item);
     let id = item.Id;
@@ -2573,9 +2568,9 @@ function generateData(input) {
 
 ; //Render all items in local storage
 
-function renderItemsOfCurrentFolder() {
+async function renderItemsOfCurrentFolder() {
   let items = [];
-  getItemsInFolder(clickedRow);
+  items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(clickedRow, clickedRow);
   generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
   //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
   //    if (item.parent === clickedRow) generateData([item]);
@@ -2593,27 +2588,16 @@ function clearCurrentData() {
 
 ;
 /**
- * Get an array of items in a folder
- * @param folderId - parentId
- */
-
-function getItemsInFolder(folderId) {
-  let items = [];
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEMS_FOR_PARENT_API_URL(clickedRow)).then(response => items = JSON.parse(response.data)).catch(err => console.log(err));
-  return items;
-}
-/**
  * Attach on click event to view items in folder for <tr> tag
  * @param {number} id - folder id.
  * @param {HTMLTableRowElement}  tr - <tr> element.
  */
 
-
 function attachOnclickFolder(id, tr) {
-  tr.addEventListener("click", function () {
+  tr.addEventListener("click", async function () {
     clearCurrentData(); //Check if data is in local storage and render
 
-    let fold = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
+    let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
     changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
     //    fold.subItems.forEach(element => {
@@ -2624,7 +2608,7 @@ function attachOnclickFolder(id, tr) {
     //    });
     //}
 
-    let items = getItemsInFolder(id);
+    let items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id, clickedRow);
     generateData(items);
   });
 }
@@ -2639,65 +2623,13 @@ function getRowIdOnHover(id, tr) {
   };
 }
 /**
- * Get last id in database and plus 1
- * */
-
-
-function getNextIdForInsert() {
-  let id = 1;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(-1)).then(res => id = res.data).catch(err => console.log(err));
-  return id;
-}
-/**
- * Get user name from cookies after authentication
- * */
-
-
-function getUserName() {
-  let name = "";
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.USER_API_URL).then(res => name = res.data).catch(err => console.log(err));
-  return name;
-}
-/**
- * Save new item to the Db by calling Post with new item
- * @param item - new item
- */
-
-
-function createNewItem(item) {
-  let created = false;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().post(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, item).then(res => created = true);
-  return created;
-}
-/**
- * Update item by calling Put
- * @param id - id of the current item
- * @param item - updated item
- */
-
-
-function updateExistingItem(id, item) {
-  let updated = false;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().put(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, {
-    id,
-    item
-  }).then(res => updated = true);
-  return updated;
-}
-
-function removeExistingItem(id) {
-  let removed = false;
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().delete(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(id)).then(res => removed = true);
-  return removed;
-}
-/**
  * Attach add folder event to provided <button>.
  * @param {HTMLButtonElement}  btn - <tr> element.
  */
 
 
 function addItemEvent(btn) {
-  btn.onclick = function () {
+  btn.onclick = async function () {
     //Get ID field
     let idField = document.getElementById("id");
     let id = idField.value; //Get Name field
@@ -2709,13 +2641,13 @@ function addItemEvent(btn) {
     let isFile = inputElem.checked; //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
     //let result = generateKey(prefix, randomLength);
 
-    idField.value = getNextIdForInsert().toString();
-    let creator = getUserName();
+    idField.value = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getNextIdForInsert)().toString();
+    let creator = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getUserName)();
 
     if (!editMode) {
       //Add file or folder
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
-      createNewItem(item);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+      await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.createNewItem)(item);
     } else {
       //let type: Array<string> = hoverRow.split('-');
       //if (type[0] === 'file') {
@@ -2729,11 +2661,11 @@ function addItemEvent(btn) {
       //    folder.name = name;
       //    folder.addOrUpdate(properties.EDIT_MODE);
       //}
-      let file = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+      let file = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
       item.mapping(file);
       item.Name = name;
-      updateExistingItem(hoverRow, item);
+      await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.updateExistingItem)(hoverRow, item);
       editMode = false;
     }
 
@@ -2751,7 +2683,7 @@ function attachRemoveItemEvent(row) {
   let btn = row.getElementsByClassName('close');
 
   for (let i = 0; i < btn.length; i += 1) {
-    btn[i].addEventListener('click', function () {
+    btn[i].addEventListener('click', async function () {
       //let type: Array<string> = hoverRow.split('-');
       //if (type[0] === 'file') {
       //    let file: File = new File();
@@ -2764,10 +2696,10 @@ function attachRemoveItemEvent(row) {
       //    clickedRow = folder.parent;
       //    folder.remove();
       //}
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
-      item.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
       clickedRow = item.Parent;
-      removeExistingItem(hoverRow);
+      await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       clearCurrentData();
       renderItemsOfCurrentFolder();
       event.stopImmediatePropagation();
