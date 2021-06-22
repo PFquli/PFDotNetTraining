@@ -16,11 +16,12 @@ const randomLength: number = 5;
 ready(async () => {
     renderGrid();
     currentDir = properties.BASE_DIRECTORY;
-    changeCurrentDirectory();
+    addToCurrentDirectoryPath();
     await renderItemsOfCurrentFolder();
     let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
+    attachGoUpEvent();
 });
 
 /**
@@ -100,7 +101,7 @@ function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
         clickedRow = id;
         let item = new Item();
         item.mapping(fold['data']);
-        changeCurrentDirectory(item.Name);
+        addToCurrentDirectoryPath(item.Name);
         //if (!fold.IsFile) {
         //    fold.subItems.forEach(element => {
         //        if (Array.isArray(element)) {
@@ -166,7 +167,7 @@ function addItemEvent(btn: HTMLButtonElement) {
             await updateExistingItem(hoverRow, item);
             editMode = false;
         }
-        renderItemsOfCurrentFolder();
+        await renderItemsOfCurrentFolder();
     }
 }
 
@@ -194,7 +195,7 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
             item.mapping(await getItemById(hoverRow)['data']);
             clickedRow = item.Parent;
             await removeExistingItem(hoverRow);
-            renderItemsOfCurrentFolder();
+            await renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();
         })
     }
@@ -206,9 +207,17 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
  * @param {string}  folder - folder name.
  * @return {string} - result prefix & length.
  */
-function changeCurrentDirectory(folder: string = ''): string {
+function addToCurrentDirectoryPath(folder: string = ''): string {
     if (folder != '')
         currentDir += '/' + folder;
+    document.getElementById('directory').innerHTML = currentDir;
+    return currentDir;
+}
+
+function removeFromCurrentDirectoryPath() {
+    let arr: Array<string> = currentDir.split('/');
+    arr.pop();
+    currentDir = arr.join("/");
     document.getElementById('directory').innerHTML = currentDir;
     return currentDir;
 }
@@ -239,5 +248,29 @@ function attachEditEvent(tr: HTMLTableRowElement) {
             console.log(editMode);
             event.stopImmediatePropagation();
         });
+    }
+}
+/**
+ * Event for back button
+ */
+function attachGoUpEvent() {
+    document.getElementById('go-up-button').onclick = async function () {
+        if (clickedRow !== properties.BASE_ID) {
+            //    getData(properties.BASE_API_URL + 'Folder/GetFolderById/' + clickedRow, {}).then(data => {
+            //        if (data.parentID != null)
+            //            clickedRow = data.parentID;
+            //        else clickedRow = '0';
+            //        refresh();
+            //    });
+            //}
+            let parent = await getItemById(clickedRow);
+            let item = new Item();
+            item.mapping(parent['data']);
+            if (item.Parent != properties.BASE_ID) {
+                clickedRow = item.Parent;
+                removeFromCurrentDirectoryPath();
+                await renderItemsOfCurrentFolder();
+            }
+        }
     }
 }

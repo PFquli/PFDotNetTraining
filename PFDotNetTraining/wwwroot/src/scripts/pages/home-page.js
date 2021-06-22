@@ -14,11 +14,12 @@ const randomLength = 5;
 ready(async () => {
     renderGrid();
     currentDir = properties.BASE_DIRECTORY;
-    changeCurrentDirectory();
+    addToCurrentDirectoryPath();
     await renderItemsOfCurrentFolder();
     let submitButton = document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
+    attachGoUpEvent();
 });
 /**
  * Render all data with given array of Folder or Files.
@@ -95,7 +96,7 @@ function attachOnclickFolder(id, tr) {
         clickedRow = id;
         let item = new Item();
         item.mapping(fold['data']);
-        changeCurrentDirectory(item.Name);
+        addToCurrentDirectoryPath(item.Name);
         //if (!fold.IsFile) {
         //    fold.subItems.forEach(element => {
         //        if (Array.isArray(element)) {
@@ -160,7 +161,7 @@ function addItemEvent(btn) {
             await updateExistingItem(hoverRow, item);
             editMode = false;
         }
-        renderItemsOfCurrentFolder();
+        await renderItemsOfCurrentFolder();
     };
 }
 /**
@@ -187,7 +188,7 @@ function attachRemoveItemEvent(row) {
             item.mapping(await getItemById(hoverRow)['data']);
             clickedRow = item.Parent;
             await removeExistingItem(hoverRow);
-            renderItemsOfCurrentFolder();
+            await renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();
         });
     }
@@ -199,9 +200,16 @@ function attachRemoveItemEvent(row) {
  * @param {string}  folder - folder name.
  * @return {string} - result prefix & length.
  */
-function changeCurrentDirectory(folder = '') {
+function addToCurrentDirectoryPath(folder = '') {
     if (folder != '')
         currentDir += '/' + folder;
+    document.getElementById('directory').innerHTML = currentDir;
+    return currentDir;
+}
+function removeFromCurrentDirectoryPath() {
+    let arr = currentDir.split('/');
+    arr.pop();
+    currentDir = arr.join("/");
     document.getElementById('directory').innerHTML = currentDir;
     return currentDir;
 }
@@ -231,4 +239,28 @@ function attachEditEvent(tr) {
             event.stopImmediatePropagation();
         });
     }
+}
+/**
+ * Event for back button
+ */
+function attachGoUpEvent() {
+    document.getElementById('go-up-button').onclick = async function () {
+        if (clickedRow !== properties.BASE_ID) {
+            //    getData(properties.BASE_API_URL + 'Folder/GetFolderById/' + clickedRow, {}).then(data => {
+            //        if (data.parentID != null)
+            //            clickedRow = data.parentID;
+            //        else clickedRow = '0';
+            //        refresh();
+            //    });
+            //}
+            let parent = await getItemById(clickedRow);
+            let item = new Item();
+            item.mapping(parent['data']);
+            if (item.Parent != properties.BASE_ID) {
+                clickedRow = item.Parent;
+                removeFromCurrentDirectoryPath();
+                await renderItemsOfCurrentFolder();
+            }
+        }
+    };
 }

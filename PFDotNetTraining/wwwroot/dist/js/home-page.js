@@ -2245,12 +2245,13 @@ let editMode = false;
 const randomLength = 5;
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(async () => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
-  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString() || 'root';
+  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_DIRECTORY;
   changeCurrentDirectory();
   await renderItemsOfCurrentFolder();
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
+  attachGoUpEvent();
 });
 /**
  * Render all data with given array of Folder or Files.
@@ -2483,6 +2484,32 @@ function attachEditEvent(tr) {
       event.stopImmediatePropagation();
     });
   }
+}
+/**
+ * Event for back button
+ */
+
+
+function attachGoUpEvent() {
+  document.getElementById('go-up-button').onclick = async function () {
+    if (clickedRow !== _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID) {
+      //    getData(properties.BASE_API_URL + 'Folder/GetFolderById/' + clickedRow, {}).then(data => {
+      //        if (data.parentID != null)
+      //            clickedRow = data.parentID;
+      //        else clickedRow = '0';
+      //        refresh();
+      //    });
+      //}
+      let parent = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(clickedRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(parent['data']);
+
+      if (item.Parent != _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID) {
+        clickedRow = item.Parent;
+        renderItemsOfCurrentFolder();
+      }
+    }
+  };
 }
 }();
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -2516,11 +2543,12 @@ const randomLength = 5;
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(async () => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_DIRECTORY;
-  changeCurrentDirectory();
+  addToCurrentDirectoryPath();
   await renderItemsOfCurrentFolder();
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
+  attachGoUpEvent();
 });
 /**
  * Render all data with given array of Folder or Files.
@@ -2603,7 +2631,7 @@ function attachOnclickFolder(id, tr) {
     clickedRow = id;
     let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
     item.mapping(fold['data']);
-    changeCurrentDirectory(item.Name); //if (!fold.IsFile) {
+    addToCurrentDirectoryPath(item.Name); //if (!fold.IsFile) {
     //    fold.subItems.forEach(element => {
     //        if (Array.isArray(element)) {
     //            generateData(element);
@@ -2673,7 +2701,7 @@ function addItemEvent(btn) {
       editMode = false;
     }
 
-    renderItemsOfCurrentFolder();
+    await renderItemsOfCurrentFolder();
   };
 }
 /**
@@ -2703,7 +2731,7 @@ function attachRemoveItemEvent(row) {
       item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow)['data']);
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
-      renderItemsOfCurrentFolder();
+      await renderItemsOfCurrentFolder();
       event.stopImmediatePropagation();
     });
   }
@@ -2717,8 +2745,16 @@ function attachRemoveItemEvent(row) {
  * @return {string} - result prefix & length.
  */
 
-function changeCurrentDirectory(folder = '') {
+function addToCurrentDirectoryPath(folder = '') {
   if (folder != '') currentDir += '/' + folder;
+  document.getElementById('directory').innerHTML = currentDir;
+  return currentDir;
+}
+
+function removeFromCurrentDirectoryPath() {
+  let arr = currentDir.split('/');
+  arr.pop();
+  currentDir = arr.join("/");
   document.getElementById('directory').innerHTML = currentDir;
   return currentDir;
 } // Checkbox event
@@ -2753,6 +2789,33 @@ function attachEditEvent(tr) {
       event.stopImmediatePropagation();
     });
   }
+}
+/**
+ * Event for back button
+ */
+
+
+function attachGoUpEvent() {
+  document.getElementById('go-up-button').onclick = async function () {
+    if (clickedRow !== _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID) {
+      //    getData(properties.BASE_API_URL + 'Folder/GetFolderById/' + clickedRow, {}).then(data => {
+      //        if (data.parentID != null)
+      //            clickedRow = data.parentID;
+      //        else clickedRow = '0';
+      //        refresh();
+      //    });
+      //}
+      let parent = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(clickedRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(parent['data']);
+
+      if (item.Parent != _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID) {
+        clickedRow = item.Parent;
+        removeFromCurrentDirectoryPath();
+        await renderItemsOfCurrentFolder();
+      }
+    }
+  };
 }
 }();
 // This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
