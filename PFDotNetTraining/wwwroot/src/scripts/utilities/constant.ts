@@ -9,7 +9,7 @@ function itemIdApiUrl(id: number) {
 export const properties = {
   CREATE_MODE: 'create',
   EDIT_MODE: 'edit',
-  ORDERING: ['icon', 'name', 'createDate', 'creator', 'id'],
+  ORDERING: ['Icon', 'Name', 'ModifiedAt', 'ModifiedBy', 'Id'],
   BASE_DIRECTORY: 'root',
   BASE_ID: 0,
   FILE_PREFIX: 'file-',

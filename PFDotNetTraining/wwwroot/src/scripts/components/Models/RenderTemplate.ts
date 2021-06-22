@@ -19,7 +19,7 @@ export class RenderTemplate {
     for (let i = 0; i <= this.ordering.length; i += 1) {
       // Render content
       const cell = row.insertCell(-1);
-      if (this.ordering[i] === 'icon') {
+      if (this.ordering[i] === 'Icon') {
         cell.className = 'pl-md-5';
         const imgNode = document.createElement('img');
         imgNode.className = 'icon';
@@ -28,7 +28,7 @@ export class RenderTemplate {
         continue;
       }
       // Hide ID col
-      if (this.ordering[i] === 'id') cell.className = 'd-none';
+      if (this.ordering[i] === 'Id') cell.className = 'd-none';
       // Ultility button
       if (i === this.ordering.length) {
         const editBtn = document.createElement('button');

@@ -1903,7 +1903,7 @@ class RenderTemplate {
       // Render content
       const cell = row.insertCell(-1);
 
-      if (this.ordering[i] === 'icon') {
+      if (this.ordering[i] === 'Icon') {
         cell.className = 'pl-md-5';
         const imgNode = document.createElement('img');
         imgNode.className = 'icon';
@@ -1913,7 +1913,7 @@ class RenderTemplate {
       } // Hide ID col
 
 
-      if (this.ordering[i] === 'id') cell.className = 'd-none'; // Ultility button
+      if (this.ordering[i] === 'Id') cell.className = 'd-none'; // Ultility button
 
       if (i === this.ordering.length) {
         const editBtn = document.createElement('button');
@@ -2088,7 +2088,7 @@ function itemIdApiUrl(id) {
 const properties = {
   CREATE_MODE: 'create',
   EDIT_MODE: 'edit',
-  ORDERING: ['icon', 'name', 'createDate', 'creator', 'id'],
+  ORDERING: ['Icon', 'Name', 'ModifiedAt', 'ModifiedBy', 'Id'],
   BASE_DIRECTORY: 'root',
   BASE_ID: 0,
   FILE_PREFIX: 'file-',
