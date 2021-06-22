@@ -15,7 +15,7 @@ const randomLength: number = 5;
 
 ready(async () => {
     renderGrid();
-    currentDir = properties.BASE_ID.toString();
+    currentDir = properties.BASE_DIRECTORY;
     changeCurrentDirectory();
     await renderItemsOfCurrentFolder();
     let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementsByClassName('btn-add')[0];
@@ -64,7 +64,6 @@ function generateData(input: Array<any>) {
         attachRemoveItemEvent(row);
         attachEditEvent(row);
         if (!item.IsFile) {
-            console.log("Attaching on-click on folder");
             attachOnclickFolder(id, row);
         }
     }
@@ -99,7 +98,9 @@ function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
         //Check if data is in local storage and render
         let fold = await getItemById(id);
         clickedRow = id;
-        changeCurrentDirectory(fold.name);
+        let item = new Item();
+        item.mapping(fold['data']);
+        changeCurrentDirectory(item.Name);
         //if (!fold.IsFile) {
         //    fold.subItems.forEach(element => {
         //        if (Array.isArray(element)) {
@@ -160,7 +161,7 @@ function addItemEvent(btn: HTMLButtonElement) {
             //}
             let file = await getItemById(hoverRow);
             let item = new Item();
-            item.mapping(file);
+            item.mapping(file['data']);
             item.Name = name;
             await updateExistingItem(hoverRow, item);
             editMode = false;
@@ -190,7 +191,7 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
             //    folder.remove();
             //}
             let item = new Item();
-            item.mapping(await getItemById(hoverRow));
+            item.mapping(await getItemById(hoverRow)['data']);
             clickedRow = item.Parent;
             await removeExistingItem(hoverRow);
             renderItemsOfCurrentFolder();

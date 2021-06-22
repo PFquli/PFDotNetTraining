@@ -2245,7 +2245,7 @@ let editMode = false;
 const randomLength = 5;
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(async () => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
-  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString();
+  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString() || 'root';
   changeCurrentDirectory();
   await renderItemsOfCurrentFolder();
   let submitButton = document.getElementsByClassName('btn-add')[0];
@@ -2294,7 +2294,6 @@ function generateData(input) {
     attachEditEvent(row);
 
     if (!item.IsFile) {
-      console.log("Attaching on-click on folder");
       attachOnclickFolder(id, row);
     }
   }
@@ -2332,7 +2331,9 @@ function attachOnclickFolder(id, tr) {
     //Check if data is in local storage and render
     let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
-    changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+    item.mapping(fold['data']);
+    changeCurrentDirectory(item.Name); //if (!fold.IsFile) {
     //    fold.subItems.forEach(element => {
     //        if (Array.isArray(element)) {
     //            generateData(element);
@@ -2396,7 +2397,7 @@ function addItemEvent(btn) {
       //}
       let file = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
       let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(file);
+      item.mapping(file['data']);
       item.Name = name;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.updateExistingItem)(hoverRow, item);
       editMode = false;
@@ -2429,7 +2430,7 @@ function attachRemoveItemEvent(row) {
       //    folder.remove();
       //}
       let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
+      item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow)['data']);
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       renderItemsOfCurrentFolder();
@@ -2514,7 +2515,7 @@ let editMode = false;
 const randomLength = 5;
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(async () => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
-  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString();
+  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_DIRECTORY;
   changeCurrentDirectory();
   await renderItemsOfCurrentFolder();
   let submitButton = document.getElementsByClassName('btn-add')[0];
@@ -2563,7 +2564,6 @@ function generateData(input) {
     attachEditEvent(row);
 
     if (!item.IsFile) {
-      console.log("Attaching on-click on folder");
       attachOnclickFolder(id, row);
     }
   }
@@ -2601,7 +2601,9 @@ function attachOnclickFolder(id, tr) {
     //Check if data is in local storage and render
     let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
-    changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+    item.mapping(fold['data']);
+    changeCurrentDirectory(item.Name); //if (!fold.IsFile) {
     //    fold.subItems.forEach(element => {
     //        if (Array.isArray(element)) {
     //            generateData(element);
@@ -2665,7 +2667,7 @@ function addItemEvent(btn) {
       //}
       let file = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
       let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(file);
+      item.mapping(file['data']);
       item.Name = name;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.updateExistingItem)(hoverRow, item);
       editMode = false;
@@ -2698,7 +2700,7 @@ function attachRemoveItemEvent(row) {
       //    folder.remove();
       //}
       let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
+      item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow)['data']);
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       renderItemsOfCurrentFolder();
