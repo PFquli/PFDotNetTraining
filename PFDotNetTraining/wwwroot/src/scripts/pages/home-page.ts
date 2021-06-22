@@ -12,7 +12,7 @@ import Item from '../components/Models/Item';
 let currentDir = '';
 let template = new RenderTemplate(<HTMLTableElement>document.getElementById("content-table"), properties.ORDERING);
 let clickedRow: number = 0;
-let hoverRow: string = '';
+let hoverRow: number = 0;
 let editMode: boolean = false;
 const randomLength: number = 5;
 
@@ -143,7 +143,7 @@ function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
 /**
  * Passing Item id to global variable for a later use.
  */
-function getRowIdOnHover(id: string, tr: HTMLTableRowElement) {
+function getRowIdOnHover(id: number, tr: HTMLTableRowElement) {
     tr.onmouseover = function () {
         hoverRow = id;
     }
@@ -181,6 +181,17 @@ function createNewItem(item: Item) {
 }
 
 /**
+ * Update item by calling Put
+ * @param id - id of the current item
+ * @param item - updated item
+ */
+function updateExistingItem(id: number, item: Item) {
+    let updated = false;
+    axios.put(properties.ITEM_API_URL, { id, item }).then(res => updated = true);
+    return updated;
+}
+
+/**
  * Attach add folder event to provided <button>.
  * @param {HTMLButtonElement}  btn - <tr> element.
  */
@@ -204,18 +215,23 @@ function addItemEvent(btn: HTMLButtonElement) {
             let item = new Item(parseInt(id), name, getCurrentDate(), creator, getCurrentDate(), creator, 50, clickedRow, null, isFile ? 1 : 0);
             createNewItem(item);
         } else {
-            let type: Array<string> = hoverRow.split('-');
-            if (type[0] === 'file') {
-                let file: File = new File();
-                file.mapping(getItemById(hoverRow));
-                file.name = name;
-                file.addOrUpdate(properties.EDIT_MODE);
-            } else {
-                let folder: Folder = new Folder();
-                folder.mapping(getItemById(hoverRow));
-                folder.name = name;
-                folder.addOrUpdate(properties.EDIT_MODE);
-            }
+            //let type: Array<string> = hoverRow.split('-');
+            //if (type[0] === 'file') {
+            //    let file: File = new File();
+            //    file.mapping(getItemById(hoverRow));
+            //    file.name = name;
+            //    file.addOrUpdate(properties.EDIT_MODE);
+            //} else {
+            //    let folder: Folder = new Folder();
+            //    folder.mapping(getItemById(hoverRow));
+            //    folder.name = name;
+            //    folder.addOrUpdate(properties.EDIT_MODE);
+            //}
+            let file = getItemById(hoverRow);
+            let item = new Item();
+            item.mapping(file);
+            item.Name = name;
+            updateExistingItem(hoverRow, item);
             editMode = false;
         }
         clearCurrentData();
