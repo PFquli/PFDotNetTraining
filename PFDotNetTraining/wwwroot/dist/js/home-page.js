@@ -1833,177 +1833,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./src/scripts/components/Models/File.ts":
-/*!***********************************************!*\
-  !*** ./src/scripts/components/Models/File.ts ***!
-  \***********************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "File": function() { return /* binding */ File; }
-/* harmony export */ });
-/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utilities/constant */ "./src/scripts/utilities/constant.ts");
-/* harmony import */ var _Item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Item */ "./src/scripts/components/Models/Item.ts");
-
-
-class File extends _Item__WEBPACK_IMPORTED_MODULE_1__.Item {
-  constructor(id, name, createDate, creator, modifiedAt, modifiedBy, icon, parent, extension = ".doc") {
-    super(id, name, createDate, creator, modifiedAt, modifiedBy, icon, parent);
-    this.extension = extension;
-    this.extension = extension;
-    this.icon = _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.FILE_DEFAULT_URL;
-  }
-
-  addOrUpdate(mode) {
-    //Add file to local storage
-    super.addOrUpdate(mode);
-
-    if (this.parent !== _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.BASE_DIRECTORY) {
-      //Add file to folder or update file name
-      let folder = JSON.parse(window.localStorage.getItem(this.parent));
-
-      if (mode === _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.CREATE_MODE) {
-        folder.subItems.push(this);
-      } else {
-        for (let i = 0; i < folder.subItems.length; i++) {
-          if (folder.subItems[i].id === this.id) {
-            folder.subItems[i].name = this.name;
-          }
-        }
-      } //Update local storage
-
-
-      localStorage.setItem(folder.id, JSON.stringify(folder));
-    }
-  }
-
-  remove() {
-    //Remove file from local storage
-    super.remove(); //Remove file from folder
-
-    if (this.parent !== 'root') {
-      let folder = JSON.parse(window.localStorage.getItem(this.parent));
-      let pos = 0;
-
-      for (let i = 0; i < folder.subItems.length; i++) {
-        if (folder.subItems[i].id === this.id) pos = i;
-      }
-
-      folder.subItems.splice(pos, 1); //Update local storage
-
-      localStorage.setItem(folder.id, JSON.stringify(folder));
-    }
-  }
-
-  mapping(input) {
-    if (input.id) this.id = input.id;
-    if (input.name) this.name = input.name;
-    if (input.creator) this.creator = input.creator;
-    if (input.createDate) this.createDate = input.createDate;
-    if (input.modifiedBy) this.modifiedBy = input.modifiedBy;
-    if (input.modifiedAt) this.modifiedAt = input.modifiedAt;
-    if (input.extension) this.extension = input.extension;
-    if (input.icon) this.icon = input.icon;
-    if (input.parent) this.parent = input.parent; // super.mapping(input);
-    // if (input.extension) this.extension = input.extension;
-  }
-
-}
-
-/***/ }),
-
-/***/ "./src/scripts/components/Models/Folder.ts":
-/*!*************************************************!*\
-  !*** ./src/scripts/components/Models/Folder.ts ***!
-  \*************************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Folder": function() { return /* binding */ Folder; }
-/* harmony export */ });
-/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utilities/constant */ "./src/scripts/utilities/constant.ts");
-/* harmony import */ var _Item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Item */ "./src/scripts/components/Models/Item.ts");
-
-
-class Folder extends _Item__WEBPACK_IMPORTED_MODULE_1__.Item {
-  constructor(id, name, createDate, creator, modifiedAt, modifiedBy, icon, parent) {
-    super(id, name, createDate, creator, modifiedAt, modifiedBy, icon, parent);
-    this.subItems = [];
-    this.icon = _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.FOLDER_DEFAULT_URL;
-  }
-
-  addOrUpdate(mode) {
-    // Add folder to local storage
-    localStorage.setItem(this.id, JSON.stringify(this)); // Add folder to folder
-
-    if (this.parent !== _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.BASE_DIRECTORY) {
-      const folder = JSON.parse(localStorage.getItem(this.parent));
-
-      if (mode === _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.CREATE_MODE) {
-        folder.subItems.push(this);
-      } else {
-        for (let i = 0; i < folder.subItems.length; i += 1) {
-          if (folder.subItems[i].id === this.id) {
-            folder.subItems[i].mapping(this);
-          }
-        }
-      }
-
-      localStorage.setItem(folder.id, JSON.stringify(folder));
-    }
-  }
-
-  remove() {
-    // Remove folder from local storage
-    super.remove(); // Remove all items from folder
-
-    if (this.subItems.length !== 0) {
-      for (let i = 0; i < localStorage.length; i += 1) {
-        const item = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        console.log(item.parent);
-
-        if (item.parent === this.id) {
-          localStorage.removeItem(item.id);
-        }
-      }
-    } // Remove folder from parent
-
-
-    if (this.parent !== 'root') {
-      const folder = JSON.parse(window.localStorage.getItem(this.parent));
-      let pos = 0;
-
-      for (let i = 0; i < folder.subItems.length; i += 1) {
-        if (folder.subItems[i].id === this.id) pos = i;
-      }
-
-      folder.subItems.splice(pos, 1); // Update local storage
-
-      localStorage.setItem(folder.id, JSON.stringify(folder));
-    }
-  }
-
-  mapping(input) {
-    if (input.id) this.id = input.id;
-    if (input.name) this.name = input.name;
-    if (input.creator) this.creator = input.creator;
-    if (input.createDate) this.createDate = input.createDate;
-    if (input.modifiedBy) this.modifiedBy = input.modifiedBy;
-    if (input.modifiedAt) this.modifiedAt = input.modifiedAt;
-    if (input.subItems) this.subItems = input.subItems;
-    if (input.icon) this.icon = input.icon;
-    if (input.parent) this.parent = input.parent; // super.mapping(input);
-    // if (input.subItems) this.subItems = input.subItems;
-  }
-
-}
-
-/***/ }),
-
 /***/ "./src/scripts/components/Models/Item.ts":
 /*!***********************************************!*\
   !*** ./src/scripts/components/Models/Item.ts ***!
@@ -2013,41 +1842,36 @@ class Folder extends _Item__WEBPACK_IMPORTED_MODULE_1__.Item {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Item": function() { return /* binding */ Item; }
+/* harmony export */   "default": function() { return /* binding */ Item; }
 /* harmony export */ });
 /* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utilities/constant */ "./src/scripts/utilities/constant.ts");
 
 class Item {
-  constructor(id, name, createDate, creator, modifiedAt, modifiedBy, icon, parent = _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.BASE_DIRECTORY) {
-    this.createDate = '049/04/2021';
-    this.creator = 'An Tran Hoang';
-    if (id) this.id = id;
-    if (name) this.name = name;
-    if (createDate) this.createDate = createDate;
-    if (creator) this.creator = creator;
-    if (modifiedAt) this.modifiedAt = modifiedAt;
-    if (modifiedBy) this.modifiedBy = modifiedBy;
-    if (icon) this.icon = icon;
-    if (parent) this.parent = parent;
-  }
-
-  addOrUpdate(mode) {
-    localStorage.setItem(this.id, JSON.stringify(this));
-  }
-
-  remove() {
-    localStorage.removeItem(this.id);
+  constructor(id, name, createDate, createdBy, modifiedAt, modifiedBy, size, parent = _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.BASE_ID, content = null, isFile = 1) {
+    this.CreatedBy = 'An Tran Hoang';
+    if (id) this.Id = id;
+    if (name) this.Name = name;
+    if (createDate) this.CreatedDate = createDate;
+    if (createdBy) this.CreatedBy = createdBy;
+    if (modifiedAt) this.ModifiedAt = modifiedAt;
+    if (modifiedBy) this.ModifiedBy = modifiedBy;
+    if (size) this.Size = size;
+    if (parent) this.Parent = parent;
+    if (content) this.Content = content;
+    if (isFile) this.IsFile = isFile;
   }
 
   mapping(input) {
-    if (input.id) this.id = input.id;
-    if (input.name) this.name = input.name;
-    if (input.creator) this.creator = input.creator;
-    if (input.createDate) this.createDate = input.createDate;
-    if (input.modifiedBy) this.modifiedBy = input.modifiedBy;
-    if (input.modifiedAt) this.modifiedAt = input.modifiedAt;
-    if (input.icon) this.icon = input.icon;
-    if (input.parent) this.parent = input.parent;
+    if (input.id) this.Id = input.id;
+    if (input.name) this.Name = input.name;
+    if (input.createdBy) this.CreatedBy = input.createdBy;
+    if (input.createdDate) this.CreatedDate = input.createdDate;
+    if (input.modifiedBy) this.ModifiedBy = input.modifiedBy;
+    if (input.modifiedAt) this.ModifiedAt = input.modifiedAt;
+    if (input.size) this.Size = input.size;
+    if (input.parent) this.Parent = input.parent;
+    if (input.content) this.Content = input.content;
+    if (input.isFile) this.IsFile = input.isFile;
   }
 
 }
@@ -2140,12 +1964,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getItemById": function() { return /* binding */ getItemById; }
 /* harmony export */ });
+/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
+/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
+
+
 function getItemById(id) {
-  for (let i = 0; i < window.localStorage.length; i += 1) {
-    if (localStorage.key(i) === id) {
-      return JSON.parse(localStorage.getItem(localStorage.key(i)));
-    }
-  }
+  let item;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(id)).then(function (response) {
+    item = response;
+  }).catch(err => console.log(err));
+  return item;
 }
 
 /***/ }),
@@ -2181,17 +2010,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "properties": function() { return /* binding */ properties; }
 /* harmony export */ });
+const baseApiUrl = 'https://localhost:44390/api/';
+const userApiUrl = baseApiUrl + "User";
+
+function itemsForParentApiUrl(parentId) {
+  return baseApiUrl + "Items/parent/" + parentId;
+}
+
+function itemIdApiUrl(id) {
+  return baseApiUrl + "Items/id/" + id;
+}
+
 const properties = {
   CREATE_MODE: 'create',
   EDIT_MODE: 'edit',
   ORDERING: ['icon', 'name', 'createDate', 'creator', 'id'],
   BASE_DIRECTORY: 'root',
-  BASE_ID: '0',
+  BASE_ID: 0,
   FILE_PREFIX: 'file-',
   FOLDER_PREFIX: 'folder-',
   FILE_DEFAULT_URL: './dist/image/excel.png',
   FOLDER_DEFAULT_URL: './dist/image/folder.png',
-  BASE_API_URL: 'https://localhost:44390/api/'
+  USER_API_URL: userApiUrl,
+  ITEMS_FOR_PARENT_API_URL: itemsForParentApiUrl,
+  ITEM_ID_API_URL: itemIdApiUrl,
+  ITEM_API_URL: baseApiUrl + "Items"
 };
 
 /***/ }),
@@ -2232,7 +2075,7 @@ function getCurrentDate() {
   const dd = String(today.getDate()).padStart(2, '0');
   const mm = String(today.getMonth() + 1).padStart(2, '0');
   const yyyy = today.getFullYear();
-  return `${dd}/${mm}/${yyyy}`;
+  return `${mm}/${dd}/${yyyy}`;
 }
 
 /***/ })
@@ -2316,321 +2159,13 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utilities_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utilities/_helper */ "./src/scripts/utilities/_helper.ts");
 /* harmony import */ var _components_grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/_grid */ "./src/scripts/components/_grid.ts");
-/* harmony import */ var _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Models/Folder */ "./src/scripts/components/Models/Folder.ts");
-/* harmony import */ var _components_Models_File__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Models/File */ "./src/scripts/components/Models/File.ts");
-/* harmony import */ var _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Models/RenderTemplate */ "./src/scripts/components/Models/RenderTemplate.ts");
-/* harmony import */ var _data_dataOperation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../data/dataOperation */ "./src/scripts/data/dataOperation.ts");
-/* harmony import */ var _utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/utilities-function */ "./src/scripts/utilities/utilities-function.ts");
-/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8__);
-
-
-
-
-
-
-
-
-
-let currentDir = '';
-const template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_4__.RenderTemplate(document.getElementById('content-table'), _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.ORDERING);
-let clickedRow = 'root';
-let hoverRow = '';
-let editMode = false;
-const randomLength = 5;
-const userApiUrl = `${_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL}User`;
-
-function itemApiUrl(id) {
-  return `${_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL}Items/${id}`;
-}
-
-(0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
-  (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
-  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID;
-  changeCurrentDirectory();
-  renderLocalStorage();
-  const submitButton = document.getElementsByClassName('btn-add')[0];
-  addItemEvent(submitButton);
-  checkboxEvent();
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID)).then(function (response) {
-    // handle success
-    console.log(response);
-  });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl('1')).then(function (response) {
-    // handle success
-    console.log(response);
-  });
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(userApiUrl).then(function (response) {
-    // handle success
-    console.log(response);
-  });
-  /*    axios.put(itemApiUrl("109")) */
-});
-/**
- * Render all data with given array of Folder or Files.
- * @param {Array<Item>} input - Array of folders or files.
- */
-
-function generateData(input) {
-  // Generate Folder
-  if (input[0].subItems) {
-    for (let i = 0; i < input.length; i += 1) {
-      const folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-      folder.mapping(input[i]);
-      const row = template.render(folder);
-      const id = row.cells[row.cells.length - 2].textContent;
-      getRowIdOnHover(id, row);
-      attachRemoveItemEvent(row);
-      attachOnclickFolder(id, row);
-      attachEditEvent(row);
-    }
-  } else {
-    // Generate Files
-    for (let i = 0; i < input.length; i += 1) {
-      const file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
-      file.mapping(input[i]);
-      const row = template.render(file);
-      const id = row.cells[row.cells.length - 2].textContent;
-      getRowIdOnHover(id, row);
-      attachRemoveItemEvent(row);
-      attachEditEvent(row);
-    }
-  } // if (!input[0].isFile) {
-  //    for (let i = 0; i < input.length; i += 1) {
-  //        let folder = new Folder();
-  //        folder.mapping(input[i]);
-  //        let row = template.render(folder);
-  //        let id = row.cells[row.cells.length - 2].textContent;
-  //        getRowIdOnHover(id, row);
-  //        attachRemoveItemEvent(row);
-  //        attachOnclickFolder(id, row);
-  //        attachEditEvent(row);
-  //    }
-  // }
-  // else {
-  //    //Generate Files
-  //    for (let i = 0; i < input.length; i += 1) {
-  //        let file = new File();
-  //        file.mapping(input[i]);
-  //        let row = template.render(file);
-  //        let id = row.cells[row.cells.length - 2].textContent;
-  //        getRowIdOnHover(id, row);
-  //        attachRemoveItemEvent(row);
-  //        attachEditEvent(row);
-  //    }
-  // }
-
-} // Render all items in local storage
-
-
-function renderLocalStorage() {
-  for (let i = 0; i < window.localStorage.length; i += 1) {
-    const item = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (item.parent === clickedRow) generateData([item]);
-  }
-} // Clear current page data excluding header
-
-
-function clearCurrentData() {
-  const tr = document.getElementsByTagName('tr');
-
-  while (tr.length != 1) {
-    tr[1].remove();
-  }
-}
-/**
- * Attach on click event to view items in folder for <tr> tag
- */
-
-
-function getItemInFolder(folderId) {
-  const fold = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-  fold.mapping(JSON.parse(window.localStorage.getItem(folderId)));
-  return fold;
-}
-/**
- * Attach on click event to view items in folder for <tr> tag
- * @param {string} id - folder id.
- * @param {HTMLTableRowElement}  tr - <tr> element.
- */
-
-
-function attachOnclickFolder(id, tr) {
-  tr.addEventListener('click', function () {
-    clearCurrentData(); // Check if data is in local storage and render
-
-    const fold = getItemInFolder(id);
-    clickedRow = id;
-    changeCurrentDirectory(fold.name);
-
-    if (fold) {
-      fold.subItems.forEach(element => {
-        if (Array.isArray(element)) {
-          generateData(element);
-        } else generateData([element]);
-      });
-    }
-  });
-}
-/**
- * Passing Item id to global variable for a later use.
- */
-
-
-function getRowIdOnHover(id, tr) {
-  tr.onmouseover = function () {
-    hoverRow = id;
-  };
-}
-/**
- * Attach add folder event to provided <button>.
- * @param {HTMLButtonElement}  btn - <tr> element.
- */
-
-
-function addItemEvent(btn) {
-  btn.onclick = function () {
-    // Get ID field
-    const idField = document.getElementById('id');
-    const id = idField.value; // Get Name field
-
-    const nameField = document.getElementById('name');
-    const name = nameField.value; // Check if in put is a file
-
-    const inputElem = document.getElementById('file');
-    const isFile = inputElem.checked;
-    const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX;
-    const result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
-    idField.value = result;
-
-    if (!editMode) {
-      // Add file or folder
-      if (isFile) {
-        const item = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow, '.xlxs');
-        item.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.CREATE_MODE);
-      } else {
-        const item = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow);
-        item.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.CREATE_MODE);
-      }
-    } else {
-      const type = hoverRow.split('-');
-
-      if (type[0] === 'file') {
-        const file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
-        file.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        file.name = name;
-        file.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.EDIT_MODE);
-      } else {
-        const folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-        folder.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        folder.name = name;
-        folder.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.EDIT_MODE);
-      }
-
-      editMode = false;
-    }
-
-    clearCurrentData();
-    renderLocalStorage();
-  };
-}
-/**
- * Attach event "Remove item" to provided <tr>.
- * @param {HTMLTableRowElement}  row - <tr> element.
- */
-
-
-function attachRemoveItemEvent(row) {
-  const btn = row.getElementsByClassName('close');
-
-  for (let i = 0; i < btn.length; i += 1) {
-    btn[i].addEventListener('click', function () {
-      const type = hoverRow.split('-');
-
-      if (type[0] === 'file') {
-        const file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
-        file.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        clickedRow = file.parent;
-        file.remove();
-      } else {
-        const folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-        folder.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        clickedRow = folder.parent;
-        folder.remove();
-      }
-
-      clearCurrentData();
-      renderLocalStorage();
-      event.stopImmediatePropagation();
-    });
-  }
-}
-/**
- * Add current folder to directory if folder name is provided
- * else return current directory
- * @param {string}  folder - folder name.
- * @return {string} - result prefix & length.
- */
-
-
-function changeCurrentDirectory(folder = '') {
-  if (folder != '') currentDir += `/${folder}`;
-  document.getElementById('directory').innerHTML = currentDir;
-  return currentDir;
-} // Checkbox event
-
-
-function checkboxEvent() {
-  const inputElem = document.getElementById('file');
-  const idField = document.getElementById('id');
-  idField.value = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX, randomLength);
-
-  inputElem.onclick = function () {
-    const isFile = inputElem.checked;
-    const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX;
-    const result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
-    idField.value = result;
-  };
-}
-/**
- * Edit item
- */
-
-
-function attachEditEvent(tr) {
-  const btn = tr.getElementsByClassName('edit');
-
-  for (let i = 0; i < btn.length; i += 1) {
-    btn[i].addEventListener('click', function () {
-      const btn = document.getElementById('toggle-button');
-      btn.click();
-      editMode = true;
-      console.log(editMode);
-      event.stopImmediatePropagation();
-    });
-  }
-}
-}();
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-!function() {
-"use strict";
-var __webpack_exports__ = {};
-/*!****************************************!*\
-  !*** ./src/scripts/pages/home-page.ts ***!
-  \****************************************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utilities_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utilities/_helper */ "./src/scripts/utilities/_helper.ts");
-/* harmony import */ var _components_grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/_grid */ "./src/scripts/components/_grid.ts");
-/* harmony import */ var _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Models/Folder */ "./src/scripts/components/Models/Folder.ts");
-/* harmony import */ var _components_Models_File__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Models/File */ "./src/scripts/components/Models/File.ts");
-/* harmony import */ var _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Models/RenderTemplate */ "./src/scripts/components/Models/RenderTemplate.ts");
-/* harmony import */ var _data_dataOperation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../data/dataOperation */ "./src/scripts/data/dataOperation.ts");
-/* harmony import */ var _utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/utilities-function */ "./src/scripts/utilities/utilities-function.ts");
-/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
-/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8__);
-
+/* harmony import */ var _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Models/RenderTemplate */ "./src/scripts/components/Models/RenderTemplate.ts");
+/* harmony import */ var _data_dataOperation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../data/dataOperation */ "./src/scripts/data/dataOperation.ts");
+/* harmony import */ var _utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/utilities-function */ "./src/scripts/utilities/utilities-function.ts");
+/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
+/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
+/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Models/Item */ "./src/scripts/components/Models/Item.ts");
 
 
 
@@ -2640,30 +2175,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let currentDir = '';
-let template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_4__.RenderTemplate(document.getElementById("content-table"), _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.ORDERING);
-let clickedRow = 'root';
-let hoverRow = '';
+let template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_2__.RenderTemplate(document.getElementById("content-table"), _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ORDERING);
+let clickedRow = 0;
+let hoverRow = 0;
 let editMode = false;
 const randomLength = 5;
-const userApiUrl = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "User";
-
-function itemApiUrl(id) {
-  return _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_API_URL + "Items/" + id;
-}
-
 (0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
-  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.BASE_ID;
+  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString();
   changeCurrentDirectory();
-  renderLocalStorage();
+  renderItemsOfCurrentFolder();
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().delete(itemApiUrl("19")).then(response => console.log(response)).catch(error => alert(error));
-  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_8___default().get(itemApiUrl("19")).then(function (response) {
-    // handle success
-    console.log(response);
-  });
 });
 /**
  * Render all data with given array of Folder or Files.
@@ -2672,29 +2196,7 @@ function itemApiUrl(id) {
 
 function generateData(input) {
   //Generate Folder
-  if (input[0].subItems) {
-    for (let i = 0; i < input.length; i += 1) {
-      let folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-      folder.mapping(input[i]);
-      let row = template.render(folder);
-      let id = row.cells[row.cells.length - 2].textContent;
-      getRowIdOnHover(id, row);
-      attachRemoveItemEvent(row);
-      attachOnclickFolder(id, row);
-      attachEditEvent(row);
-    }
-  } else {
-    //Generate Files
-    for (let i = 0; i < input.length; i += 1) {
-      let file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
-      file.mapping(input[i]);
-      let row = template.render(file);
-      let id = row.cells[row.cells.length - 2].textContent;
-      getRowIdOnHover(id, row);
-      attachRemoveItemEvent(row);
-      attachEditEvent(row);
-    }
-  } //if (!input[0].isFile) {
+  //if (input[0].subItems) {
   //    for (let i = 0; i < input.length; i += 1) {
   //        let folder = new Folder();
   //        folder.mapping(input[i]);
@@ -2718,16 +2220,30 @@ function generateData(input) {
   //        attachEditEvent(row);
   //    }
   //}
+  for (let i = 0; i < input.length; i += 1) {
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+    item.mapping(input[i]);
+    let row = template.render(item);
+    let id = item.Id;
+    getRowIdOnHover(id, row);
+    attachRemoveItemEvent(row);
+    attachEditEvent(row);
 
+    if (!item.IsFile) {
+      attachOnclickFolder(id, row);
+    }
+  }
 }
 
 ; //Render all items in local storage
 
-function renderLocalStorage() {
-  for (var i = 0; i < window.localStorage.length; i += 1) {
-    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    if (item.parent === clickedRow) generateData([item]);
-  }
+function renderItemsOfCurrentFolder() {
+  let items = [];
+  getItemsInFolder(clickedRow);
+  generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
+  //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
+  //    if (item.parent === clickedRow) generateData([item]);
+  //}
 } //Clear current page data excluding header
 
 
@@ -2741,17 +2257,18 @@ function clearCurrentData() {
 
 ;
 /**
- * Attach on click event to view items in folder for <tr> tag
+ * Get an array of items in a folder
+ * @param folderId - parentId
  */
 
-function getItemInFolder(folderId) {
-  let fold = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-  fold.mapping(JSON.parse(window.localStorage.getItem(folderId)));
-  return fold;
+function getItemsInFolder(folderId) {
+  let items = [];
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEMS_FOR_PARENT_API_URL(clickedRow)).then(response => items = JSON.parse(response.data)).catch(err => console.log(err));
+  return items;
 }
 /**
  * Attach on click event to view items in folder for <tr> tag
- * @param {string} id - folder id.
+ * @param {number} id - folder id.
  * @param {HTMLTableRowElement}  tr - <tr> element.
  */
 
@@ -2760,17 +2277,19 @@ function attachOnclickFolder(id, tr) {
   tr.addEventListener("click", function () {
     clearCurrentData(); //Check if data is in local storage and render
 
-    let fold = getItemInFolder(id);
+    let fold = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
-    changeCurrentDirectory(fold.name);
+    changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
+    //    fold.subItems.forEach(element => {
+    //        if (Array.isArray(element)) {
+    //            generateData(element);
+    //        }
+    //        else generateData([element]);
+    //    });
+    //}
 
-    if (fold) {
-      fold.subItems.forEach(element => {
-        if (Array.isArray(element)) {
-          generateData(element);
-        } else generateData([element]);
-      });
-    }
+    let items = getItemsInFolder(id);
+    generateData(items);
   });
 }
 /**
@@ -2782,6 +2301,58 @@ function getRowIdOnHover(id, tr) {
   tr.onmouseover = function () {
     hoverRow = id;
   };
+}
+/**
+ * Get last id in database and plus 1
+ * */
+
+
+function getNextIdForInsert() {
+  let id = 1;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(-1)).then(res => id = res.data).catch(err => console.log(err));
+  return id;
+}
+/**
+ * Get user name from cookies after authentication
+ * */
+
+
+function getUserName() {
+  let name = "";
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.USER_API_URL).then(res => name = res.data).catch(err => console.log(err));
+  return name;
+}
+/**
+ * Save new item to the Db by calling Post with new item
+ * @param item - new item
+ */
+
+
+function createNewItem(item) {
+  let created = false;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().post(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, item).then(res => created = true);
+  return created;
+}
+/**
+ * Update item by calling Put
+ * @param id - id of the current item
+ * @param item - updated item
+ */
+
+
+function updateExistingItem(id, item) {
+  let updated = false;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().put(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, {
+    id,
+    item
+  }).then(res => updated = true);
+  return updated;
+}
+
+function removeExistingItem(id) {
+  let removed = false;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().delete(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(id)).then(res => removed = true);
+  return removed;
 }
 /**
  * Attach add folder event to provided <button>.
@@ -2799,40 +2370,39 @@ function addItemEvent(btn) {
     let name = nameField.value; //Check if in put is a file
 
     let inputElem = document.getElementById("file");
-    let isFile = inputElem.checked;
-    const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX;
-    let result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
-    idField.value = result;
+    let isFile = inputElem.checked; //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
+    //let result = generateKey(prefix, randomLength);
+
+    idField.value = getNextIdForInsert().toString();
+    let creator = getUserName();
 
     if (!editMode) {
       //Add file or folder
-      if (isFile) {
-        let item = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow, '.xlxs');
-        item.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.CREATE_MODE);
-      } else {
-        let item = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder(id, name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.getCurrentDate)(), null, null, null, null, clickedRow);
-        item.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.CREATE_MODE);
-      }
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+      createNewItem(item);
     } else {
-      let type = hoverRow.split('-');
-
-      if (type[0] === 'file') {
-        let file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
-        file.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        file.name = name;
-        file.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.EDIT_MODE);
-      } else {
-        let folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-        folder.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        folder.name = name;
-        folder.addOrUpdate(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.EDIT_MODE);
-      }
-
+      //let type: Array<string> = hoverRow.split('-');
+      //if (type[0] === 'file') {
+      //    let file: File = new File();
+      //    file.mapping(getItemById(hoverRow));
+      //    file.name = name;
+      //    file.addOrUpdate(properties.EDIT_MODE);
+      //} else {
+      //    let folder: Folder = new Folder();
+      //    folder.mapping(getItemById(hoverRow));
+      //    folder.name = name;
+      //    folder.addOrUpdate(properties.EDIT_MODE);
+      //}
+      let file = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+      item.mapping(file);
+      item.Name = name;
+      updateExistingItem(hoverRow, item);
       editMode = false;
     }
 
     clearCurrentData();
-    renderLocalStorage();
+    renderItemsOfCurrentFolder();
   };
 }
 /**
@@ -2846,22 +2416,24 @@ function attachRemoveItemEvent(row) {
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', function () {
-      let type = hoverRow.split('-');
-
-      if (type[0] === 'file') {
-        let file = new _components_Models_File__WEBPACK_IMPORTED_MODULE_3__.File();
-        file.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        clickedRow = file.parent;
-        file.remove();
-      } else {
-        let folder = new _components_Models_Folder__WEBPACK_IMPORTED_MODULE_2__.Folder();
-        folder.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_5__.getItemById)(hoverRow));
-        clickedRow = folder.parent;
-        folder.remove();
-      }
-
+      //let type: Array<string> = hoverRow.split('-');
+      //if (type[0] === 'file') {
+      //    let file: File = new File();
+      //    file.mapping(getItemById(hoverRow));
+      //    clickedRow = file.parent;
+      //    file.remove();
+      //} else {
+      //    let folder: Folder = new Folder();
+      //    folder.mapping(getItemById(hoverRow));
+      //    clickedRow = folder.parent;
+      //    folder.remove();
+      //}
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+      item.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
+      clickedRow = item.Parent;
+      removeExistingItem(hoverRow);
       clearCurrentData();
-      renderLocalStorage();
+      renderItemsOfCurrentFolder();
       event.stopImmediatePropagation();
     });
   }
@@ -2885,12 +2457,348 @@ function changeCurrentDirectory(folder = '') {
 function checkboxEvent() {
   let inputElem = document.getElementById("file");
   let idField = document.getElementById("id");
-  idField.value = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(_utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX, randomLength);
+  idField.value = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.generateKey)(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FOLDER_PREFIX, randomLength);
 
   inputElem.onclick = function () {
     let isFile = inputElem.checked;
-    const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_7__.properties.FOLDER_PREFIX;
-    let result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_6__.generateKey)(prefix, randomLength);
+    const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FOLDER_PREFIX;
+    let result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.generateKey)(prefix, randomLength);
+    idField.value = result;
+  };
+}
+/**
+ * Edit item
+ */
+
+
+function attachEditEvent(tr) {
+  let btn = tr.getElementsByClassName('edit');
+
+  for (let i = 0; i < btn.length; i += 1) {
+    btn[i].addEventListener('click', function () {
+      let btn = document.getElementById('toggle-button');
+      btn.click();
+      editMode = true;
+      console.log(editMode);
+      event.stopImmediatePropagation();
+    });
+  }
+}
+}();
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+!function() {
+"use strict";
+var __webpack_exports__ = {};
+/*!****************************************!*\
+  !*** ./src/scripts/pages/home-page.ts ***!
+  \****************************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utilities_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utilities/_helper */ "./src/scripts/utilities/_helper.ts");
+/* harmony import */ var _components_grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/_grid */ "./src/scripts/components/_grid.ts");
+/* harmony import */ var _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Models/RenderTemplate */ "./src/scripts/components/Models/RenderTemplate.ts");
+/* harmony import */ var _data_dataOperation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../data/dataOperation */ "./src/scripts/data/dataOperation.ts");
+/* harmony import */ var _utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/utilities-function */ "./src/scripts/utilities/utilities-function.ts");
+/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/constant */ "./src/scripts/utilities/constant.ts");
+/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../node_modules/axios/index */ "./node_modules/axios/index.js");
+/* harmony import */ var _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Models/Item */ "./src/scripts/components/Models/Item.ts");
+
+
+
+
+
+
+
+
+let currentDir = '';
+let template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_2__.RenderTemplate(document.getElementById("content-table"), _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ORDERING);
+let clickedRow = 0;
+let hoverRow = 0;
+let editMode = false;
+const randomLength = 5;
+(0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
+  (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
+  currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString();
+  changeCurrentDirectory();
+  renderItemsOfCurrentFolder();
+  let submitButton = document.getElementsByClassName('btn-add')[0];
+  addItemEvent(submitButton);
+  checkboxEvent();
+});
+/**
+ * Render all data with given array of Folder or Files.
+ * @param {Array<Item>} input - Array of folders or files.
+*/
+
+function generateData(input) {
+  //Generate Folder
+  //if (input[0].subItems) {
+  //    for (let i = 0; i < input.length; i += 1) {
+  //        let folder = new Folder();
+  //        folder.mapping(input[i]);
+  //        let row = template.render(folder);
+  //        let id = row.cells[row.cells.length - 2].textContent;
+  //        getRowIdOnHover(id, row);
+  //        attachRemoveItemEvent(row);
+  //        attachOnclickFolder(id, row);
+  //        attachEditEvent(row);
+  //    }
+  //}
+  //else {
+  //    //Generate Files
+  //    for (let i = 0; i < input.length; i += 1) {
+  //        let file = new File();
+  //        file.mapping(input[i]);
+  //        let row = template.render(file);
+  //        let id = row.cells[row.cells.length - 2].textContent;
+  //        getRowIdOnHover(id, row);
+  //        attachRemoveItemEvent(row);
+  //        attachEditEvent(row);
+  //    }
+  //}
+  for (let i = 0; i < input.length; i += 1) {
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+    item.mapping(input[i]);
+    let row = template.render(item);
+    let id = item.Id;
+    getRowIdOnHover(id, row);
+    attachRemoveItemEvent(row);
+    attachEditEvent(row);
+
+    if (!item.IsFile) {
+      attachOnclickFolder(id, row);
+    }
+  }
+}
+
+; //Render all items in local storage
+
+function renderItemsOfCurrentFolder() {
+  let items = [];
+  getItemsInFolder(clickedRow);
+  generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
+  //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
+  //    if (item.parent === clickedRow) generateData([item]);
+  //}
+} //Clear current page data excluding header
+
+
+function clearCurrentData() {
+  let tr = document.getElementsByTagName('tr');
+
+  while (tr.length != 1) {
+    tr[1].remove();
+  }
+}
+
+;
+/**
+ * Get an array of items in a folder
+ * @param folderId - parentId
+ */
+
+function getItemsInFolder(folderId) {
+  let items = [];
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEMS_FOR_PARENT_API_URL(clickedRow)).then(response => items = JSON.parse(response.data)).catch(err => console.log(err));
+  return items;
+}
+/**
+ * Attach on click event to view items in folder for <tr> tag
+ * @param {number} id - folder id.
+ * @param {HTMLTableRowElement}  tr - <tr> element.
+ */
+
+
+function attachOnclickFolder(id, tr) {
+  tr.addEventListener("click", function () {
+    clearCurrentData(); //Check if data is in local storage and render
+
+    let fold = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
+    clickedRow = id;
+    changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
+    //    fold.subItems.forEach(element => {
+    //        if (Array.isArray(element)) {
+    //            generateData(element);
+    //        }
+    //        else generateData([element]);
+    //    });
+    //}
+
+    let items = getItemsInFolder(id);
+    generateData(items);
+  });
+}
+/**
+ * Passing Item id to global variable for a later use.
+ */
+
+
+function getRowIdOnHover(id, tr) {
+  tr.onmouseover = function () {
+    hoverRow = id;
+  };
+}
+/**
+ * Get last id in database and plus 1
+ * */
+
+
+function getNextIdForInsert() {
+  let id = 1;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(-1)).then(res => id = res.data).catch(err => console.log(err));
+  return id;
+}
+/**
+ * Get user name from cookies after authentication
+ * */
+
+
+function getUserName() {
+  let name = "";
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.USER_API_URL).then(res => name = res.data).catch(err => console.log(err));
+  return name;
+}
+/**
+ * Save new item to the Db by calling Post with new item
+ * @param item - new item
+ */
+
+
+function createNewItem(item) {
+  let created = false;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().post(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, item).then(res => created = true);
+  return created;
+}
+/**
+ * Update item by calling Put
+ * @param id - id of the current item
+ * @param item - updated item
+ */
+
+
+function updateExistingItem(id, item) {
+  let updated = false;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().put(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_API_URL, {
+    id,
+    item
+  }).then(res => updated = true);
+  return updated;
+}
+
+function removeExistingItem(id) {
+  let removed = false;
+  _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_6___default().delete(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ITEM_ID_API_URL(id)).then(res => removed = true);
+  return removed;
+}
+/**
+ * Attach add folder event to provided <button>.
+ * @param {HTMLButtonElement}  btn - <tr> element.
+ */
+
+
+function addItemEvent(btn) {
+  btn.onclick = function () {
+    //Get ID field
+    let idField = document.getElementById("id");
+    let id = idField.value; //Get Name field
+
+    let nameField = document.getElementById("name");
+    let name = nameField.value; //Check if in put is a file
+
+    let inputElem = document.getElementById("file");
+    let isFile = inputElem.checked; //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
+    //let result = generateKey(prefix, randomLength);
+
+    idField.value = getNextIdForInsert().toString();
+    let creator = getUserName();
+
+    if (!editMode) {
+      //Add file or folder
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+      createNewItem(item);
+    } else {
+      //let type: Array<string> = hoverRow.split('-');
+      //if (type[0] === 'file') {
+      //    let file: File = new File();
+      //    file.mapping(getItemById(hoverRow));
+      //    file.name = name;
+      //    file.addOrUpdate(properties.EDIT_MODE);
+      //} else {
+      //    let folder: Folder = new Folder();
+      //    folder.mapping(getItemById(hoverRow));
+      //    folder.name = name;
+      //    folder.addOrUpdate(properties.EDIT_MODE);
+      //}
+      let file = (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+      item.mapping(file);
+      item.Name = name;
+      updateExistingItem(hoverRow, item);
+      editMode = false;
+    }
+
+    clearCurrentData();
+    renderItemsOfCurrentFolder();
+  };
+}
+/**
+ * Attach event "Remove item" to provided <tr>.
+ * @param {HTMLTableRowElement}  row - <tr> element.
+ */
+
+
+function attachRemoveItemEvent(row) {
+  let btn = row.getElementsByClassName('close');
+
+  for (let i = 0; i < btn.length; i += 1) {
+    btn[i].addEventListener('click', function () {
+      //let type: Array<string> = hoverRow.split('-');
+      //if (type[0] === 'file') {
+      //    let file: File = new File();
+      //    file.mapping(getItemById(hoverRow));
+      //    clickedRow = file.parent;
+      //    file.remove();
+      //} else {
+      //    let folder: Folder = new Folder();
+      //    folder.mapping(getItemById(hoverRow));
+      //    clickedRow = folder.parent;
+      //    folder.remove();
+      //}
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_7__.default();
+      item.mapping((0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
+      clickedRow = item.Parent;
+      removeExistingItem(hoverRow);
+      clearCurrentData();
+      renderItemsOfCurrentFolder();
+      event.stopImmediatePropagation();
+    });
+  }
+}
+
+;
+/**
+ * Add current folder to directory if folder name is provided
+ * else return current directory
+ * @param {string}  folder - folder name.
+ * @return {string} - result prefix & length.
+ */
+
+function changeCurrentDirectory(folder = '') {
+  if (folder != '') currentDir += '/' + folder;
+  document.getElementById('directory').innerHTML = currentDir;
+  return currentDir;
+} // Checkbox event
+
+
+function checkboxEvent() {
+  let inputElem = document.getElementById("file");
+  let idField = document.getElementById("id");
+  idField.value = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.generateKey)(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FOLDER_PREFIX, randomLength);
+
+  inputElem.onclick = function () {
+    let isFile = inputElem.checked;
+    const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FOLDER_PREFIX;
+    let result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.generateKey)(prefix, randomLength);
     idField.value = result;
   };
 }

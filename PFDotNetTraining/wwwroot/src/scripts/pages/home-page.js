@@ -1,26 +1,22 @@
 import ready from '../utilities/_helper';
 import renderGrid from '../components/_grid';
-import { Folder } from '../components/Models/Folder';
-import { File } from '../components/Models/File';
 import { RenderTemplate } from '../components/Models/RenderTemplate';
 import { getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
+import axios from '../../../node_modules/axios/index';
+import Item from '../components/Models/Item';
 let currentDir = '';
 let template = new RenderTemplate(document.getElementById("content-table"), properties.ORDERING);
-let clickedRow = 'root';
-let hoverRow = '';
+let clickedRow = 0;
+let hoverRow = 0;
 let editMode = false;
 const randomLength = 5;
-const userApiUrl = properties.BASE_API_URL + "User";
-function itemApiUrl(id) {
-    return properties.BASE_API_URL + "Items/" + id;
-}
 ready(() => {
     renderGrid();
-    currentDir = properties.BASE_ID;
+    currentDir = properties.BASE_ID.toString();
     changeCurrentDirectory();
-    renderLocalStorage();
+    renderItemsOfCurrentFolder();
     let submitButton = document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
@@ -31,31 +27,7 @@ ready(() => {
 */
 function generateData(input) {
     //Generate Folder
-    if (input[0].subItems) {
-        for (let i = 0; i < input.length; i += 1) {
-            let folder = new Folder();
-            folder.mapping(input[i]);
-            let row = template.render(folder);
-            let id = row.cells[row.cells.length - 2].textContent;
-            getRowIdOnHover(id, row);
-            attachRemoveItemEvent(row);
-            attachOnclickFolder(id, row);
-            attachEditEvent(row);
-        }
-    }
-    else {
-        //Generate Files
-        for (let i = 0; i < input.length; i += 1) {
-            let file = new File();
-            file.mapping(input[i]);
-            let row = template.render(file);
-            let id = row.cells[row.cells.length - 2].textContent;
-            getRowIdOnHover(id, row);
-            attachRemoveItemEvent(row);
-            attachEditEvent(row);
-        }
-    }
-    //if (!input[0].isFile) {
+    //if (input[0].subItems) {
     //    for (let i = 0; i < input.length; i += 1) {
     //        let folder = new Folder();
     //        folder.mapping(input[i]);
@@ -79,15 +51,29 @@ function generateData(input) {
     //        attachEditEvent(row);
     //    }
     //}
+    for (let i = 0; i < input.length; i += 1) {
+        let item = new Item();
+        item.mapping(input[i]);
+        let row = template.render(item);
+        let id = item.Id;
+        getRowIdOnHover(id, row);
+        attachRemoveItemEvent(row);
+        attachEditEvent(row);
+        if (!item.IsFile) {
+            attachOnclickFolder(id, row);
+        }
+    }
 }
 ;
 //Render all items in local storage
-function renderLocalStorage() {
-    for (var i = 0; i < window.localStorage.length; i += 1) {
-        let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        if (item.parent === clickedRow)
-            generateData([item]);
-    }
+function renderItemsOfCurrentFolder() {
+    let items = [];
+    getItemsInFolder(clickedRow);
+    generateData(items);
+    //for (var i = 0; i < window.localStorage.length; i += 1) {
+    //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    //    if (item.parent === clickedRow) generateData([item]);
+    //}
 }
 //Clear current page data excluding header
 function clearCurrentData() {
@@ -98,34 +84,37 @@ function clearCurrentData() {
 }
 ;
 /**
- * Attach on click event to view items in folder for <tr> tag
+ * Get an array of items in a folder
+ * @param folderId - parentId
  */
-function getItemInFolder(folderId) {
-    let fold = new Folder();
-    fold.mapping(JSON.parse(window.localStorage.getItem(folderId)));
-    return fold;
+function getItemsInFolder(folderId) {
+    let items = [];
+    axios.get(properties.ITEMS_FOR_PARENT_API_URL(clickedRow))
+        .then(response => items = JSON.parse(response.data)).catch(err => console.log(err));
+    return items;
 }
 /**
  * Attach on click event to view items in folder for <tr> tag
- * @param {string} id - folder id.
+ * @param {number} id - folder id.
  * @param {HTMLTableRowElement}  tr - <tr> element.
  */
 function attachOnclickFolder(id, tr) {
     tr.addEventListener("click", function () {
         clearCurrentData();
         //Check if data is in local storage and render
-        let fold = getItemInFolder(id);
+        let fold = getItemById(id);
         clickedRow = id;
         changeCurrentDirectory(fold.name);
-        if (fold) {
-            fold.subItems.forEach(element => {
-                if (Array.isArray(element)) {
-                    generateData(element);
-                }
-                else
-                    generateData([element]);
-            });
-        }
+        //if (!fold.IsFile) {
+        //    fold.subItems.forEach(element => {
+        //        if (Array.isArray(element)) {
+        //            generateData(element);
+        //        }
+        //        else generateData([element]);
+        //    });
+        //}
+        let items = getItemsInFolder(id);
+        generateData(items);
     });
 }
 /**
@@ -135,6 +124,49 @@ function getRowIdOnHover(id, tr) {
     tr.onmouseover = function () {
         hoverRow = id;
     };
+}
+/**
+ * Get last id in database and plus 1
+ * */
+function getNextIdForInsert() {
+    let id = 1;
+    axios.get(properties.ITEM_ID_API_URL(-1))
+        .then(res => id = res.data).catch(err => console.log(err));
+    return id;
+}
+/**
+ * Get user name from cookies after authentication
+ * */
+function getUserName() {
+    let name = "";
+    axios.get(properties.USER_API_URL)
+        .then(res => name = res.data).catch(err => console.log(err));
+    return name;
+}
+/**
+ * Save new item to the Db by calling Post with new item
+ * @param item - new item
+ */
+function createNewItem(item) {
+    let created = false;
+    axios.post(properties.ITEM_API_URL, item)
+        .then(res => created = true);
+    return created;
+}
+/**
+ * Update item by calling Put
+ * @param id - id of the current item
+ * @param item - updated item
+ */
+function updateExistingItem(id, item) {
+    let updated = false;
+    axios.put(properties.ITEM_API_URL, { id, item }).then(res => updated = true);
+    return updated;
+}
+function removeExistingItem(id) {
+    let removed = false;
+    axios.delete(properties.ITEM_ID_API_URL(id)).then(res => removed = true);
+    return removed;
 }
 /**
  * Attach add folder event to provided <button>.
@@ -151,38 +183,37 @@ function addItemEvent(btn) {
         //Check if in put is a file
         let inputElem = document.getElementById("file");
         let isFile = inputElem.checked;
-        const prefix = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
-        let result = generateKey(prefix, randomLength);
-        idField.value = result;
+        //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
+        //let result = generateKey(prefix, randomLength);
+        idField.value = getNextIdForInsert().toString();
+        let creator = getUserName();
         if (!editMode) {
             //Add file or folder
-            if (isFile) {
-                let item = new File(id, name, getCurrentDate(), null, null, null, null, clickedRow, '.xlxs');
-                item.addOrUpdate(properties.CREATE_MODE);
-            }
-            else {
-                let item = new Folder(id, name, getCurrentDate(), null, null, null, null, clickedRow);
-                item.addOrUpdate(properties.CREATE_MODE);
-            }
+            let item = new Item(parseInt(id), name, getCurrentDate(), creator, getCurrentDate(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+            createNewItem(item);
         }
         else {
-            let type = hoverRow.split('-');
-            if (type[0] === 'file') {
-                let file = new File();
-                file.mapping(getItemById(hoverRow));
-                file.name = name;
-                file.addOrUpdate(properties.EDIT_MODE);
-            }
-            else {
-                let folder = new Folder();
-                folder.mapping(getItemById(hoverRow));
-                folder.name = name;
-                folder.addOrUpdate(properties.EDIT_MODE);
-            }
+            //let type: Array<string> = hoverRow.split('-');
+            //if (type[0] === 'file') {
+            //    let file: File = new File();
+            //    file.mapping(getItemById(hoverRow));
+            //    file.name = name;
+            //    file.addOrUpdate(properties.EDIT_MODE);
+            //} else {
+            //    let folder: Folder = new Folder();
+            //    folder.mapping(getItemById(hoverRow));
+            //    folder.name = name;
+            //    folder.addOrUpdate(properties.EDIT_MODE);
+            //}
+            let file = getItemById(hoverRow);
+            let item = new Item();
+            item.mapping(file);
+            item.Name = name;
+            updateExistingItem(hoverRow, item);
             editMode = false;
         }
         clearCurrentData();
-        renderLocalStorage();
+        renderItemsOfCurrentFolder();
     };
 }
 /**
@@ -193,21 +224,24 @@ function attachRemoveItemEvent(row) {
     let btn = row.getElementsByClassName('close');
     for (let i = 0; i < btn.length; i += 1) {
         btn[i].addEventListener('click', function () {
-            let type = hoverRow.split('-');
-            if (type[0] === 'file') {
-                let file = new File();
-                file.mapping(getItemById(hoverRow));
-                clickedRow = file.parent;
-                file.remove();
-            }
-            else {
-                let folder = new Folder();
-                folder.mapping(getItemById(hoverRow));
-                clickedRow = folder.parent;
-                folder.remove();
-            }
+            //let type: Array<string> = hoverRow.split('-');
+            //if (type[0] === 'file') {
+            //    let file: File = new File();
+            //    file.mapping(getItemById(hoverRow));
+            //    clickedRow = file.parent;
+            //    file.remove();
+            //} else {
+            //    let folder: Folder = new Folder();
+            //    folder.mapping(getItemById(hoverRow));
+            //    clickedRow = folder.parent;
+            //    folder.remove();
+            //}
+            let item = new Item();
+            item.mapping(getItemById(hoverRow));
+            clickedRow = item.Parent;
+            removeExistingItem(hoverRow);
             clearCurrentData();
-            renderLocalStorage();
+            renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();
         });
     }

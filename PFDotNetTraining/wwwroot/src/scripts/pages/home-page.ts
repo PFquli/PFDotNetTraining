@@ -1,7 +1,5 @@
 import ready from '../utilities/_helper';
 import renderGrid from '../components/_grid';
-import { Folder } from '../components/Models/Folder';
-import { File } from '../components/Models/File';
 import { RenderTemplate } from '../components/Models/RenderTemplate';
 import { getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
@@ -18,7 +16,7 @@ const randomLength: number = 5;
 
 ready(() => {
     renderGrid();
-    currentDir = properties.BASE_ID;
+    currentDir = properties.BASE_ID.toString();
     changeCurrentDirectory();
     renderItemsOfCurrentFolder();
     let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementsByClassName('btn-add')[0];
@@ -32,33 +30,7 @@ ready(() => {
 */
 function generateData(input: Array<any>) {
     //Generate Folder
-    if (input[0].subItems) {
-        for (let i = 0; i < input.length; i += 1) {
-            let folder = new Folder();
-            folder.mapping(input[i]);
-            let row = template.render(folder);
-            let id = row.cells[row.cells.length - 2].textContent;
-            getRowIdOnHover(id, row);
-            attachRemoveItemEvent(row);
-            attachOnclickFolder(id, row);
-            attachEditEvent(row);
-        }
-    }
-
-    else {
-        //Generate Files
-        for (let i = 0; i < input.length; i += 1) {
-            let file = new File();
-            file.mapping(input[i]);
-            let row = template.render(file);
-            let id = row.cells[row.cells.length - 2].textContent;
-            getRowIdOnHover(id, row);
-            attachRemoveItemEvent(row);
-            attachEditEvent(row);
-        }
-    }
-
-    //if (!input[0].isFile) {
+    //if (input[0].subItems) {
     //    for (let i = 0; i < input.length; i += 1) {
     //        let folder = new Folder();
     //        folder.mapping(input[i]);
@@ -83,13 +55,25 @@ function generateData(input: Array<any>) {
     //        attachEditEvent(row);
     //    }
     //}
+    for (let i = 0; i < input.length; i += 1) {
+        let item = new Item();
+        item.mapping(input[i]);
+        let row = template.render(item);
+        let id = item.Id;
+        getRowIdOnHover(id, row);
+        attachRemoveItemEvent(row);
+        attachEditEvent(row);
+        if (!item.IsFile) {
+            attachOnclickFolder(id, row);
+        }
+    }
 };
 
 //Render all items in local storage
 function renderItemsOfCurrentFolder() {
     let items = [];
     getItemsInFolder(clickedRow);
-    items.forEach(i => generateData(i))
+    generateData(items);
     //for (var i = 0; i < window.localStorage.length; i += 1) {
     //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
     //    if (item.parent === clickedRow) generateData([item]);
@@ -191,6 +175,12 @@ function updateExistingItem(id: number, item: Item) {
     return updated;
 }
 
+function removeExistingItem(id: number) {
+    let removed = false;
+    axios.delete(properties.ITEM_ID_API_URL(id)).then(res => removed = true);
+    return removed;
+}
+
 /**
  * Attach add folder event to provided <button>.
  * @param {HTMLButtonElement}  btn - <tr> element.
@@ -247,18 +237,22 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
     let btn = row.getElementsByClassName('close');
     for (let i = 0; i < btn.length; i += 1) {
         btn[i].addEventListener('click', function () {
-            let type: Array<string> = hoverRow.split('-');
-            if (type[0] === 'file') {
-                let file: File = new File();
-                file.mapping(getItemById(hoverRow));
-                clickedRow = file.parent;
-                file.remove();
-            } else {
-                let folder: Folder = new Folder();
-                folder.mapping(getItemById(hoverRow));
-                clickedRow = folder.parent;
-                folder.remove();
-            }
+            //let type: Array<string> = hoverRow.split('-');
+            //if (type[0] === 'file') {
+            //    let file: File = new File();
+            //    file.mapping(getItemById(hoverRow));
+            //    clickedRow = file.parent;
+            //    file.remove();
+            //} else {
+            //    let folder: Folder = new Folder();
+            //    folder.mapping(getItemById(hoverRow));
+            //    clickedRow = folder.parent;
+            //    folder.remove();
+            //}
+            let item = new Item();
+            item.mapping(getItemById(hoverRow));
+            clickedRow = item.Parent;
+            removeExistingItem(hoverRow);
             clearCurrentData();
             renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();
