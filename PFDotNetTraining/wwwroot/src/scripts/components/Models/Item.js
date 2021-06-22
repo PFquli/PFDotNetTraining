@@ -42,7 +42,7 @@ export default class Item {
             this.Parent = input.parent;
         if (input.content)
             this.Content = input.content;
-        if (input.isFile)
+        if (input.hasOwnProperty('isFile'))
             this.IsFile = input.isFile;
     }
 }

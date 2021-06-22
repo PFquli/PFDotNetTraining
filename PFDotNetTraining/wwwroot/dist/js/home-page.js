@@ -1871,7 +1871,7 @@ class Item {
     if (input.size) this.Size = input.size;
     if (input.parent) this.Parent = input.parent;
     if (input.content) this.Content = input.content;
-    if (input.isFile) this.IsFile = input.isFile;
+    if (input.hasOwnProperty("isFile")) this.IsFile = input.isFile;
   }
 
 }
@@ -1987,9 +1987,9 @@ async function getItemById(id) {
  * @param folderId - parentId
  */
 
-async function getItemsInFolder(folderId, clickedRow) {
+async function getItemsInFolder(folderId) {
   let items = [];
-  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEMS_FOR_PARENT_API_URL(clickedRow)).then(response => items = response.data).catch(err => console.log(err));
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEMS_FOR_PARENT_API_URL(folderId)).then(response => items = response.data).catch(err => console.log(err));
   console.log(items);
   return await items;
 }
@@ -2241,11 +2241,11 @@ let clickedRow = 0;
 let hoverRow = 0;
 let editMode = false;
 const randomLength = 5;
-(0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
+(0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(async () => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString();
   changeCurrentDirectory();
-  renderItemsOfCurrentFolder();
+  await renderItemsOfCurrentFolder();
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
@@ -2256,7 +2256,7 @@ const randomLength = 5;
 */
 
 function generateData(input) {
-  //Generate Folder
+  clearCurrentData(); //Generate Folder
   //if (input[0].subItems) {
   //    for (let i = 0; i < input.length; i += 1) {
   //        let folder = new Folder();
@@ -2281,6 +2281,7 @@ function generateData(input) {
   //        attachEditEvent(row);
   //    }
   //}
+
   for (let i = 0; i < input.length; i += 1) {
     let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
     item.mapping(input[i]);
@@ -2291,6 +2292,7 @@ function generateData(input) {
     attachEditEvent(row);
 
     if (!item.IsFile) {
+      console.log("Attaching on-click on folder");
       attachOnclickFolder(id, row);
     }
   }
@@ -2300,8 +2302,8 @@ function generateData(input) {
 
 async function renderItemsOfCurrentFolder() {
   let items = [];
-  items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(clickedRow, clickedRow);
-  generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
+  items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(clickedRow);
+  await generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
   //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
   //    if (item.parent === clickedRow) generateData([item]);
   //}
@@ -2325,8 +2327,7 @@ function clearCurrentData() {
 
 function attachOnclickFolder(id, tr) {
   tr.addEventListener("click", async function () {
-    clearCurrentData(); //Check if data is in local storage and render
-
+    //Check if data is in local storage and render
     let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
     changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
@@ -2338,8 +2339,8 @@ function attachOnclickFolder(id, tr) {
     //    });
     //}
 
-    let items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id, clickedRow);
-    generateData(items);
+    let items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id);
+    await generateData(items);
   });
 }
 /**
@@ -2399,7 +2400,6 @@ function addItemEvent(btn) {
       editMode = false;
     }
 
-    clearCurrentData();
     renderItemsOfCurrentFolder();
   };
 }
@@ -2430,7 +2430,6 @@ function attachRemoveItemEvent(row) {
       item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
-      clearCurrentData();
       renderItemsOfCurrentFolder();
       event.stopImmediatePropagation();
     });
@@ -2511,11 +2510,11 @@ let clickedRow = 0;
 let hoverRow = 0;
 let editMode = false;
 const randomLength = 5;
-(0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(() => {
+(0,_utilities_helper__WEBPACK_IMPORTED_MODULE_0__.default)(async () => {
   (0,_components_grid__WEBPACK_IMPORTED_MODULE_1__.default)();
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID.toString();
   changeCurrentDirectory();
-  renderItemsOfCurrentFolder();
+  await renderItemsOfCurrentFolder();
   let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
@@ -2526,7 +2525,7 @@ const randomLength = 5;
 */
 
 function generateData(input) {
-  //Generate Folder
+  clearCurrentData(); //Generate Folder
   //if (input[0].subItems) {
   //    for (let i = 0; i < input.length; i += 1) {
   //        let folder = new Folder();
@@ -2551,6 +2550,7 @@ function generateData(input) {
   //        attachEditEvent(row);
   //    }
   //}
+
   for (let i = 0; i < input.length; i += 1) {
     let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
     item.mapping(input[i]);
@@ -2561,6 +2561,7 @@ function generateData(input) {
     attachEditEvent(row);
 
     if (!item.IsFile) {
+      console.log("Attaching on-click on folder");
       attachOnclickFolder(id, row);
     }
   }
@@ -2570,8 +2571,8 @@ function generateData(input) {
 
 async function renderItemsOfCurrentFolder() {
   let items = [];
-  items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(clickedRow, clickedRow);
-  generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
+  items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(clickedRow);
+  await generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
   //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
   //    if (item.parent === clickedRow) generateData([item]);
   //}
@@ -2595,8 +2596,7 @@ function clearCurrentData() {
 
 function attachOnclickFolder(id, tr) {
   tr.addEventListener("click", async function () {
-    clearCurrentData(); //Check if data is in local storage and render
-
+    //Check if data is in local storage and render
     let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
     changeCurrentDirectory(fold.name); //if (!fold.IsFile) {
@@ -2608,8 +2608,8 @@ function attachOnclickFolder(id, tr) {
     //    });
     //}
 
-    let items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id, clickedRow);
-    generateData(items);
+    let items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id);
+    await generateData(items);
   });
 }
 /**
@@ -2669,7 +2669,6 @@ function addItemEvent(btn) {
       editMode = false;
     }
 
-    clearCurrentData();
     renderItemsOfCurrentFolder();
   };
 }
@@ -2700,7 +2699,6 @@ function attachRemoveItemEvent(row) {
       item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow));
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
-      clearCurrentData();
       renderItemsOfCurrentFolder();
       event.stopImmediatePropagation();
     });

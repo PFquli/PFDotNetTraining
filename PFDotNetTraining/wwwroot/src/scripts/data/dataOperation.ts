@@ -17,13 +17,10 @@ export async function getItemById(id: number): Promise<File> {
  * Get an array of items in a folder
  * @param folderId - parentId
  */
-export async function getItemsInFolder(
-  folderId: number,
-  clickedRow: number,
-) {
+export async function getItemsInFolder(folderId: number) {
   let items = [];
   await axios
-    .get(properties.ITEMS_FOR_PARENT_API_URL(clickedRow))
+    .get(properties.ITEMS_FOR_PARENT_API_URL(folderId))
     .then(response => (items = response.data))
     .catch(err => console.log(err));
   console.log(items);

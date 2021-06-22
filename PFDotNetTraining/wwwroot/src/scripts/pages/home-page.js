@@ -11,11 +11,11 @@ let clickedRow = 0;
 let hoverRow = 0;
 let editMode = false;
 const randomLength = 5;
-ready(() => {
+ready(async () => {
     renderGrid();
     currentDir = properties.BASE_ID.toString();
     changeCurrentDirectory();
-    renderItemsOfCurrentFolder();
+    await renderItemsOfCurrentFolder();
     let submitButton = document.getElementsByClassName('btn-add')[0];
     addItemEvent(submitButton);
     checkboxEvent();
@@ -25,6 +25,7 @@ ready(() => {
  * @param {Array<Item>} input - Array of folders or files.
 */
 function generateData(input) {
+    clearCurrentData();
     //Generate Folder
     //if (input[0].subItems) {
     //    for (let i = 0; i < input.length; i += 1) {
@@ -59,6 +60,7 @@ function generateData(input) {
         attachRemoveItemEvent(row);
         attachEditEvent(row);
         if (!item.IsFile) {
+            console.log("Attaching on-click on folder");
             attachOnclickFolder(id, row);
         }
     }
@@ -67,8 +69,8 @@ function generateData(input) {
 //Render all items in local storage
 async function renderItemsOfCurrentFolder() {
     let items = [];
-    items = await getItemsInFolder(clickedRow, clickedRow);
-    generateData(items);
+    items = await getItemsInFolder(clickedRow);
+    await generateData(items);
     //for (var i = 0; i < window.localStorage.length; i += 1) {
     //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
     //    if (item.parent === clickedRow) generateData([item]);
@@ -89,7 +91,6 @@ function clearCurrentData() {
  */
 function attachOnclickFolder(id, tr) {
     tr.addEventListener("click", async function () {
-        clearCurrentData();
         //Check if data is in local storage and render
         let fold = await getItemById(id);
         clickedRow = id;
@@ -102,8 +103,8 @@ function attachOnclickFolder(id, tr) {
         //        else generateData([element]);
         //    });
         //}
-        let items = await getItemsInFolder(id, clickedRow);
-        generateData(items);
+        let items = await getItemsInFolder(id);
+        await generateData(items);
     });
 }
 /**
@@ -158,7 +159,6 @@ function addItemEvent(btn) {
             await updateExistingItem(hoverRow, item);
             editMode = false;
         }
-        clearCurrentData();
         renderItemsOfCurrentFolder();
     };
 }
@@ -186,7 +186,6 @@ function attachRemoveItemEvent(row) {
             item.mapping(await getItemById(hoverRow));
             clickedRow = item.Parent;
             await removeExistingItem(hoverRow);
-            clearCurrentData();
             renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();
         });

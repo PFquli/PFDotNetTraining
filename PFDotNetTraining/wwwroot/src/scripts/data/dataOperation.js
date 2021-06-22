@@ -14,10 +14,10 @@ export async function getItemById(id) {
  * Get an array of items in a folder
  * @param folderId - parentId
  */
-export async function getItemsInFolder(folderId, clickedRow) {
+export async function getItemsInFolder(folderId) {
     let items = [];
     await axios
-        .get(properties.ITEMS_FOR_PARENT_API_URL(clickedRow))
+        .get(properties.ITEMS_FOR_PARENT_API_URL(folderId))
         .then(response => (items = response.data))
         .catch(err => console.log(err));
     console.log(items);
