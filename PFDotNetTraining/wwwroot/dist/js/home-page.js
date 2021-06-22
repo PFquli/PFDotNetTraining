@@ -1862,16 +1862,16 @@ class Item {
   }
 
   mapping(input) {
-    if (input.id) this.Id = input.id;
-    if (input.name) this.Name = input.name;
-    if (input.createdBy) this.CreatedBy = input.createdBy;
-    if (input.createdDate) this.CreatedDate = input.createdDate;
-    if (input.modifiedBy) this.ModifiedBy = input.modifiedBy;
-    if (input.modifiedAt) this.ModifiedAt = input.modifiedAt;
-    if (input.size) this.Size = input.size;
-    if (input.parent) this.Parent = input.parent;
-    if (input.content) this.Content = input.content;
-    if (input.hasOwnProperty("isFile")) this.IsFile = input.isFile;
+    if (input.hasOwnProperty('id')) this.Id = input.id;
+    if (input.hasOwnProperty('name')) this.Name = input.name;
+    if (input.hasOwnProperty('createdBy')) this.CreatedBy = input.createdBy;
+    if (input.hasOwnProperty('createdDate')) this.CreatedDate = input.createdDate;
+    if (input.hasOwnProperty('modifiedBy')) this.ModifiedBy = input.modifiedBy;
+    if (input.hasOwnProperty('modifiedAt')) this.ModifiedAt = input.modifiedAt;
+    if (input.hasOwnProperty('size')) this.Size = input.size;
+    if (input.hasOwnProperty('parent')) this.Parent = input.parent;
+    if (input.hasOwnProperty('content')) this.Content = input.content;
+    if (input.hasOwnProperty('isFile')) this.IsFile = input.isFile;
   }
 
 }
@@ -1889,6 +1889,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RenderTemplate": function() { return /* binding */ RenderTemplate; }
 /* harmony export */ });
+/* harmony import */ var _utilities_constant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utilities/constant */ "./src/scripts/utilities/constant.ts");
+
 class RenderTemplate {
   constructor(table, ordering) {
     this.table = table;
@@ -1907,7 +1909,7 @@ class RenderTemplate {
         cell.className = 'pl-md-5';
         const imgNode = document.createElement('img');
         imgNode.className = 'icon';
-        imgNode.src = map.get('icon');
+        imgNode.src = map.get('IsFile') ? _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.FILE_DEFAULT_URL : _utilities_constant__WEBPACK_IMPORTED_MODULE_0__.properties.FOLDER_DEFAULT_URL;
         cell.appendChild(imgNode);
         continue;
       } // Hide ID col

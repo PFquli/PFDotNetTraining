@@ -24,23 +24,23 @@ export default class Item {
             this.IsFile = isFile;
     }
     mapping(input) {
-        if (input.id)
+        if (input.hasOwnProperty('id'))
             this.Id = input.id;
-        if (input.name)
+        if (input.hasOwnProperty('name'))
             this.Name = input.name;
-        if (input.createdBy)
+        if (input.hasOwnProperty('createdBy'))
             this.CreatedBy = input.createdBy;
-        if (input.createdDate)
+        if (input.hasOwnProperty('createdDate'))
             this.CreatedDate = input.createdDate;
-        if (input.modifiedBy)
+        if (input.hasOwnProperty('modifiedBy'))
             this.ModifiedBy = input.modifiedBy;
-        if (input.modifiedAt)
+        if (input.hasOwnProperty('modifiedAt'))
             this.ModifiedAt = input.modifiedAt;
-        if (input.size)
+        if (input.hasOwnProperty('size'))
             this.Size = input.size;
-        if (input.parent)
+        if (input.hasOwnProperty('parent'))
             this.Parent = input.parent;
-        if (input.content)
+        if (input.hasOwnProperty('content'))
             this.Content = input.content;
         if (input.hasOwnProperty('isFile'))
             this.IsFile = input.isFile;

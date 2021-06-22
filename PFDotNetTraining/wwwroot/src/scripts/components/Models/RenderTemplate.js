@@ -1,3 +1,4 @@
+import { properties } from '../../utilities/constant';
 export class RenderTemplate {
     constructor(table, ordering) {
         this.table = table;
@@ -15,7 +16,9 @@ export class RenderTemplate {
                 cell.className = 'pl-md-5';
                 const imgNode = document.createElement('img');
                 imgNode.className = 'icon';
-                imgNode.src = map.get('icon');
+                imgNode.src = map.get('IsFile')
+                    ? properties.FILE_DEFAULT_URL
+                    : properties.FOLDER_DEFAULT_URL;
                 cell.appendChild(imgNode);
                 continue;
             }
