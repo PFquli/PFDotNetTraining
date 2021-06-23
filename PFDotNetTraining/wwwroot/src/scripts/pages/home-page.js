@@ -82,7 +82,6 @@ function generateData(input) {
 }
 // Render all items in local storage
 async function renderItemsOfCurrentFolder() {
-  console.log('current clickedRow: ', clickedRow);
   let items = [];
   items = await getItemsInFolder(clickedRow);
   await generateData(items);
@@ -214,6 +213,7 @@ function attachRemoveItemEvent(row) {
       await removeExistingItem(hoverRow);
       await renderItemsOfCurrentFolder();
       event.stopImmediatePropagation();
+      renderItemsOfCurrentFolder();
     });
   }
 }

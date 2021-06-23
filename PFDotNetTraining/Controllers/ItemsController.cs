@@ -101,8 +101,8 @@ namespace PFDotNetTraining.Controllers
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
 
-        // DELETE: api/Items/5
-        [HttpDelete("{id}")]
+        // DELETE: api/Items/id/5
+        [HttpDelete("id/{id}")]
         public async Task<IActionResult> DeleteItemById(int id)
         {
             var item = await _context.Items.FindAsync(id);

@@ -191,12 +191,14 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
             //    clickedRow = folder.parent;
             //    folder.remove();
             //}
+            let fold = await getItemById(hoverRow);
             let item = new Item();
-            item.mapping(await getItemById(hoverRow)['data']);
+            item.mapping(fold['data']);
             clickedRow = item.Parent;
             await removeExistingItem(hoverRow);
             await renderItemsOfCurrentFolder();
             event.stopImmediatePropagation();
+            renderItemsOfCurrentFolder();
         })
     }
 };
