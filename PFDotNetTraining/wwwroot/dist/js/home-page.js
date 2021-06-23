@@ -2365,8 +2365,7 @@ function getRowIdOnHover(id, tr) {
 function addItemEvent(btn) {
   btn.onclick = async function () {
     //Get ID field
-    let idField = document.getElementById("id");
-    let id = idField.value; //Get Name field
+    let idField = document.getElementById("id"); //Get Name field
 
     let nameField = document.getElementById("name");
     let name = nameField.value; //Check if in put is a file
@@ -2375,12 +2374,26 @@ function addItemEvent(btn) {
     let isFile = inputElem.checked; //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
     //let result = generateKey(prefix, randomLength);
 
-    idField.value = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getNextIdForInsert)().toString();
+    let id = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getNextIdForInsert)();
+    idField.value = id.toString();
     let creator = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getUserName)();
 
     if (!editMode) {
       //Add file or folder
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+      let temp = {
+        id: [id],
+        name: [name],
+        createdBy: [creator],
+        createdDate: [(0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)()],
+        modifiedBy: [creator],
+        modifiedAt: [(0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)()],
+        size: 50,
+        parent: [clickedRow],
+        content: null,
+        isFile: isFile ? 1 : 0
+      };
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(temp);
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.createNewItem)(item);
     } else {
       //let type: Array<string> = hoverRow.split('-');
@@ -2429,8 +2442,9 @@ function attachRemoveItemEvent(row) {
       //    clickedRow = folder.parent;
       //    folder.remove();
       //}
+      let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
       let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow)['data']);
+      item.mapping(fold['data']);
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       await renderItemsOfCurrentFolder();
@@ -2673,8 +2687,7 @@ function getRowIdOnHover(id, tr) {
 function addItemEvent(btn) {
   btn.onclick = async function () {
     //Get ID field
-    let idField = document.getElementById("id");
-    let id = idField.value; //Get Name field
+    let idField = document.getElementById("id"); //Get Name field
 
     let nameField = document.getElementById("name");
     let name = nameField.value; //Check if in put is a file
@@ -2683,12 +2696,26 @@ function addItemEvent(btn) {
     let isFile = inputElem.checked; //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
     //let result = generateKey(prefix, randomLength);
 
-    idField.value = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getNextIdForInsert)().toString();
+    let id = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getNextIdForInsert)();
+    idField.value = id.toString();
     let creator = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getUserName)();
 
     if (!editMode) {
       //Add file or folder
-      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default(parseInt(id), name, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+      let temp = {
+        id: id,
+        name: name,
+        createdBy: creator,
+        createdDate: (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(),
+        modifiedBy: creator,
+        modifiedAt: (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(),
+        size: 50,
+        parent: clickedRow,
+        content: null,
+        isFile: isFile ? 1 : 0
+      };
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(temp);
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.createNewItem)(item);
     } else {
       //let type: Array<string> = hoverRow.split('-');

@@ -132,7 +132,6 @@ function addItemEvent(btn: HTMLButtonElement) {
     btn.onclick = async function () {
         //Get ID field
         let idField: HTMLInputElement = <HTMLInputElement>document.getElementById("id");
-        let id: string = idField.value;
         //Get Name field
         let nameField: HTMLInputElement = <HTMLInputElement>document.getElementById("name");
         let name: string = nameField.value;
@@ -141,11 +140,25 @@ function addItemEvent(btn: HTMLButtonElement) {
         let isFile: boolean = inputElem.checked;
         //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
         //let result = generateKey(prefix, randomLength);
-        idField.value = await getNextIdForInsert().toString();
+        let id: number = await getNextIdForInsert();
+        idField.value = id.toString();
         let creator = await getUserName();
         if (!editMode) {
             //Add file or folder
-            let item = new Item(parseInt(id), name, getCurrentDate(), creator, getCurrentDate(), creator, 50, clickedRow, null, isFile ? 1 : 0);
+            let temp = {
+                id: id,
+                name: name,
+                createdBy: creator,
+                createdDate: getCurrentDate(),
+                modifiedBy: creator,
+                modifiedAt: getCurrentDate(),
+                size: 50,
+                parent: clickedRow,
+                content: null,
+                isFile: isFile ? 1 : 0
+            }
+            let item = new Item();
+            item.mapping(temp);
             await createNewItem(item);
         } else {
             //let type: Array<string> = hoverRow.split('-');

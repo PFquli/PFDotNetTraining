@@ -61,7 +61,7 @@ namespace PFDotNetTraining.Controllers
 
         // PUT: api/Items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("id/{id}")]
         public async Task<IActionResult> PutItem(int id, Item item)
         {
             if (id != item.Id)
