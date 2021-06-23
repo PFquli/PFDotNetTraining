@@ -245,7 +245,6 @@ function attachEditEvent(tr: HTMLTableRowElement) {
             let btn = document.getElementById('toggle-button');
             btn.click();
             editMode = true;
-            console.log(editMode);
             event.stopImmediatePropagation();
         });
     }
@@ -266,10 +265,12 @@ function attachGoUpEvent() {
             let parent = await getItemById(clickedRow);
             let item = new Item();
             item.mapping(parent['data']);
-            if (item.Parent != properties.BASE_ID) {
-                clickedRow = item.Parent;
-                removeFromCurrentDirectoryPath();
-                await renderItemsOfCurrentFolder();
+            if (item.Parent >= properties.BASE_ID) {
+                if (item.Parent !== clickedRow) {
+                    clickedRow = item.Parent;
+                    removeFromCurrentDirectoryPath();
+                    await renderItemsOfCurrentFolder();
+                }
             }
         }
     }

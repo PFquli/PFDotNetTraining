@@ -20,7 +20,6 @@ export async function getItemsInFolder(folderId) {
         .get(properties.ITEMS_FOR_PARENT_API_URL(folderId))
         .then(response => (items = response.data))
         .catch(err => console.log(err));
-    console.log(items);
     return await items;
 }
 /**
