@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PFDotNetTraining.Model;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PFDotNetTraining.Data.Context
 {
@@ -14,6 +15,7 @@ namespace PFDotNetTraining.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Item>().ToTable("Item");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

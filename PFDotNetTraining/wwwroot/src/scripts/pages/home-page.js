@@ -1,7 +1,7 @@
 import ready from '../utilities/_helper';
 import renderGrid from '../components/_grid';
 import { RenderTemplate } from '../components/Models/RenderTemplate';
-import { removeExistingItem, updateExistingItem, createNewItem, getUserName, getNextIdForInsert, getItemsInFolder, getItemById } from '../data/dataOperation';
+import { removeExistingItem, updateExistingItem, createNewItem, getUserName, getItemsInFolder, getItemById } from '../data/dataOperation';
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
 import Item from '../components/Models/Item';
@@ -123,8 +123,6 @@ function getRowIdOnHover(id, tr) {
  */
 function addItemEvent(btn) {
     btn.onclick = async function () {
-        //Get ID field
-        let idField = document.getElementById("id");
         //Get Name field
         let nameField = document.getElementById("name");
         let name = nameField.value;
@@ -133,8 +131,7 @@ function addItemEvent(btn) {
         let isFile = inputElem.checked;
         //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
         //let result = generateKey(prefix, randomLength);
-        let id = await getNextIdForInsert();
-        idField.value = id.toString();
+        let id = null;
         let creator = await getUserName();
         if (!editMode) {
             //Add file or folder

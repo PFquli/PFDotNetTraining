@@ -27,18 +27,6 @@ export async function getItemsInFolder(folderId: number) {
 }
 
 /**
- * Get last id in database and plus 1
- * */
-export async function getNextIdForInsert() {
-  let id = 1;
-  await axios
-    .get(properties.ITEM_ID_API_URL(-1))
-    .then(res => (id = res.data))
-    .catch(err => console.log(err));
-  return await id;
-}
-
-/**
  * Get user name from cookies after authentication
  * */
 export async function getUserName() {
@@ -58,7 +46,8 @@ export async function createNewItem(item: Item) {
   let created = false;
   await axios
     .post(properties.ITEM_API_URL, item)
-    .then(res => (created = true));
+    .then(res => (created = true))
+    .catch(err => console.log(err.response));
   return await created;
 }
 

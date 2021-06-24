@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9F06pvH2Sco4jHlbZ5mE/5kcFTCgtmJvTt40GLPz2HTBDirgiT9sLxfkLMoHCDj9NisaP4cyNjIqwS6tMuBXlA==",
+  "dgSpecHash": "SsMPfqLzW7JQNBAOh7gSo/X8QfZdixTqPnYKVDml9ABqAmrM7A0aRowYzqNpW6nOkn+OkUwuOzfFge/UmQwCZg==",
   "success": true,
   "projectFilePath": "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
   "expectedPackageFiles": [
@@ -48,8 +48,8 @@
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\5.0.7\\microsoft.entityframeworkcore.analyzers.5.0.7.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.entityframeworkcore.design\\5.0.7\\microsoft.entityframeworkcore.design.5.0.7.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\5.0.7\\microsoft.entityframeworkcore.relational.5.0.7.nupkg.sha512",
-    "C:\\Users\\quli\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\5.0.6\\microsoft.entityframeworkcore.sqlserver.5.0.6.nupkg.sha512",
-    "C:\\Users\\quli\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\5.0.6\\microsoft.entityframeworkcore.tools.5.0.6.nupkg.sha512",
+    "C:\\Users\\quli\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\5.0.7\\microsoft.entityframeworkcore.sqlserver.5.0.7.nupkg.sha512",
+    "C:\\Users\\quli\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\5.0.7\\microsoft.entityframeworkcore.tools.5.0.7.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\5.0.0\\microsoft.extensions.caching.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.extensions.caching.memory\\5.0.0\\microsoft.extensions.caching.memory.5.0.0.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",

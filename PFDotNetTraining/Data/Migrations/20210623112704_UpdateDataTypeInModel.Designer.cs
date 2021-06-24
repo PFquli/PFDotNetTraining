@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PFDotNetTraining.Data.Context;
 
 namespace PFDotNetTraining.Data.Migrations
 {
     [DbContext(typeof(ShelfContext))]
-    partial class ShelfContextModelSnapshot : ModelSnapshot
+    [Migration("20210623112704_UpdateDataTypeInModel")]
+    partial class UpdateDataTypeInModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

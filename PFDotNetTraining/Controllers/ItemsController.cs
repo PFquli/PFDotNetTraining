@@ -43,14 +43,6 @@ namespace PFDotNetTraining.Controllers
             return item;
         }
 
-        [HttpGet("id/-1")]
-        public async Task<ActionResult<int>> GetNextId()
-        {
-            var lastItem = _context.Items.AsNoTracking().OrderByDescending(item => item.Id).FirstOrDefault();
-
-            return (int)lastItem.Id + 1;
-        }
-
         // GET: api/Items/0
         [HttpGet("parent/{parent}")]
         public async Task<ActionResult<IEnumerable<Item>>> GetItemsByParentId(int parent)
@@ -95,8 +87,11 @@ namespace PFDotNetTraining.Controllers
         [HttpPost]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
+            //var rs = _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Items] ON");
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
+
+            //await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Items] OFF");
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
@@ -123,7 +118,7 @@ namespace PFDotNetTraining.Controllers
             var items = await _context.Items.AsNoTracking().Where(item => item.Parent == parent).ToListAsync();
             foreach (var item in items)
             {
-                int id = item.Id;
+                int id = (int)item.Id;
                 await DeleteItemsByParent(id);
                 _context.Items.Remove(item);
             }

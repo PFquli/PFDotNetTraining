@@ -21,7 +21,7 @@ export default class Item implements IMapping {
 
   Content: string;
 
-  IsFile: Number;
+  IsFile: number;
 
   constructor(
     id?: number,
@@ -33,7 +33,7 @@ export default class Item implements IMapping {
     size?: number,
     parent: number = properties.BASE_ID,
     content: string = null,
-    isFile: Number = 1,
+    isFile: number = 1,
   ) {
     if (id) this.Id = id;
     if (name) this.Name = name;
