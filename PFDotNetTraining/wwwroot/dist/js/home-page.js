@@ -1980,7 +1980,7 @@ async function getItemById(id) {
   let item;
   await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(id)).then(function (response) {
     item = response;
-  }).catch(err => console.log(err));
+  }).catch(err => console.log(err.response));
   return await item;
 }
 /**
@@ -1990,7 +1990,7 @@ async function getItemById(id) {
 
 async function getItemsInFolder(folderId) {
   let items = [];
-  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEMS_FOR_PARENT_API_URL(folderId)).then(response => items = response.data).catch(err => console.log(err));
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEMS_FOR_PARENT_API_URL(folderId)).then(response => items = response.data).catch(err => console.log(err.response));
   return await items;
 }
 /**
@@ -1999,7 +1999,7 @@ async function getItemsInFolder(folderId) {
 
 async function getUserName() {
   let name = '';
-  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.USER_API_URL).then(res => name = res.data).catch(err => console.log(err));
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().get(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.USER_API_URL).then(res => name = res.data).catch(err => console.log(err.response));
   return await name;
 }
 /**
@@ -2020,15 +2020,12 @@ async function createNewItem(item) {
 
 async function updateExistingItem(id, item) {
   let updated = false;
-  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().put(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_API_URL, {
-    id,
-    item
-  }).then(res => updated = true);
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().put(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_API_URL, item).then(res => updated = true).catch(err => console.log(err.response));
   return await updated;
 }
 async function removeExistingItem(id) {
   let removed = false;
-  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().delete(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(id)).then(res => removed = true);
+  await _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default().delete(_utilities_constant__WEBPACK_IMPORTED_MODULE_1__.properties.ITEM_ID_API_URL(id)).then(res => removed = true).catch(err => console.log(err.response));
   return await removed;
 }
 

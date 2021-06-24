@@ -9,7 +9,7 @@ export async function getItemById(id: number): Promise<File> {
     .then(function(response) {
       item = response;
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
   return await item;
 }
 
@@ -22,7 +22,7 @@ export async function getItemsInFolder(folderId: number) {
   await axios
     .get(properties.ITEMS_FOR_PARENT_API_URL(folderId))
     .then(response => (items = response.data))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
   return await items;
 }
 
@@ -34,7 +34,7 @@ export async function getUserName() {
   await axios
     .get(properties.USER_API_URL)
     .then(res => (name = res.data))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response));
   return await name;
 }
 
@@ -59,8 +59,9 @@ export async function createNewItem(item: Item) {
 export async function updateExistingItem(id: number, item: Item) {
   let updated = false;
   await axios
-    .put(properties.ITEM_API_URL, { id, item })
-    .then(res => (updated = true));
+    .put(properties.ITEM_API_URL, item)
+    .then(res => (updated = true))
+    .catch(err => console.log(err.response));
   return await updated;
 }
 
@@ -68,6 +69,7 @@ export async function removeExistingItem(id: number) {
   let removed = false;
   await axios
     .delete(properties.ITEM_ID_API_URL(id))
-    .then(res => (removed = true));
+    .then(res => (removed = true))
+    .catch(err => console.log(err.response));
   return await removed;
 }

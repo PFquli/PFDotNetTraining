@@ -53,14 +53,9 @@ namespace PFDotNetTraining.Controllers
 
         // PUT: api/Items/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("id/{id}")]
-        public async Task<IActionResult> PutItem(int id, Item item)
+        [HttpPut]
+        public async Task<IActionResult> PutItem(Item item)
         {
-            if (id != item.Id)
-            {
-                return BadRequest();
-            }
-
             _context.Entry(item).State = EntityState.Modified;
 
             try
@@ -69,6 +64,7 @@ namespace PFDotNetTraining.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
+                var id = (int)item.Id;
                 if (!ItemExists(id))
                 {
                     return NotFound();
