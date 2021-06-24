@@ -2234,7 +2234,7 @@ const randomLength = 5;
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_DIRECTORY;
   addToCurrentDirectoryPath();
   await renderItemsOfCurrentFolder();
-  let submitButton = document.getElementsByClassName('btn-add')[0];
+  let submitButton = document.getElementById('btn-add');
   addItemEvent(submitButton);
   checkboxEvent();
   attachGoUpEvent();
@@ -2341,6 +2341,7 @@ function attachOnclickFolder(id, tr) {
 function getRowIdOnHover(id, tr) {
   tr.onmouseover = function () {
     hoverRow = id;
+    console.log(hoverRow, clickedRow);
   };
 }
 /**
@@ -2398,6 +2399,8 @@ function addItemEvent(btn) {
       item.Name = name;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.updateExistingItem)(hoverRow, item);
       editMode = false;
+      let addBtn = document.getElementById("btn-add");
+      addBtn.innerHTML = "Add";
     }
 
     await renderItemsOfCurrentFolder();
@@ -2475,7 +2478,7 @@ function checkboxEvent() {
   };
 }
 /**
- * Edit item
+ * Edit item. Change edit mode to true, get the toggle button and click it, stop immediate propagation
  */
 
 
@@ -2484,9 +2487,11 @@ function attachEditEvent(tr) {
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', function () {
+      editMode = true;
+      let addBtn = document.getElementById("btn-add");
+      addBtn.innerHTML = "Update";
       let btn = document.getElementById('toggle-button');
       btn.click();
-      editMode = true;
       event.stopImmediatePropagation();
     });
   }
@@ -2554,7 +2559,7 @@ const randomLength = 5;
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_DIRECTORY;
   addToCurrentDirectoryPath();
   await renderItemsOfCurrentFolder();
-  let submitButton = document.getElementsByClassName('btn-add')[0];
+  let submitButton = document.getElementById('add-btn');
   addItemEvent(submitButton);
   checkboxEvent();
   attachGoUpEvent();
@@ -2754,7 +2759,6 @@ function attachRemoveItemEvent(row) {
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       await renderItemsOfCurrentFolder();
-      renderItemsOfCurrentFolder();
     });
   }
 }
@@ -2795,7 +2799,7 @@ function checkboxEvent() {
   };
 }
 /**
- * Edit item
+ * Edit item. Change edit mode to true, get the toggle button and click it, stop immediate propagation
  */
 
 
@@ -2804,9 +2808,9 @@ function attachEditEvent(tr) {
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', function () {
+      editMode = true;
       let btn = document.getElementById('toggle-button');
       btn.click();
-      editMode = true;
       event.stopImmediatePropagation();
     });
   }

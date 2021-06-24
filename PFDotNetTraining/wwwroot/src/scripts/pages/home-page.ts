@@ -18,7 +18,7 @@ ready(async () => {
     currentDir = properties.BASE_DIRECTORY;
     addToCurrentDirectoryPath();
     await renderItemsOfCurrentFolder();
-    let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementsByClassName('btn-add')[0];
+    let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById('add-btn');
     addItemEvent(submitButton);
     checkboxEvent();
     attachGoUpEvent();
@@ -209,7 +209,6 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
             clickedRow = item.Parent;
             await removeExistingItem(hoverRow);
             await renderItemsOfCurrentFolder();
-            renderItemsOfCurrentFolder();
         })
     }
 };
@@ -249,15 +248,15 @@ function checkboxEvent() {
 }
 
 /**
- * Edit item
+ * Edit item. Change edit mode to true, get the toggle button and click it, stop immediate propagation
  */
 function attachEditEvent(tr: HTMLTableRowElement) {
     let btn = tr.getElementsByClassName('edit');
     for (let i = 0; i < btn.length; i += 1) {
         btn[i].addEventListener('click', function () {
+            editMode = true;
             let btn = document.getElementById('toggle-button');
             btn.click();
-            editMode = true;
             event.stopImmediatePropagation();
         });
     }
