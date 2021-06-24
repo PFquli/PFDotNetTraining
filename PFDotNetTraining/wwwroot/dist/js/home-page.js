@@ -2130,7 +2130,7 @@ function getCurrentDate() {
   const dd = String(today.getDate()).padStart(2, '0');
   const mm = String(today.getMonth() + 1).padStart(2, '0');
   const yyyy = today.getFullYear();
-  return `${mm}/${dd}/${yyyy}`;
+  return `${dd}/${mm}/${yyyy}`;
 }
 
 /***/ })
@@ -2227,7 +2227,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let currentDir = '';
-const template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_2__.RenderTemplate(document.getElementById('content-table'), _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ORDERING);
+let template = new _components_Models_RenderTemplate__WEBPACK_IMPORTED_MODULE_2__.RenderTemplate(document.getElementById("content-table"), _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.ORDERING);
 let clickedRow = 0;
 let hoverRow = 0;
 let editMode = false;
@@ -2237,7 +2237,7 @@ const randomLength = 5;
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_DIRECTORY;
   addToCurrentDirectoryPath();
   await renderItemsOfCurrentFolder();
-  const submitButton = document.getElementsByClassName('btn-add')[0];
+  let submitButton = document.getElementsByClassName('btn-add')[0];
   addItemEvent(submitButton);
   checkboxEvent();
   attachGoUpEvent();
@@ -2245,11 +2245,11 @@ const randomLength = 5;
 /**
  * Render all data with given array of Folder or Files.
  * @param {Array<Item>} input - Array of folders or files.
- */
+*/
 
 function generateData(input) {
-  clearCurrentData(); // Generate Folder
-  // if (input[0].subItems) {
+  clearCurrentData(); //Generate Folder
+  //if (input[0].subItems) {
   //    for (let i = 0; i < input.length; i += 1) {
   //        let folder = new Folder();
   //        folder.mapping(input[i]);
@@ -2260,8 +2260,8 @@ function generateData(input) {
   //        attachOnclickFolder(id, row);
   //        attachEditEvent(row);
   //    }
-  // }
-  // else {
+  //}
+  //else {
   //    //Generate Files
   //    for (let i = 0; i < input.length; i += 1) {
   //        let file = new File();
@@ -2272,13 +2272,13 @@ function generateData(input) {
   //        attachRemoveItemEvent(row);
   //        attachEditEvent(row);
   //    }
-  // }
+  //}
 
   for (let i = 0; i < input.length; i += 1) {
-    const item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
     item.mapping(input[i]);
-    const row = template.render(item);
-    const id = item.Id;
+    let row = template.render(item);
+    let id = item.Id;
     getRowIdOnHover(id, row);
     attachRemoveItemEvent(row);
     attachEditEvent(row);
@@ -2287,50 +2287,52 @@ function generateData(input) {
       attachOnclickFolder(id, row);
     }
   }
-} // Render all items in local storage
+}
 
+; //Render all items in local storage
 
 async function renderItemsOfCurrentFolder() {
   let items = [];
   items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(clickedRow);
-  await generateData(items); // for (var i = 0; i < window.localStorage.length; i += 1) {
+  await generateData(items); //for (var i = 0; i < window.localStorage.length; i += 1) {
   //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
   //    if (item.parent === clickedRow) generateData([item]);
-  // }
-} // Clear current page data excluding header
+  //}
+} //Clear current page data excluding header
 
 
 function clearCurrentData() {
-  const tr = document.getElementsByTagName('tr');
+  let tr = document.getElementsByTagName('tr');
 
   while (tr.length != 1) {
     tr[1].remove();
   }
 }
+
+;
 /**
  * Attach on click event to view items in folder for <tr> tag
  * @param {number} id - folder id.
  * @param {HTMLTableRowElement}  tr - <tr> element.
  */
 
-
 function attachOnclickFolder(id, tr) {
-  tr.addEventListener('click', async function () {
-    // Check if data is in local storage and render
-    const fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
+  tr.addEventListener("click", async function () {
+    //Check if data is in local storage and render
+    let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(id);
     clickedRow = id;
-    const item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-    item.mapping(fold.data);
-    addToCurrentDirectoryPath(item.Name); // if (!fold.IsFile) {
+    let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+    item.mapping(fold['data']);
+    addToCurrentDirectoryPath(item.Name); //if (!fold.IsFile) {
     //    fold.subItems.forEach(element => {
     //        if (Array.isArray(element)) {
     //            generateData(element);
     //        }
     //        else generateData([element]);
     //    });
-    // }
+    //}
 
-    const items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id);
+    let items = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemsInFolder)(id);
     await generateData(items);
   });
 }
@@ -2352,22 +2354,22 @@ function getRowIdOnHover(id, tr) {
 
 function addItemEvent(btn) {
   btn.onclick = async function () {
-    // Get Name field
-    const nameField = document.getElementById('name');
-    const name = nameField.value; // Check if in put is a file
+    //Get Name field
+    let nameField = document.getElementById("name");
+    let name = nameField.value; //Check if in put is a file
 
-    const inputElem = document.getElementById('file');
-    const isFile = inputElem.checked; // const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
-    // let result = generateKey(prefix, randomLength);
+    let inputElem = document.getElementById("file");
+    let isFile = inputElem.checked; //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
+    //let result = generateKey(prefix, randomLength);
 
-    const id = null;
-    const creator = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getUserName)();
+    let id = null;
+    let creator = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getUserName)();
 
     if (!editMode) {
-      // Add file or folder
-      const temp = {
-        id,
-        name,
+      //Add file or folder
+      let temp = {
+        id: id,
+        name: name,
         createdBy: creator,
         createdDate: (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.getCurrentDate)(),
         modifiedBy: creator,
@@ -2377,25 +2379,25 @@ function addItemEvent(btn) {
         content: null,
         isFile: isFile ? 1 : 0
       };
-      const item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
       item.mapping(temp);
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.createNewItem)(item);
     } else {
-      // let type: Array<string> = hoverRow.split('-');
-      // if (type[0] === 'file') {
+      //let type: Array<string> = hoverRow.split('-');
+      //if (type[0] === 'file') {
       //    let file: File = new File();
       //    file.mapping(getItemById(hoverRow));
       //    file.name = name;
       //    file.addOrUpdate(properties.EDIT_MODE);
-      // } else {
+      //} else {
       //    let folder: Folder = new Folder();
       //    folder.mapping(getItemById(hoverRow));
       //    folder.name = name;
       //    folder.addOrUpdate(properties.EDIT_MODE);
-      // }
-      const file = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
-      const item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(file.data);
+      //}
+      let file = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(file['data']);
       item.Name = name;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.updateExistingItem)(hoverRow, item);
       editMode = false;
@@ -2411,33 +2413,36 @@ function addItemEvent(btn) {
 
 
 function attachRemoveItemEvent(row) {
-  const btn = row.getElementsByClassName('close');
+  let btn = row.getElementsByClassName('close');
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', async function () {
-      // let type: Array<string> = hoverRow.split('-');
-      // if (type[0] === 'file') {
+      // Prevent calling onClick folder in folder case
+      event.stopImmediatePropagation(); //let type: Array<string> = hoverRow.split('-');
+      //if (type[0] === 'file') {
       //    let file: File = new File();
       //    file.mapping(getItemById(hoverRow));
       //    clickedRow = file.parent;
       //    file.remove();
-      // } else {
+      //} else {
       //    let folder: Folder = new Folder();
       //    folder.mapping(getItemById(hoverRow));
       //    clickedRow = folder.parent;
       //    folder.remove();
-      // }
-      const fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
-      const item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(fold.data);
+      //}
+
+      let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(fold['data']);
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       await renderItemsOfCurrentFolder();
-      event.stopImmediatePropagation();
       renderItemsOfCurrentFolder();
     });
   }
 }
+
+;
 /**
  * Add current folder to directory if folder name is provided
  * else return current directory
@@ -2445,31 +2450,30 @@ function attachRemoveItemEvent(row) {
  * @return {string} - result prefix & length.
  */
 
-
 function addToCurrentDirectoryPath(folder = '') {
-  if (folder != '') currentDir += `/${folder}`;
+  if (folder != '') currentDir += '/' + folder;
   document.getElementById('directory').innerHTML = currentDir;
   return currentDir;
 }
 
 function removeFromCurrentDirectoryPath() {
-  const arr = currentDir.split('/');
+  let arr = currentDir.split('/');
   arr.pop();
-  currentDir = arr.join('/');
+  currentDir = arr.join("/");
   document.getElementById('directory').innerHTML = currentDir;
   return currentDir;
 } // Checkbox event
 
 
 function checkboxEvent() {
-  const inputElem = document.getElementById('file');
-  const idField = document.getElementById('id');
+  let inputElem = document.getElementById("file");
+  let idField = document.getElementById("id");
   idField.value = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.generateKey)(_utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FOLDER_PREFIX, randomLength);
 
   inputElem.onclick = function () {
-    const isFile = inputElem.checked;
+    let isFile = inputElem.checked;
     const prefix = isFile ? _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FILE_PREFIX : _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.FOLDER_PREFIX;
-    const result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.generateKey)(prefix, randomLength);
+    let result = (0,_utilities_utilities_function__WEBPACK_IMPORTED_MODULE_4__.generateKey)(prefix, randomLength);
     idField.value = result;
   };
 }
@@ -2479,11 +2483,11 @@ function checkboxEvent() {
 
 
 function attachEditEvent(tr) {
-  const btn = tr.getElementsByClassName('edit');
+  let btn = tr.getElementsByClassName('edit');
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', function () {
-      const btn = document.getElementById('toggle-button');
+      let btn = document.getElementById('toggle-button');
       btn.click();
       editMode = true;
       event.stopImmediatePropagation();
@@ -2504,10 +2508,10 @@ function attachGoUpEvent() {
       //        else clickedRow = '0';
       //        refresh();
       //    });
-      // }
-      const parent = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(clickedRow);
-      const item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
-      item.mapping(parent.data);
+      //}
+      let parent = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(clickedRow);
+      let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
+      item.mapping(parent['data']);
 
       if (item.Parent >= _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_ID) {
         if (item.Parent !== clickedRow) {
@@ -2733,7 +2737,8 @@ function attachRemoveItemEvent(row) {
 
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', async function () {
-      //let type: Array<string> = hoverRow.split('-');
+      // Prevent calling onClick folder in folder case
+      event.stopImmediatePropagation(); //let type: Array<string> = hoverRow.split('-');
       //if (type[0] === 'file') {
       //    let file: File = new File();
       //    file.mapping(getItemById(hoverRow));
@@ -2745,13 +2750,13 @@ function attachRemoveItemEvent(row) {
       //    clickedRow = folder.parent;
       //    folder.remove();
       //}
+
       let fold = await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.getItemById)(hoverRow);
       let item = new _components_Models_Item__WEBPACK_IMPORTED_MODULE_6__.default();
       item.mapping(fold['data']);
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       await renderItemsOfCurrentFolder();
-      event.stopImmediatePropagation();
       renderItemsOfCurrentFolder();
     });
   }

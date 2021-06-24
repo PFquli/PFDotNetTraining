@@ -189,6 +189,8 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
     let btn = row.getElementsByClassName('close');
     for (let i = 0; i < btn.length; i += 1) {
         btn[i].addEventListener('click', async function () {
+            // Prevent calling onClick folder in folder case
+            event.stopImmediatePropagation();
             //let type: Array<string> = hoverRow.split('-');
             //if (type[0] === 'file') {
             //    let file: File = new File();
@@ -207,7 +209,6 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
             clickedRow = item.Parent;
             await removeExistingItem(hoverRow);
             await renderItemsOfCurrentFolder();
-            event.stopImmediatePropagation();
             renderItemsOfCurrentFolder();
         })
     }
