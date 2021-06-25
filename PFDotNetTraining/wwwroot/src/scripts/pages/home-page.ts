@@ -20,6 +20,8 @@ ready(async () => {
     await renderItemsOfCurrentFolder();
     let submitButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById('add-btn');
     addItemEvent(submitButton);
+    let toggleButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById('toggle-button');
+    addToggleButtonEvent(toggleButton);
     checkboxEvent();
     attachGoUpEvent();
 });
@@ -121,6 +123,19 @@ function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
 function getRowIdOnHover(id: number, tr: HTMLTableRowElement) {
     tr.onmouseover = function () {
         hoverRow = id;
+    }
+}
+
+function addToggleButtonEvent(btn: HTMLButtonElement) {
+    btn.onclick = function () {
+        if (editMode) {
+            let addBtn = document.getElementById("add-btn");
+            addBtn.innerHTML = "Update";
+        }
+        else {
+            let addBtn = document.getElementById("add-btn");
+            addBtn.innerHTML = "Add";
+        }
     }
 }
 
@@ -228,7 +243,10 @@ function addToCurrentDirectoryPath(folder: string = ''): string {
 
 function removeFromCurrentDirectoryPath() {
     let arr: Array<string> = currentDir.split('/');
-    arr.pop();
+    // Check array length to ensure the root stay
+    if (arr.length > 1) {
+        arr.pop();
+    }
     currentDir = arr.join("/");
     document.getElementById('directory').innerHTML = currentDir;
     return currentDir;

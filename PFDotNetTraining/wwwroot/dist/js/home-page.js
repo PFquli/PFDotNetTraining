@@ -2234,8 +2234,10 @@ const randomLength = 5;
   currentDir = _utilities_constant__WEBPACK_IMPORTED_MODULE_5__.properties.BASE_DIRECTORY;
   addToCurrentDirectoryPath();
   await renderItemsOfCurrentFolder();
-  let submitButton = document.getElementById('btn-add');
+  let submitButton = document.getElementById('add-btn');
   addItemEvent(submitButton);
+  let toggleButton = document.getElementById('toggle-button');
+  addToggleButtonEvent(toggleButton);
   checkboxEvent();
   attachGoUpEvent();
 });
@@ -2341,7 +2343,18 @@ function attachOnclickFolder(id, tr) {
 function getRowIdOnHover(id, tr) {
   tr.onmouseover = function () {
     hoverRow = id;
-    console.log(hoverRow, clickedRow);
+  };
+}
+
+function addToggleButtonEvent(btn) {
+  btn.onclick = function () {
+    if (editMode) {
+      let addBtn = document.getElementById("btn-add");
+      addBtn.innerHTML = "Update";
+    } else {
+      let addBtn = document.getElementById("btn-add");
+      addBtn.innerHTML = "Add";
+    }
   };
 }
 /**
@@ -2399,8 +2412,6 @@ function addItemEvent(btn) {
       item.Name = name;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.updateExistingItem)(hoverRow, item);
       editMode = false;
-      let addBtn = document.getElementById("btn-add");
-      addBtn.innerHTML = "Add";
     }
 
     await renderItemsOfCurrentFolder();
@@ -2437,7 +2448,6 @@ function attachRemoveItemEvent(row) {
       clickedRow = item.Parent;
       await (0,_data_dataOperation__WEBPACK_IMPORTED_MODULE_3__.removeExistingItem)(hoverRow);
       await renderItemsOfCurrentFolder();
-      renderItemsOfCurrentFolder();
     });
   }
 }
@@ -2457,8 +2467,12 @@ function addToCurrentDirectoryPath(folder = '') {
 }
 
 function removeFromCurrentDirectoryPath() {
-  let arr = currentDir.split('/');
-  arr.pop();
+  let arr = currentDir.split('/'); // Check array length to ensure the root stay
+
+  if (arr.length > 1) {
+    arr.pop();
+  }
+
   currentDir = arr.join("/");
   document.getElementById('directory').innerHTML = currentDir;
   return currentDir;
@@ -2488,8 +2502,6 @@ function attachEditEvent(tr) {
   for (let i = 0; i < btn.length; i += 1) {
     btn[i].addEventListener('click', function () {
       editMode = true;
-      let addBtn = document.getElementById("btn-add");
-      addBtn.innerHTML = "Update";
       let btn = document.getElementById('toggle-button');
       btn.click();
       event.stopImmediatePropagation();
@@ -2561,6 +2573,8 @@ const randomLength = 5;
   await renderItemsOfCurrentFolder();
   let submitButton = document.getElementById('add-btn');
   addItemEvent(submitButton);
+  let toggleButton = document.getElementById('toggle-button');
+  addToggleButtonEvent(toggleButton);
   checkboxEvent();
   attachGoUpEvent();
 });
@@ -2666,6 +2680,18 @@ function attachOnclickFolder(id, tr) {
 function getRowIdOnHover(id, tr) {
   tr.onmouseover = function () {
     hoverRow = id;
+  };
+}
+
+function addToggleButtonEvent(btn) {
+  btn.onclick = function () {
+    if (editMode) {
+      let addBtn = document.getElementById("add-btn");
+      addBtn.innerHTML = "Update";
+    } else {
+      let addBtn = document.getElementById("add-btn");
+      addBtn.innerHTML = "Add";
+    }
   };
 }
 /**
@@ -2778,8 +2804,12 @@ function addToCurrentDirectoryPath(folder = '') {
 }
 
 function removeFromCurrentDirectoryPath() {
-  let arr = currentDir.split('/');
-  arr.pop();
+  let arr = currentDir.split('/'); // Check array length to ensure the root stay
+
+  if (arr.length > 1) {
+    arr.pop();
+  }
+
   currentDir = arr.join("/");
   document.getElementById('directory').innerHTML = currentDir;
   return currentDir;

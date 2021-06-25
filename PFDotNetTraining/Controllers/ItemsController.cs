@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PFDotNetTraining.Data.Context;
@@ -15,10 +16,16 @@ namespace PFDotNetTraining.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly ShelfContext _context;
+        private IMapper _mapper;
 
         public ItemsController(ShelfContext context)
         {
             _context = context;
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Item, Item>();
+            });
+            _mapper = config.CreateMapper();
         }
 
         //GET: api/Items/all
@@ -56,23 +63,15 @@ namespace PFDotNetTraining.Controllers
         [HttpPut]
         public async Task<IActionResult> PutItem(Item item)
         {
-            _context.Entry(item).State = EntityState.Modified;
-
-            try
+            var entity = _context.Items.SingleOrDefault(x => x.Id == item.Id);
+            if (entity != null)
             {
+                _mapper.Map<Item, Item>(item, entity);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                var id = (int)item.Id;
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();

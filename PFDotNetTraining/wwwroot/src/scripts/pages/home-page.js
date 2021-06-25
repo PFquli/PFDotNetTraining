@@ -18,6 +18,8 @@ ready(async () => {
     await renderItemsOfCurrentFolder();
     let submitButton = document.getElementById('add-btn');
     addItemEvent(submitButton);
+    let toggleButton = document.getElementById('toggle-button');
+    addToggleButtonEvent(toggleButton);
     checkboxEvent();
     attachGoUpEvent();
 });
@@ -115,6 +117,18 @@ function attachOnclickFolder(id, tr) {
 function getRowIdOnHover(id, tr) {
     tr.onmouseover = function () {
         hoverRow = id;
+    };
+}
+function addToggleButtonEvent(btn) {
+    btn.onclick = function () {
+        if (editMode) {
+            let addBtn = document.getElementById("add-btn");
+            addBtn.innerHTML = "Update";
+        }
+        else {
+            let addBtn = document.getElementById("add-btn");
+            addBtn.innerHTML = "Add";
+        }
     };
 }
 /**
@@ -220,7 +234,10 @@ function addToCurrentDirectoryPath(folder = '') {
 }
 function removeFromCurrentDirectoryPath() {
     let arr = currentDir.split('/');
-    arr.pop();
+    // Check array length to ensure the root stay
+    if (arr.length > 1) {
+        arr.pop();
+    }
     currentDir = arr.join("/");
     document.getElementById('directory').innerHTML = currentDir;
     return currentDir;

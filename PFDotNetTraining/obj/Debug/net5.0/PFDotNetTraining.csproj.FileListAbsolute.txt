@@ -159,3 +159,5 @@ C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\re
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.pdb
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.genruntimeconfig.cache
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
