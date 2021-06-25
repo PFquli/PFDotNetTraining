@@ -22,6 +22,14 @@ ready(async () => {
     addItemEvent(submitButton);
     let toggleButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById('toggle-button');
     addToggleButtonEvent(toggleButton);
+    let modalEle: HTMLElement = <HTMLElement>document.getElementById('add-modal');
+    let modalContent: HTMLElement = <HTMLElement>document.getElementById('modal-content');
+    let exitBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById('exit-btn');
+    let closeBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById('close-btn');
+    addModeClickEvent(modalEle);
+    addModeClickEvent(exitBtn);
+    addModeClickEvent(closeBtn);
+    doNothingClickEvent(modalContent);
     checkboxEvent();
     attachGoUpEvent();
 });
@@ -137,6 +145,19 @@ function addToggleButtonEvent(btn: HTMLButtonElement) {
             addBtn.innerHTML = "Add";
         }
     }
+}
+
+function addModeClickEvent(ele: HTMLElement) {
+    ele.addEventListener("click", function () {
+        editMode = false;
+        event.stopPropagation();
+    })
+}
+
+function doNothingClickEvent(ele: HTMLElement) {
+    ele.addEventListener("click", function () {
+        event.stopPropagation();
+    })
 }
 
 /**

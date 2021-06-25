@@ -2238,6 +2238,14 @@ const randomLength = 5;
   addItemEvent(submitButton);
   let toggleButton = document.getElementById('toggle-button');
   addToggleButtonEvent(toggleButton);
+  let modalEle = document.getElementById('add-modal');
+  let modalContent = document.getElementById('modal-content');
+  let exitBtn = document.getElementById('exit-btn');
+  let closeBtn = document.getElementById('close-btn');
+  addModeClickEvent(modalEle);
+  addModeClickEvent(exitBtn);
+  addModeClickEvent(closeBtn);
+  doNothingClickEvent(modalContent);
   checkboxEvent();
   attachGoUpEvent();
 });
@@ -2349,13 +2357,26 @@ function getRowIdOnHover(id, tr) {
 function addToggleButtonEvent(btn) {
   btn.onclick = function () {
     if (editMode) {
-      let addBtn = document.getElementById("btn-add");
+      let addBtn = document.getElementById("add-btn");
       addBtn.innerHTML = "Update";
     } else {
-      let addBtn = document.getElementById("btn-add");
+      let addBtn = document.getElementById("add-btn");
       addBtn.innerHTML = "Add";
     }
   };
+}
+
+function addModeClickEvent(ele) {
+  ele.addEventListener("click", function () {
+    editMode = false;
+    event.stopPropagation();
+  });
+}
+
+function doNothingClickEvent(ele) {
+  ele.addEventListener("click", function () {
+    event.stopPropagation();
+  });
 }
 /**
  * Attach add folder event to provided <button>.
@@ -2575,6 +2596,14 @@ const randomLength = 5;
   addItemEvent(submitButton);
   let toggleButton = document.getElementById('toggle-button');
   addToggleButtonEvent(toggleButton);
+  let modalEle = document.getElementById('add-modal');
+  let modalContent = document.getElementById('modal-content');
+  let exitBtn = document.getElementById('exit-btn');
+  let closeBtn = document.getElementById('close-btn');
+  addModeClickEvent(modalEle);
+  addModeClickEvent(exitBtn);
+  addModeClickEvent(closeBtn);
+  doNothingClickEvent(modalContent);
   checkboxEvent();
   attachGoUpEvent();
 });
@@ -2693,6 +2722,19 @@ function addToggleButtonEvent(btn) {
       addBtn.innerHTML = "Add";
     }
   };
+}
+
+function addModeClickEvent(ele) {
+  ele.addEventListener("click", function () {
+    editMode = false;
+    event.stopPropagation();
+  });
+}
+
+function doNothingClickEvent(ele) {
+  ele.addEventListener("click", function () {
+    event.stopPropagation();
+  });
 }
 /**
  * Attach add folder event to provided <button>.
