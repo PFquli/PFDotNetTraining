@@ -5,6 +5,7 @@ import { removeExistingItem, updateExistingItem, createNewItem, getUserName, get
 import { generateKey, getCurrentDate } from '../utilities/utilities-function';
 import { properties } from '../utilities/constant';
 import Item from '../components/Models/Item';
+import $ from "jquery";
 
 let currentDir = '';
 let template = new RenderTemplate(<HTMLTableElement>document.getElementById("content-table"), properties.ORDERING);
@@ -12,6 +13,17 @@ let clickedRow: number = 0;
 let hoverRow: number = 0;
 let editMode: boolean = false;
 const randomLength: number = 5;
+
+//function callback(mutationsList, observer) {
+//    let classString: string = mutationsList[0].target.className;
+//    let list: Array<string> = classString.split(" ");
+//    if (!list.includes("show")) {
+//        /*        setTimeout(() => { editMode = false }, 2000);*/
+//        editMode = false
+//    }
+//}
+
+//const mutationObserver = new MutationObserver(callback);
 
 ready(async () => {
     renderGrid();
@@ -23,13 +35,16 @@ ready(async () => {
     let toggleButton: HTMLButtonElement = <HTMLButtonElement>document.getElementById('toggle-button');
     addToggleButtonEvent(toggleButton);
     let modalEle: HTMLElement = <HTMLElement>document.getElementById('add-modal');
-    let modalContent: HTMLElement = <HTMLElement>document.getElementById('modal-content');
-    let exitBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById('exit-btn');
-    let closeBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById('close-btn');
-    addModeClickEvent(modalEle);
-    addModeClickEvent(exitBtn);
-    addModeClickEvent(closeBtn);
-    doNothingClickEvent(modalContent);
+    /*    mutationObserver.observe(modalEle, { attributes: true });*/
+    //$('#add-modal').on('hidden.bs.modal', function (e) {
+    //    setTimeout(function () {
+    //        alert('The modal is completely hidden now!');
+    //    }, 300);
+    //})
+    $('#add-modal').on('hidden.bs.modal', function () {
+        console.log("modal dong ne");
+        editMode = false
+    })
     checkboxEvent();
     attachGoUpEvent();
 });
@@ -40,32 +55,6 @@ ready(async () => {
 */
 function generateData(input: Array<any>) {
     clearCurrentData();
-    //Generate Folder
-    //if (input[0].subItems) {
-    //    for (let i = 0; i < input.length; i += 1) {
-    //        let folder = new Folder();
-    //        folder.mapping(input[i]);
-    //        let row = template.render(folder);
-    //        let id = row.cells[row.cells.length - 2].textContent;
-    //        getRowIdOnHover(id, row);
-    //        attachRemoveItemEvent(row);
-    //        attachOnclickFolder(id, row);
-    //        attachEditEvent(row);
-    //    }
-    //}
-
-    //else {
-    //    //Generate Files
-    //    for (let i = 0; i < input.length; i += 1) {
-    //        let file = new File();
-    //        file.mapping(input[i]);
-    //        let row = template.render(file);
-    //        let id = row.cells[row.cells.length - 2].textContent;
-    //        getRowIdOnHover(id, row);
-    //        attachRemoveItemEvent(row);
-    //        attachEditEvent(row);
-    //    }
-    //}
     for (let i = 0; i < input.length; i += 1) {
         let item = new Item();
         item.mapping(input[i]);
@@ -85,10 +74,6 @@ async function renderItemsOfCurrentFolder() {
     let items = [];
     items = await getItemsInFolder(clickedRow);
     await generateData(items);
-    //for (var i = 0; i < window.localStorage.length; i += 1) {
-    //    let item = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    //    if (item.parent === clickedRow) generateData([item]);
-    //}
 }
 
 //Clear current page data excluding header
@@ -112,14 +97,6 @@ function attachOnclickFolder(id: number, tr: HTMLTableRowElement) {
         let item = new Item();
         item.mapping(fold['data']);
         addToCurrentDirectoryPath(item.Name);
-        //if (!fold.IsFile) {
-        //    fold.subItems.forEach(element => {
-        //        if (Array.isArray(element)) {
-        //            generateData(element);
-        //        }
-        //        else generateData([element]);
-        //    });
-        //}
         let items = await getItemsInFolder(id);
         await generateData(items);
     });
@@ -147,19 +124,6 @@ function addToggleButtonEvent(btn: HTMLButtonElement) {
     }
 }
 
-function addModeClickEvent(ele: HTMLElement) {
-    ele.addEventListener("click", function () {
-        editMode = false;
-        event.stopPropagation();
-    })
-}
-
-function doNothingClickEvent(ele: HTMLElement) {
-    ele.addEventListener("click", function () {
-        event.stopPropagation();
-    })
-}
-
 /**
  * Attach add folder event to provided <button>.
  * @param {HTMLButtonElement}  btn - <tr> element.
@@ -172,8 +136,6 @@ function addItemEvent(btn: HTMLButtonElement) {
         //Check if in put is a file
         let inputElem: HTMLInputElement = <HTMLInputElement>document.getElementById("file");
         let isFile: boolean = inputElem.checked;
-        //const prefix: string = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
-        //let result = generateKey(prefix, randomLength);
         let id: number = null;
         let creator = await getUserName();
         if (!editMode) {
@@ -194,18 +156,6 @@ function addItemEvent(btn: HTMLButtonElement) {
             item.mapping(temp);
             await createNewItem(item);
         } else {
-            //let type: Array<string> = hoverRow.split('-');
-            //if (type[0] === 'file') {
-            //    let file: File = new File();
-            //    file.mapping(getItemById(hoverRow));
-            //    file.name = name;
-            //    file.addOrUpdate(properties.EDIT_MODE);
-            //} else {
-            //    let folder: Folder = new Folder();
-            //    folder.mapping(getItemById(hoverRow));
-            //    folder.name = name;
-            //    folder.addOrUpdate(properties.EDIT_MODE);
-            //}
             let file = await getItemById(hoverRow);
             let item = new Item();
             item.mapping(file['data']);
@@ -227,18 +177,6 @@ function attachRemoveItemEvent(row: HTMLTableRowElement) {
         btn[i].addEventListener('click', async function () {
             // Prevent calling onClick folder in folder case
             event.stopImmediatePropagation();
-            //let type: Array<string> = hoverRow.split('-');
-            //if (type[0] === 'file') {
-            //    let file: File = new File();
-            //    file.mapping(getItemById(hoverRow));
-            //    clickedRow = file.parent;
-            //    file.remove();
-            //} else {
-            //    let folder: Folder = new Folder();
-            //    folder.mapping(getItemById(hoverRow));
-            //    clickedRow = folder.parent;
-            //    folder.remove();
-            //}
             let fold = await getItemById(hoverRow);
             let item = new Item();
             item.mapping(fold['data']);
@@ -306,13 +244,6 @@ function attachEditEvent(tr: HTMLTableRowElement) {
 function attachGoUpEvent() {
     document.getElementById('go-up-button').onclick = async function () {
         if (clickedRow !== properties.BASE_ID) {
-            //    getData(properties.BASE_API_URL + 'Folder/GetFolderById/' + clickedRow, {}).then(data => {
-            //        if (data.parentID != null)
-            //            clickedRow = data.parentID;
-            //        else clickedRow = '0';
-            //        refresh();
-            //    });
-            //}
             let parent = await getItemById(clickedRow);
             let item = new Item();
             item.mapping(parent['data']);
