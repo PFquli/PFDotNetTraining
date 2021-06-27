@@ -16,16 +16,12 @@ namespace PFDotNetTraining.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly ShelfContext _context;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public ItemsController(ShelfContext context)
+        public ItemsController(ShelfContext context, IMapper mapper)
         {
             _context = context;
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Item, Item>();
-            });
-            _mapper = config.CreateMapper();
+            _mapper = mapper;
         }
 
         //GET: api/Items/all
@@ -82,11 +78,8 @@ namespace PFDotNetTraining.Controllers
         [HttpPost]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
-            //var rs = _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Items] ON");
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
-
-            //await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Items] OFF");
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }

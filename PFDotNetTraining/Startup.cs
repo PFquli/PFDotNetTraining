@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using PFDotNetTraining.Data.Context;
+using PFDotNetTraining.Controllers.Services;
+using AutoMapper;
 
 namespace PFDotNetTraining
 {
@@ -34,6 +36,13 @@ namespace PFDotNetTraining
             services.AddDbContext<ShelfContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ItemMapper());
+            });
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddControllers();
 
