@@ -133,7 +133,6 @@ C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\ru
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.csproj.AssemblyReference.cache
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.AssemblyInfoInputs.cache
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.AssemblyInfo.cs
@@ -143,7 +142,6 @@ C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PF
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.RazorAssemblyInfo.cache
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.RazorAssemblyInfo.cs
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\staticwebassets\PFDotNetTraining.StaticWebAssets.Manifest.cache
-C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\staticwebassets\PFDotNetTraining.StaticWebAssets.xml
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\scopedcss\bundle\PFDotNetTraining.styles.css
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.TagHelpers.input.cache
 C:\Users\quli\source\repos\PFDotNetTraining\PFDotNetTraining\obj\Debug\net5.0\PFDotNetTraining.TagHelpers.output.cache

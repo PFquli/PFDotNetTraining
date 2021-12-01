@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const ready = (fn) => {
     if (document.readyState !== 'loading') {
         fn();
@@ -6,4 +8,4 @@ const ready = (fn) => {
         document.addEventListener('DOMContentLoaded', fn);
     }
 };
-export default ready;
+exports.default = ready;

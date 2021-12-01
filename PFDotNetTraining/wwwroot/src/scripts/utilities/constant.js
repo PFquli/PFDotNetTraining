@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.properties = void 0;
 const baseApiUrl = 'https://localhost:44390/api/';
 const userApiUrl = `${baseApiUrl}User`;
 function itemsForParentApiUrl(parentId) {
@@ -6,7 +9,7 @@ function itemsForParentApiUrl(parentId) {
 function itemIdApiUrl(id) {
     return `${baseApiUrl}Items/id/${id}`;
 }
-export const properties = {
+exports.properties = {
     CREATE_MODE: 'create',
     EDIT_MODE: 'edit',
     ORDERING: ['Icon', 'Name', 'ModifiedAt', 'ModifiedBy', 'Id'],

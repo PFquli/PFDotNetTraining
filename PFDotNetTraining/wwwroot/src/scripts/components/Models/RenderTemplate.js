@@ -1,5 +1,8 @@
-import { properties } from '../../utilities/constant';
-export class RenderTemplate {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RenderTemplate = void 0;
+const constant_1 = require("../../utilities/constant");
+class RenderTemplate {
     constructor(table, ordering) {
         this.table = table;
         this.ordering = ordering;
@@ -17,8 +20,8 @@ export class RenderTemplate {
                 const imgNode = document.createElement('img');
                 imgNode.className = 'icon';
                 imgNode.src = map.get('IsFile')
-                    ? properties.FILE_DEFAULT_URL
-                    : properties.FOLDER_DEFAULT_URL;
+                    ? constant_1.properties.FILE_DEFAULT_URL
+                    : constant_1.properties.FOLDER_DEFAULT_URL;
                 cell.appendChild(imgNode);
                 continue;
             }
@@ -46,3 +49,4 @@ export class RenderTemplate {
         return row;
     }
 }
+exports.RenderTemplate = RenderTemplate;

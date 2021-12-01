@@ -1,13 +1,18 @@
-import ready from '../utilities/_helper';
-import renderGrid from '../components/_grid';
-import { RenderTemplate } from '../components/Models/RenderTemplate';
-import { removeExistingItem, updateExistingItem, createNewItem, getUserName, getItemsInFolder, getItemById } from '../data/dataOperation';
-import { generateKey, getCurrentDate } from '../utilities/utilities-function';
-import { properties } from '../utilities/constant';
-import Item from '../components/Models/Item';
-import $ from "jquery";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const _helper_1 = __importDefault(require("../utilities/_helper"));
+const _grid_1 = __importDefault(require("../components/_grid"));
+const RenderTemplate_1 = require("../components/Models/RenderTemplate");
+const dataOperation_1 = require("../data/dataOperation");
+const utilities_function_1 = require("../utilities/utilities-function");
+const constant_1 = require("../utilities/constant");
+const Item_1 = __importDefault(require("../components/Models/Item"));
+const jquery_1 = __importDefault(require("jquery"));
 let currentDir = '';
-let template = new RenderTemplate(document.getElementById("content-table"), properties.ORDERING);
+let template = new RenderTemplate_1.RenderTemplate(document.getElementById("content-table"), constant_1.properties.ORDERING);
 let clickedRow = 0;
 let hoverRow = 0;
 let editMode = false;
@@ -21,9 +26,9 @@ const randomLength = 5;
 //    }
 //}
 //const mutationObserver = new MutationObserver(callback);
-ready(async () => {
-    renderGrid();
-    currentDir = properties.BASE_DIRECTORY;
+_helper_1.default(async () => {
+    _grid_1.default();
+    currentDir = constant_1.properties.BASE_DIRECTORY;
     addToCurrentDirectoryPath();
     await renderItemsOfCurrentFolder();
     let submitButton = document.getElementById('add-btn');
@@ -37,7 +42,7 @@ ready(async () => {
     //        alert('The modal is completely hidden now!');
     //    }, 300);
     //})
-    $('#add-modal').on('hidden.bs.modal', function () {
+    jquery_1.default('#add-modal').on('hidden.bs.modal', function () {
         console.log("modal dong ne");
         editMode = false;
     });
@@ -51,7 +56,7 @@ ready(async () => {
 function generateData(input) {
     clearCurrentData();
     for (let i = 0; i < input.length; i += 1) {
-        let item = new Item();
+        let item = new Item_1.default();
         item.mapping(input[i]);
         let row = template.render(item);
         let id = item.Id;
@@ -67,7 +72,7 @@ function generateData(input) {
 //Render all items in local storage
 async function renderItemsOfCurrentFolder() {
     let items = [];
-    items = await getItemsInFolder(clickedRow);
+    items = await dataOperation_1.getItemsInFolder(clickedRow);
     await generateData(items);
 }
 //Clear current page data excluding header
@@ -86,12 +91,12 @@ function clearCurrentData() {
 function attachOnclickFolder(id, tr) {
     tr.addEventListener("click", async function () {
         //Check if data is in local storage and render
-        let fold = await getItemById(id);
+        let fold = await dataOperation_1.getItemById(id);
         clickedRow = id;
-        let item = new Item();
+        let item = new Item_1.default();
         item.mapping(fold['data']);
         addToCurrentDirectoryPath(item.Name);
-        let items = await getItemsInFolder(id);
+        let items = await dataOperation_1.getItemsInFolder(id);
         await generateData(items);
     });
 }
@@ -128,31 +133,31 @@ function addItemEvent(btn) {
         let inputElem = document.getElementById("file");
         let isFile = inputElem.checked;
         let id = null;
-        let creator = await getUserName();
+        let creator = await dataOperation_1.getUserName();
         if (!editMode) {
             //Add file or folder
             let temp = {
                 id: id,
                 name: name,
                 createdBy: creator,
-                createdDate: getCurrentDate(),
+                createdDate: utilities_function_1.getCurrentDate(),
                 modifiedBy: creator,
-                modifiedAt: getCurrentDate(),
+                modifiedAt: utilities_function_1.getCurrentDate(),
                 size: 50,
                 parent: clickedRow,
                 content: null,
                 isFile: isFile ? 1 : 0
             };
-            let item = new Item();
+            let item = new Item_1.default();
             item.mapping(temp);
-            await createNewItem(item);
+            await dataOperation_1.createNewItem(item);
         }
         else {
-            let file = await getItemById(hoverRow);
-            let item = new Item();
+            let file = await dataOperation_1.getItemById(hoverRow);
+            let item = new Item_1.default();
             item.mapping(file['data']);
             item.Name = name;
-            await updateExistingItem(hoverRow, item);
+            await dataOperation_1.updateExistingItem(hoverRow, item);
             editMode = false;
         }
         await renderItemsOfCurrentFolder();
@@ -168,11 +173,11 @@ function attachRemoveItemEvent(row) {
         btn[i].addEventListener('click', async function () {
             // Prevent calling onClick folder in folder case
             event.stopImmediatePropagation();
-            let fold = await getItemById(hoverRow);
-            let item = new Item();
+            let fold = await dataOperation_1.getItemById(hoverRow);
+            let item = new Item_1.default();
             item.mapping(fold['data']);
             clickedRow = item.Parent;
-            await removeExistingItem(hoverRow);
+            await dataOperation_1.removeExistingItem(hoverRow);
             await renderItemsOfCurrentFolder();
         });
     }
@@ -204,11 +209,11 @@ function removeFromCurrentDirectoryPath() {
 function checkboxEvent() {
     let inputElem = document.getElementById("file");
     let idField = document.getElementById("id");
-    idField.value = generateKey(properties.FOLDER_PREFIX, randomLength);
+    idField.value = utilities_function_1.generateKey(constant_1.properties.FOLDER_PREFIX, randomLength);
     inputElem.onclick = function () {
         let isFile = inputElem.checked;
-        const prefix = isFile ? properties.FILE_PREFIX : properties.FOLDER_PREFIX;
-        let result = generateKey(prefix, randomLength);
+        const prefix = isFile ? constant_1.properties.FILE_PREFIX : constant_1.properties.FOLDER_PREFIX;
+        let result = utilities_function_1.generateKey(prefix, randomLength);
         idField.value = result;
     };
 }
@@ -231,11 +236,11 @@ function attachEditEvent(tr) {
  */
 function attachGoUpEvent() {
     document.getElementById('go-up-button').onclick = async function () {
-        if (clickedRow !== properties.BASE_ID) {
-            let parent = await getItemById(clickedRow);
-            let item = new Item();
+        if (clickedRow !== constant_1.properties.BASE_ID) {
+            let parent = await dataOperation_1.getItemById(clickedRow);
+            let item = new Item_1.default();
             item.mapping(parent['data']);
-            if (item.Parent >= properties.BASE_ID) {
+            if (item.Parent >= constant_1.properties.BASE_ID) {
                 if (item.Parent !== clickedRow) {
                     clickedRow = item.Parent;
                     removeFromCurrentDirectoryPath();

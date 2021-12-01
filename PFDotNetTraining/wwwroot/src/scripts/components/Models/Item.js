@@ -1,6 +1,8 @@
-import { properties } from '../../utilities/constant';
-export default class Item {
-    constructor(id, name, createDate, createdBy, modifiedAt, modifiedBy, size, parent = properties.BASE_ID, content = null, isFile = 1) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const constant_1 = require("../../utilities/constant");
+class Item {
+    constructor(id, name, createDate, createdBy, modifiedAt, modifiedBy, size, parent = constant_1.properties.BASE_ID, content = null, isFile = 1) {
         this.CreatedBy = 'An Tran Hoang';
         if (id)
             this.Id = id;
@@ -46,3 +48,4 @@ export default class Item {
             this.IsFile = input.isFile;
     }
 }
+exports.default = Item;
