@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj": {}
+    "C:\\Users\\quli\\Source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj": {}
   },
   "projects": {
-    "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj": {
+    "C:\\Users\\quli\\Source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
+        "projectUniqueName": "C:\\Users\\quli\\Source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
         "projectName": "PFDotNetTraining",
-        "projectPath": "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
+        "projectPath": "C:\\Users\\quli\\Source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
         "packagesPath": "C:\\Users\\quli\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\obj\\",
+        "outputPath": "C:\\Users\\quli\\Source\\repos\\PFDotNetTraining\\PFDotNetTraining\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\quli\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -117,6 +117,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[5.0.12, 5.0.12]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -125,7 +131,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

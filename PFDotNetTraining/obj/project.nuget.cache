@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ChfB/3Kw3O89G2pZWioqakn6bTLsnNQyI2O1glfdMwHVCUbxmjKvjyYt9jwuI49hyMabckILFEjVflqZgd0STQ==",
+  "dgSpecHash": "qwjsQZJnKEyrIxpF2HLV8hZs7Z2tEZgUwZqVOcG/Rna0soQWJ36vSHEha4DLqQhv/UibzJi4LYRyf/0PVnaa/Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\quli\\source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
+  "projectFilePath": "C:\\Users\\quli\\Source\\repos\\PFDotNetTraining\\PFDotNetTraining\\PFDotNetTraining.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\quli\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
@@ -141,7 +141,8 @@
     "C:\\Users\\quli\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\quli\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\quli\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
+    "C:\\Users\\quli\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
+    "C:\\Users\\quli\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.12\\microsoft.netcore.app.host.win-x64.5.0.12.nupkg.sha512"
   ],
   "logs": []
 }
